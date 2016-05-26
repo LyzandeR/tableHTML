@@ -3,6 +3,16 @@ HTMLtable <- function(obj,
                       class = paste0('table_', deparse(substitute(obj))),
                       second_header = NULL) {
      
+     #CHECKS----------------------------------------------------------------------------------------
+     #adding checks for obj
+     if(is.matrix(obj)) {
+      obj <- as.data.frame(obj)
+     } else if (!inherits(obj, 'data.frame')) {
+      stop('obj needs to be either a data.frame or a matrix')  
+     }
+     
+     #ROWNAMES--------------------------------------------------------------------------------------
+     #taking into account rownames
      if (rownames == TRUE) {
        headers <- paste0('<tr> <th id = header_1> </th>', 
                          paste0(vapply(seq_along(names(obj)) + 1,
@@ -29,6 +39,8 @@ HTMLtable <- function(obj,
                          '</tr>\n')
      }
      
+     #SECOND HEADERS--------------------------------------------------------------------------------
+     #adding second headers if available
      if (!is.null(second_header)) {
        over_header <- 
          paste0('<tr>', 
@@ -49,6 +61,8 @@ HTMLtable <- function(obj,
        over_header <- NULL
      }
      
+     #TABLE'S BODY----------------------------------------------------------------------------------
+     #adding body
      content <- lapply(names(obj), function(x) {
        paste0('<td align="right" id="', x, '">', obj[[x]], '</td>')
      })
@@ -63,6 +77,8 @@ HTMLtable <- function(obj,
      content <- cbind('<tr>', do.call(cbind, content), '</tr>\n')
      content <- paste(apply(content, 1, paste, collapse=''), collapse='')
      
+     #PUTTING IT ALL TOGETHER-----------------------------------------------------------------------
+     #adding all the components in one html table
      HTML(paste0('<table class=', 
                  class, 
                  ' border=1>\n', 
