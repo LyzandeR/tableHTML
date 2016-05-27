@@ -161,8 +161,8 @@ tableHTML <- function(obj,
      htmltable
 }
 
-
-
+#' @rdname tableHTML
+#' @export
 print.tableHTML <- function(htmltable) {
  
  if (interactive()) {
