@@ -1,0 +1,14 @@
+Package: tableHTML
+Type: Package
+Title: Create HTML tables
+Version: 0.1.0
+Authors@R: person("Theo", 
+                  "Boutaris", 
+                  email = "teoboot2007@hotmail.com", 
+                  role = c("aut", "cre"))
+Depends: R (>= 3.2.0)
+Imports: htmltools
+Description: Create easily css-ible HTML tables compatible with shiny
+License: MIT + file LICENSE
+LazyData: TRUE
+RoxygenNote: 5.0.1
