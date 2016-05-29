@@ -12,3 +12,4 @@ Description: Create easily css-ible HTML tables compatible with shiny
 License: MIT + file LICENSE
 LazyData: TRUE
 RoxygenNote: 5.0.1
+Suggests: testthat
