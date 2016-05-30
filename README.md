@@ -23,15 +23,15 @@ tableHTML(mtcars)
 
 an HTML table will appear on viewer in R studio and will look like this:
 
-![simple_table]()
+![simple_table](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/simple_table.PNG)
 
 You can select whether to include row names by setting the rownames argument to FALSE:
 
 ```R
-tableHTML(mtcars, rownames = FALSE)`
+tableHTML(mtcars, rownames = FALSE)
 ```
 
-![simple_table_no_rownames]()
+![simple_table_no_rownames](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/table_no_rownames.PNG)
 
 The class argument sets the class name for the table. The default will be of the form table_<data_frame_name>. For example, for mtcars the HTML table's class would be table_mtcars. This makes it easy to create a css value for it in case there are multiple tables.
 
@@ -66,7 +66,7 @@ As an example:
 tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 ```
 
-![table_second_header]()
+![table_second_header](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/table_second_headers.PNG)
 
 
 Now that we know about how to use the function's arguments let's see how we can use tableHTML with shiny. The implementation is really simple since internally tableHTML uses `htmltools::HTML` to convert the table into an HTML object. Simply using `renderUI` and `uiOutput` will be enough:
@@ -89,7 +89,7 @@ shinyApp(
 
 This will yield a very simple app that looks like this:
 
-![shiny_table]()
+![shiny_table](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/Shiny_table.PNG)
 
 Now that our very simple table has been created we can modify it using CSS. tableHTML creates ids for columns, headers and overheaders and gives the table a specific class name and it was mentioned previously.
 
@@ -139,7 +139,7 @@ In order to add a vertical column line we can use the column ids created by tabl
 
 Our HTML table will look like this:
 
-![shiny_vertical]()
+![shiny_vertical](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/shiny_vertical_line.PNG)
 
 In order to change the background color of one of the headers (e.g. the second) our css would look like this:
 
@@ -152,7 +152,7 @@ In order to change the background color of one of the headers (e.g. the second) 
 	background-color: green;
 }
 ``` 
-![shiny_back]()
+![shiny_back](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/shiny_header_color.PNG)
 
 
 And in order to align the first of the second_headers in the center our css would look like:
@@ -171,4 +171,4 @@ And in order to align the first of the second_headers in the center our css woul
 }
 ``` 
 
-![shiny_overheader]()
+![shiny_overheader](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/shiny_overheader_center.PNG)
