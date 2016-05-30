@@ -33,7 +33,7 @@ tableHTML(mtcars, rownames = FALSE)
 
 ![simple_table_no_rownames](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/table_no_rownames.PNG)
 
-The class argument sets the class name for the table. The default will be of the form table_<data_frame_name>. For example, for mtcars the HTML table's class would be table_mtcars. This makes it easy to create a css value for it in case there are multiple tables.
+The class argument sets the class name for the table. The default will be of the form table_dataframeName. For example, for mtcars the HTML table's class would be table_mtcars. This makes it easy to create a css value for it in case there are multiple tables.
 
 ```R
 mytable <- tableHTML(mtcars)
@@ -95,13 +95,13 @@ Now that our very simple table has been created we can modify it using CSS. tabl
 
 The rules are like this:
 
-* Table: Will get the class from the class argument in the function. The final class will be of the form table_<class_name>.
+* Table: Will get the class from the class argument in the function. The final class will be of the form table_dataframeName.
 
 * Columns: Will get an id which will be the same as the column name
 
-* Headers: Will get an id of the form header_<header index>. For example the first header will have the id header_1, the second header will have header_2 and so on.
+* Headers: Will get an id of the form header_headerIndex. For example the first header will have the id header_1, the second header will have header_2 and so on.
 
-* Second_Header: Will get an id of the form overheader_<second header index>. For example the first second_header will have the id overheader_1, the second header will have overheader_2 and so on.
+* Second_Header: Will get an id of the form overheader_secondHeaderIndex. For example the first second_header will have the id overheader_1, the second header will have overheader_2 and so on.
 
 Let's see this in practice. We create a CSS file e.g. mycss.css where we will write our css code. Then we load this in R shiny in the following way. We have saved a ui.R file and server.R file in the same directory. In that directory we have a www/ folder where we save our .css file. In our case that is named mycss.css. We include this file in R using `includeCSS`:
 
@@ -172,3 +172,7 @@ And in order to align the first of the second_headers in the center our css woul
 ``` 
 
 ![shiny_overheader](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/shiny_overheader_center.PNG)
+
+# Further Development
+
+This package is still in its infancy and is still under development. The next release will implement CSS functions in order to add some CSS features from within the R functions.
