@@ -95,7 +95,7 @@ tableHTML <- function(obj,
   #HEADERS---------------------------------------------------------------------------------------
   #taking into account rownames
   if (rownames == TRUE) {
-    headers <- paste('\n<tr>',
+    headers <- paste('<tr>',
                      '  <th id=header_1> </th>', 
                      paste(vapply(seq_along(names(obj)) + 1, function(x) {
                               paste0('  <th id=header_', x, '>', 
@@ -104,16 +104,16 @@ tableHTML <- function(obj,
                               },
                               FUN.VALUE = character(1)),
                               collapse = '\n'),
-                     '</tr>',
+                     '</tr>\n',
                      sep = '\n')
   } else {
-    headers <- paste('\n<tr>', 
+    headers <- paste('<tr>', 
                      paste(vapply(seq_along(names(obj)), function(x) {
                               paste0('  <th id=header_', x, '>', names(obj)[x], '</th>') 
                               },
                               FUN.VALUE = character(1)),
                               collapse = '\n'),
-                     '</tr>',
+                     '</tr>\n',
                      sep = '\n')
   }
   
@@ -133,7 +133,7 @@ tableHTML <- function(obj,
                     }, 
                    FUN.VALUE = character(1)),
                   collapse = '\n'),
-           '</tr>',
+           '</tr>\n',
            sep = '\n')
   } else {
     over_header <- NULL
@@ -164,6 +164,7 @@ tableHTML <- function(obj,
      paste0('<col width="', x, '">')
     }, FUN.VALUE = character(1)),
     collapse = '\n')
+   colwidths <- paste0(colwidths, '\n')
   } else {
    colwidths <- NULL
   }
@@ -175,13 +176,12 @@ tableHTML <- function(obj,
                     class, 
                     ' border=1 style="border-collapse: collapse;">\n', 
                     over_header, 
-                    '\n',
                     colwidths,
                     headers, 
                     content, 
                     '\n',
                     '</table>', 
-                    collapse=''))
+                    collapse = ''))
   
   class(htmltable) <- c('tableHTML', class(htmltable))
   
