@@ -68,7 +68,7 @@ tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 
 ![table_second_header](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/table_second_headers.PNG)
 
-The widths argument specifies the columns' width in pixels. It needs to have the same length as the number of columns (if rownames is TRUE, rownames are also considered a column) As an example:
+The widths argument specifies the columns' width in pixels. It needs to have the same length as the number of columns (if rownames is TRUE, rownames are also considered a column). As an example:
 
 ```R
  tableHTML(mtcars, widths = rep(100, 12), second_header = list(c(3,4,5), c('col1', 'col2', 'col3')))
