@@ -6,7 +6,7 @@
 \title{Create an easily css-ible HTML table}
 \usage{
 tableHTML(obj, rownames = TRUE, class = paste0("table_",
-  deparse(substitute(obj))), second_header = NULL)
+  deparse(substitute(obj))), widths = NULL, second_header = NULL)
 
 \method{print}{tableHTML}(htmltable)
 }
@@ -19,6 +19,8 @@ will be inlcuded.}
 
 \item{class}{Character String. Specifies the table's class. Convinient if you have multiple
 tables. Default is table_<data_frame_name>.}
+
+\item{widths}{Needs to be a numeric atomic vector with the column widths. Widths are in pixels.}
 
 \item{second_header}{A list of two elements of the same length. The first element will contain
 the column spans (i.e. a numeric atomic vector) whereas the second element will contain the
@@ -59,6 +61,9 @@ tableHTML(mtcars)
 tableHtML(mtcars, rownames = FALSE)
 tableHTML(mtcars, class = 'table1')
 tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+tableHTML(mtcars, 
+          widths = c(rep(50, 6), rep(100, 6)) , 
+          second_header = list(c(3,4,5), c('col1', 'col2', 'col3')))
 
 }
 

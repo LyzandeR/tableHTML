@@ -32,6 +32,8 @@
 #'   
 #' @param class Character String. Specifies the table's class. Convinient if you have multiple
 #'   tables. Default is table_<data_frame_name>.
+#'   
+#' @param widths Needs to be a numeric atomic vector with the column widths. Widths are in pixels.  
 #'
 #' @param second_header A list of two elements of the same length. The first element will contain
 #'   the column spans (i.e. a numeric atomic vector) whereas the second element will contain the
@@ -45,120 +47,141 @@
 #' tableHtML(mtcars, rownames = FALSE)
 #' tableHTML(mtcars, class = 'table1')
 #' tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+#' tableHTML(mtcars, 
+#'           widths = c(rep(50, 6), rep(100, 6)) , 
+#'           second_header = list(c(3,4,5), c('col1', 'col2', 'col3')))
 #' 
 #' @export
 tableHTML <- function(obj, 
                       rownames = TRUE,
                       class = paste0('table_', deparse(substitute(obj))),
+                      widths = NULL,
                       second_header = NULL) {
      
-     #CHECKS----------------------------------------------------------------------------------------
-     #adding checks for obj
-     if (is.matrix(obj)) {
-      obj <- as.data.frame(obj)
-     } else if (!inherits(obj, 'data.frame')) {
-      stop('obj needs to be either a data.frame or a matrix')  
-     }
- 
-     #checks for second header
-     if (!is.null(second_header)) {
-      if (!is.list(second_header)) {
-       stop('second_header needs to be a list')
-      }
-      if (length(second_header) != 2L) {
-       stop('second_header needs to be a list of length two')
-      }
-      if (!is.numeric(second_header[[1]])) {
-       stop("second_header\'s first element needs to be numeric")
-      }
-      if (!is.character(second_header[[2]])) {
-       stop("second_header\'s second element needs to be character")
-      }
-      if (length(second_header[[1]]) != length(second_header[[2]])) {
-       stop("second_header\'s  elements need to have the same length")
-      }
-     }
-     
-     #HEADERS---------------------------------------------------------------------------------------
-     #taking into account rownames
-     if (rownames == TRUE) {
-       headers <- paste('<tr>',
-                        '  <th id=header_1> </th>', 
-                        paste(vapply(seq_along(names(obj)) + 1, function(x) {
-                                 paste0('  <th id=header_', x, '>', 
-                                       names(obj)[x - 1], 
-                                       '</th>')
-                                 },
-                                 FUN.VALUE = character(1)),
-                                 collapse = '\n'),
-                        '</tr>',
-                        sep = '\n')
-     } else {
-       headers <- paste('<tr>', 
-                        paste(vapply(seq_along(names(obj)), function(x) {
-                                 paste0('  <th id=header_', x, '>', names(obj)[x], '</th>') 
-                                 },
-                                 FUN.VALUE = character(1)),
-                                 collapse = '\n'),
-                        '</tr>',
-                        sep = '\n')
-     }
-     
-     #SECOND HEADERS--------------------------------------------------------------------------------
-     #adding second headers if needed
-     if (!is.null(second_header)) {
-       over_header <- 
-         paste('<tr>', 
-               paste(vapply(seq_along(second_header[[1]]), function(x) {
-                       paste0('  <th colspan=', 
-                              second_header[[1]][x], 
-                              ' id=overheader_',  
-                              x,
-                              '>',
-                       second_header[[2]][x],
-                       '</th>')
-                       }, 
-                      FUN.VALUE = character(1)),
-                     collapse = '\n'),
-              '</tr>',
-              sep = '\n')
-     } else {
-       over_header <- NULL
-     }
-     
-     #TABLE'S BODY----------------------------------------------------------------------------------
-     #adding body
-     content <- lapply(names(obj), function(x) {
-       paste0('  <td id="', x, '">', obj[[x]], '</td>\n')
-     })
-     
-     #adding rownames in the body
-     if (rownames == TRUE) {
-       content <- c(list(paste0('  <td id="rownames">', 
-                                row.names(obj), 
-                                '</td>\n')), 
-                    content)
-     }
-     
-     content <- cbind('<tr>\n', do.call(cbind, content), '</tr>')
-     content <- paste(apply(content, 1, paste, collapse = ''), collapse = '\n')
-     
-     #PUTTING IT ALL TOGETHER-----------------------------------------------------------------------
-     #adding all the components in one html table
-     htmltable <- 
-       htmltools::HTML(paste0('<table class=', 
-                       class, 
-                       ' border=1 style="border-collapse: collapse;">\n', 
-                       over_header, 
-                       headers, 
-                       content, 
-                       '\n',
-                       '</table>', 
-                       collapse=''))
-     
-     class(htmltable) <- c('tableHTML', class(htmltable))
-     
-     htmltable
+  #CHECKS----------------------------------------------------------------------------------------
+  #adding checks for obj
+  if (is.matrix(obj)) {
+   obj <- as.data.frame(obj)
+  } else if (!inherits(obj, 'data.frame')) {
+   stop('obj needs to be either a data.frame or a matrix')  
+  }
+
+  #checks for second header
+  if (!is.null(second_header)) {
+   if (!is.list(second_header)) {
+    stop('second_header needs to be a list')
+   }
+   if (length(second_header) != 2L) {
+    stop('second_header needs to be a list of length two')
+   }
+   if (!is.numeric(second_header[[1]])) {
+    stop("second_header\'s first element needs to be numeric")
+   }
+   if (!is.character(second_header[[2]])) {
+    stop("second_header\'s second element needs to be character")
+   }
+   if (length(second_header[[1]]) != length(second_header[[2]])) {
+    stop("second_header\'s  elements need to have the same length")
+   }
+  }
+  if(rownames == TRUE) {
+   if (length(widths) != ncol(obj) + 1) stop('widths need to have the same length as the columns')
+  } else {
+   if (length(widths) != ncol(obj)) stop('widths need to have the same length as the columns')
+  }
+   
+  #HEADERS---------------------------------------------------------------------------------------
+  #taking into account rownames
+  if (rownames == TRUE) {
+    headers <- paste('\n<tr>',
+                     '  <th id=header_1> </th>', 
+                     paste(vapply(seq_along(names(obj)) + 1, function(x) {
+                              paste0('  <th id=header_', x, '>', 
+                                    names(obj)[x - 1], 
+                                    '</th>')
+                              },
+                              FUN.VALUE = character(1)),
+                              collapse = '\n'),
+                     '</tr>',
+                     sep = '\n')
+  } else {
+    headers <- paste('\n<tr>', 
+                     paste(vapply(seq_along(names(obj)), function(x) {
+                              paste0('  <th id=header_', x, '>', names(obj)[x], '</th>') 
+                              },
+                              FUN.VALUE = character(1)),
+                              collapse = '\n'),
+                     '</tr>',
+                     sep = '\n')
+  }
+  
+  #SECOND HEADERS--------------------------------------------------------------------------------
+  #adding second headers if needed
+  if (!is.null(second_header)) {
+    over_header <- 
+      paste('<tr>', 
+            paste(vapply(seq_along(second_header[[1]]), function(x) {
+                    paste0('  <th colspan=', 
+                           second_header[[1]][x], 
+                           ' id=overheader_',  
+                           x,
+                           '>',
+                    second_header[[2]][x],
+                    '</th>')
+                    }, 
+                   FUN.VALUE = character(1)),
+                  collapse = '\n'),
+           '</tr>',
+           sep = '\n')
+  } else {
+    over_header <- NULL
+  }
+  
+  #TABLE'S BODY----------------------------------------------------------------------------------
+  #adding body
+  content <- lapply(names(obj), function(x) {
+    paste0('  <td id="', x, '">', obj[[x]], '</td>\n')
+  })
+  
+  #adding rownames in the body
+  if (rownames == TRUE) {
+    content <- c(list(paste0('  <td id="rownames">', 
+                             row.names(obj), 
+                             '</td>\n')), 
+                 content)
+  }
+  
+  content <- cbind('<tr>\n', do.call(cbind, content), '</tr>')
+  content <- paste(apply(content, 1, paste, collapse = ''), collapse = '\n')
+  
+  #WIDTHS----------------------------------------------------------------------------------------
+  #setting column widths if any------------------------------------------------------------------
+  if (!is.null(widths)) {
+   colwidths <- paste(
+    vapply(widths, function(x) {
+     paste0('<col width="', x, '">')
+    }, FUN.VALUE = character(1)),
+    collapse = '\n')
+  }
+  
+  #PUTTING IT ALL TOGETHER-----------------------------------------------------------------------
+  #adding all the components in one html table
+  htmltable <- 
+    htmltools::HTML(paste0('\n<table class=', 
+                    class, 
+                    ' border=1 style="border-collapse: collapse;">\n', 
+                    over_header, 
+                    '\n',
+                    colwidths,
+                    headers, 
+                    content, 
+                    '\n',
+                    '</table>', 
+                    collapse=''))
+  
+  class(htmltable) <- c('tableHTML', class(htmltable))
+  
+  htmltable
 }
 
 #' @rdname tableHTML
