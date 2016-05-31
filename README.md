@@ -38,7 +38,8 @@ The class argument sets the class name for the table. The default will be of the
 ```R
 mytable <- tableHTML(mtcars)
 str(mytable)
-Classes 'tableHTML', 'html', 'character'  atomic [1:1] <table class=table_mtcars border=1 style="border-collapse: collapse;">
+Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
+<table class=table_mtcars border=1 style="border-collapse: collapse;">
 <tr>
   <th id=header_1> </th>
   <th id=header_2>mpg</th>
@@ -50,7 +51,8 @@ And also:
 ```R
 mytable <- tableHTML(mtcars, class = 'myclass')
 str(mytable)
-Classes 'tableHTML', 'html', 'character'  atomic [1:1] <table class=myclass border=1 style="border-collapse: collapse;">
+Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
+<table class=myclass border=1 style="border-collapse: collapse;">
 <tr>
   <th id=header_1> </th>
   <th id=header_2>mpg</th>
