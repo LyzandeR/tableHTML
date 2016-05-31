@@ -84,6 +84,8 @@ tableHTML <- function(obj,
     stop("second_header\'s  elements need to have the same length")
    }
   }
+  
+  #checks for widths
   if(rownames == TRUE & !is.null(widths)) {
    if (length(widths) != ncol(obj) + 1) stop('widths need to have the same length as the columns')
   } else if(rownames == FALSE & !is.null(widths)) {
