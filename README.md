@@ -73,7 +73,7 @@ The widths argument specifies the columns' width in pixels. It needs to have the
 ```R
  tableHTML(mtcars, widths = rep(100, 12), second_header = list(c(3,4,5), c('col1', 'col2', 'col3')))
 ```
-![table_widths]()
+![table_widths](https://github.com/LyzandeR/tableHTML/blob/master/readme_files/table_widths.PNG)
 
 
 Now that we know about how to use the function's arguments let's see how we can use tableHTML with shiny. The implementation is really simple since internally tableHTML uses `htmltools::HTML` to convert the table into an HTML object. Simply using `renderUI` and `uiOutput` will be enough:
