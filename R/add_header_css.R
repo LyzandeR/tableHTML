@@ -1,8 +1,8 @@
-#' Add css to tableHTML's columns 
+#' Add css to tableHTML's headers 
 #'
-#' \code{add_css_column} will add css to a tableHTML's columns
+#' \code{add_css_header} will add css to a tableHTML's headers
 #' 
-#' \code{add_css_column} will add css to a tableHTML's columns.
+#' \code{add_css_header} will add css to a tableHTML's headers.
 #'
 #' @param tableHTML A tableHTML object created by the tableHTML function.
 #'
@@ -11,23 +11,23 @@
 #'   element will be an atomic vector with the same length as the first element, which will 
 #'   contain the style definitions' values (e.g. red). Check the examples for more information.
 #'   
-#' @param column_names A character atomic vector with the names of the columns where the style
-#'   definitions will be applied on. At least one column name must be provided.
+#' @param headers A numeric atomic vector with the indices of the headers where the style
+#'   definitions will be applied on. At least one header index must be provided.
 #'
 #' @return An tableHTML object. 
 #'         
 #' @examples
 #' tableHTML(mtcars) %>% 
-#'   add_css_column(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')),
-#'                  column_names = 'mpg') 
+#'   add_css_header(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')),
+#'                  headers = 2) 
 #' 
 #' tableHTML(mtcars) %>% 
-#'   add_css_column(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
-#'                  column_names = c('mpg', 'disp'))
+#'   add_css_header(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
+#'                  headers = c(1, 4))
 #' @export
-add_css_column <- function(tableHTML, 
+add_css_header <- function(tableHTML, 
                            css, 
-                           column_names) {
+                           headers) {
  
  #checks
  if (!inherits(tableHTML, 'tableHTML')) stop('tableHTML needs to be a tableHTML object')
@@ -42,10 +42,10 @@ add_css_column <- function(tableHTML,
  
  style <- paste0('style="', css_comp, '"')
  
- for (i in column_names) {
-   tabHTML <- gsub(paste0('id="', i, '" style='), paste0('id="', i, '"'), tabHTML)
-   tabHTML <- gsub(paste0('id="', i, '"'), paste0('id="', i, '" ', style), tabHTML)
-   tabHTML <- gsub('" "', '', tabHTML)
+ for (i in headers) {
+  tabHTML <- gsub(paste0('id="header_', i, '" style='), paste0('id="header_', i, '"'), tabHTML)
+  tabHTML <- gsub(paste0('id="header_', i, '"'), paste0('id="header_', i, '" ', style), tabHTML)
+  tabHTML <- gsub('" "', '', tabHTML)
  }
  
  tabHTML

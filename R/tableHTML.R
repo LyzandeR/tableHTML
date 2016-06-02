@@ -96,9 +96,9 @@ tableHTML <- function(obj,
   #taking into account rownames
   if (rownames == TRUE) {
     headers <- paste('<tr>',
-                     '  <th id=header_1> </th>', 
+                     '  <th id="header_1"> </th>', 
                      paste(vapply(seq_along(names(obj)) + 1, function(x) {
-                              paste0('  <th id=header_', x, '>', 
+                              paste0('  <th id="header_', x, '">', 
                                     names(obj)[x - 1], 
                                     '</th>')
                               },
@@ -109,7 +109,7 @@ tableHTML <- function(obj,
   } else {
     headers <- paste('<tr>', 
                      paste(vapply(seq_along(names(obj)), function(x) {
-                              paste0('  <th id=header_', x, '>', names(obj)[x], '</th>') 
+                              paste0('  <th id="header_', x, '">', names(obj)[x], '</th>') 
                               },
                               FUN.VALUE = character(1)),
                               collapse = '\n'),
@@ -125,9 +125,9 @@ tableHTML <- function(obj,
             paste(vapply(seq_along(second_header[[1]]), function(x) {
                     paste0('  <th colspan=', 
                            second_header[[1]][x], 
-                           ' id=overheader_',  
+                           ' id="overheader_',  
                            x,
-                           '>',
+                           '">',
                     second_header[[2]][x],
                     '</th>')
                     }, 

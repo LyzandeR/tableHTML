@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_column_css.R
 \name{add_css_column}
 \alias{add_css_column}
-\title{Add css to tableHTML's collumns}
+\title{Add css to tableHTML's columns}
 \usage{
 add_css_column(tableHTML, css, column_names)
 }
@@ -15,7 +15,7 @@ element will be an atomic vector with the same length as the first element, whic
 contain the style definitions' values (e.g. red). Check the examples for more information.}
 
 \item{column_names}{A character atomic vector with the names of the columns where the style
-definitions will be applied. At least one column name must be provided.}
+definitions will be applied on. At least one column name must be provided.}
 }
 \value{
 An tableHTML object.
@@ -24,7 +24,7 @@ An tableHTML object.
 \code{add_css_column} will add css to a tableHTML's columns
 }
 \details{
-\code{add_css_row} will add css to a tableHTML's columns.
+\code{add_css_column} will add css to a tableHTML's columns.
 }
 \examples{
 tableHTML(mtcars) \%>\% 
