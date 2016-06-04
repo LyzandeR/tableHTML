@@ -14,7 +14,7 @@ devtools::install_github('lyzander/tableHTML')
 
 # Usage
 
-The package creates an easily CSS-ible HTML tables which are compatible with R shiny. By typing on your console:
+By typing on your console:
 
 ```R
 library(tableHTML)
