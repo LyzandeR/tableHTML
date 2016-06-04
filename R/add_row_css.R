@@ -13,7 +13,8 @@
 #'   contain the style definitions' values (e.g. red). Check the examples for more information.
 #'   
 #' @param rows A numeric atomic vector with the indices of the rows on which the style definitions
-#'   will be applied. headers and second_headers are included in the rows.
+#'   will be applied. headers and second_headers are included in the rows.Default is NULL
+#'   which means that it will be applied to all rows.
 #'
 #' @return An tableHTML object. 
 #'         
@@ -23,7 +24,7 @@
 #' 
 #' tableHTML(mtcars) %>% 
 #'   add_css_row(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
-#'               rows = 1:nrow(mtcars))
+#'               rows = 1:33)
 #'         
 #' @export
 add_css_row <- function(tableHTML, 
@@ -56,7 +57,7 @@ add_css_row <- function(tableHTML,
  
  splits[[1]][rows ] <- 
   vapply(splits[[1]][rows], function(x) {
-   x <- sub('style=', '', x)
+   x <- sub('<tr style=', '<tr', x)
    x <- gsub('<tr', paste0('<tr ', style), x)
    x <- sub('" "', '', x)
    x

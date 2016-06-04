@@ -12,7 +12,8 @@
 #'   contain the style definitions' values (e.g. red). Check the examples for more information.
 #'   
 #' @param column_names A character atomic vector with the names of the columns where the style
-#'   definitions will be applied on. At least one column name must be provided.
+#'   definitions will be applied on. At least one column name must be provided. If the rownames
+#'   are included the column name is "rownames".
 #'
 #' @return An tableHTML object. 
 #'         
@@ -23,7 +24,7 @@
 #' 
 #' tableHTML(mtcars) %>% 
 #'   add_css_column(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
-#'                  column_names = c('mpg', 'disp'))
+#'                  column_names = c('mpg', 'disp', 'rownames'))
 #' @export
 add_css_column <- function(tableHTML, 
                            css, 

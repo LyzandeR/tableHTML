@@ -15,7 +15,8 @@ element will be an atomic vector with the same length as the first element, whic
 contain the style definitions' values (e.g. red). Check the examples for more information.}
 
 \item{column_names}{A character atomic vector with the names of the columns where the style
-definitions will be applied on. At least one column name must be provided.}
+definitions will be applied on. At least one column name must be provided. If the rownames
+are included the column name is "rownames".}
 }
 \value{
 An tableHTML object.
@@ -33,6 +34,6 @@ tableHTML(mtcars) \%>\%
 
 tableHTML(mtcars) \%>\% 
   add_css_column(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
-                 column_names = c('mpg', 'disp'))
+                 column_names = c('mpg', 'disp', 'rownames'))
 }
 

@@ -15,7 +15,8 @@ element will be an atomic vector with the same length as the first element, whic
 contain the style definitions' values (e.g. red). Check the examples for more information.}
 
 \item{rows}{A numeric atomic vector with the indices of the rows on which the style definitions
-will be applied.}
+will be applied. headers and second_headers are included in the rows.Default is NULL
+which means that it will be applied to all rows.}
 }
 \value{
 An tableHTML object.
@@ -33,7 +34,7 @@ tableHTML(mtcars) \%>\%
 
 tableHTML(mtcars) \%>\% 
   add_css_row(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
-              rows = 1:nrow(mtcars))
+              rows = 1:33)
         
 }
 
