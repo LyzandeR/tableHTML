@@ -13,7 +13,7 @@
 #'   contain the style definitions' values (e.g. red). Check the examples for more information.
 #'   
 #' @param rows A numeric atomic vector with the indices of the rows on which the style definitions
-#'   will be applied.
+#'   will be applied. headers and second_headers are included in the rows.
 #'
 #' @return An tableHTML object. 
 #'         
@@ -50,15 +50,17 @@ add_css_row <- function(tableHTML,
  
  if (is.null(rows)) {
   rows <- 2:length(splits[[1]]) 
+ } else {
+  rows <- rows + 1
  }
  
- splits[[1]][rows + 1] <- 
-   vapply(splits[[1]][rows + 1], function(x) {
-     x <- sub('style=', '', x)
-     x <- gsub('<tr', paste0('<tr ', style), x)
-     x <- sub('" "', '', x)
-     x
- }, FUN.VALUE = character(1))
+ splits[[1]][rows ] <- 
+  vapply(splits[[1]][rows], function(x) {
+   x <- sub('style=', '', x)
+   x <- gsub('<tr', paste0('<tr ', style), x)
+   x <- sub('" "', '', x)
+   x
+  }, FUN.VALUE = character(1))
  
  new_tab <- paste(splits[[1]], collapse = '')
  
