@@ -17,10 +17,10 @@
 #' @return An tableHTML object. 
 #'         
 #' @examples
-#' tableHTML(mtcars, second_header = list(c(3,4,5), c('col1', 'col2', 'col3'))) %>% 
+#' tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>% 
 #'   add_css_second_header(css = list(c('background-color', 'border'), 
 #'                                    c('lightgray', '3px solid green')),
-#'                         second_headers = c(1,3))  
+#'                         second_headers = c(1, 3))  
 #' 
 #' @export
 add_css_second_header <- function(tableHTML, 
