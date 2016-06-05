@@ -45,7 +45,7 @@ add_css_second_header <- function(tableHTML,
                   tabHTML)
   tabHTML <- gsub(paste0('id="overheader_', i, '"'), paste0('id="overheader_', i, '" ', style),
                   tabHTML)
-  tabHTML <- gsub('" "', '', tabHTML)
+  tabHTML <- gsub(';""', ';', tabHTML)
  }
  
  tabHTML

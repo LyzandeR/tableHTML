@@ -46,7 +46,7 @@ add_css_column <- function(tableHTML,
  for (i in column_names) {
    tabHTML <- gsub(paste0('id="', i, '" style='), paste0('id="', i, '"'), tabHTML)
    tabHTML <- gsub(paste0('id="', i, '"'), paste0('id="', i, '" ', style), tabHTML)
-   tabHTML <- gsub('" "', '', tabHTML)
+   tabHTML <- gsub(';""', ';', tabHTML)
  }
  
  tabHTML

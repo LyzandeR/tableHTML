@@ -45,7 +45,7 @@ add_css_header <- function(tableHTML,
  for (i in headers) {
   tabHTML <- gsub(paste0('id="header_', i, '" style='), paste0('id="header_', i, '"'), tabHTML)
   tabHTML <- gsub(paste0('id="header_', i, '"'), paste0('id="header_', i, '" ', style), tabHTML)
-  tabHTML <- gsub('" "', '', tabHTML)
+  tabHTML <- gsub(';""', ';', tabHTML)
  }
  
  tabHTML

@@ -59,7 +59,7 @@ add_css_row <- function(tableHTML,
   vapply(splits[[1]][rows], function(x) {
    x <- sub('<tr style=', '<tr', x)
    x <- gsub('<tr', paste0('<tr ', style), x)
-   x <- sub('" "', '', x)
+   x <- sub(';""', ';', x)
    x
   }, FUN.VALUE = character(1))
  
