@@ -56,7 +56,8 @@ tableHTML <- function(obj,
                       rownames = TRUE,
                       class = paste0('table_', deparse(substitute(obj))),
                       widths = NULL,
-                      second_header = NULL) {
+                      second_header = NULL,
+                      caption = NULL) {
      
   #CHECKS----------------------------------------------------------------------------------------
   #adding checks for obj
@@ -169,19 +170,26 @@ tableHTML <- function(obj,
    colwidths <- NULL
   }
   
+  #CAPTION---------------------------------------------------------------------------------------
+  #adding a caption
+  if (!is.null(caption)) {
+   caption <- paste0('<caption>', caption, '</caption>\n')
+  }
+  
   #PUTTING IT ALL TOGETHER-----------------------------------------------------------------------
   #adding all the components in one html table
   htmltable <- 
-    htmltools::HTML(paste0('\n<table class=', 
-                    class, 
-                    ' border=1 style="border-collapse: collapse;">\n', 
-                    over_header, 
-                    colwidths,
-                    headers, 
-                    content, 
-                    '\n',
-                    '</table>', 
-                    collapse = ''))
+    htmltools::HTML(paste0('\n<table class=',
+                           class, 
+                           ' border=1 style="border-collapse: collapse;">\n',
+                           caption,
+                           over_header, 
+                           colwidths,
+                           headers, 
+                           content, 
+                           '\n',
+                           '</table>', 
+                           collapse = ''))
   
   class(htmltable) <- c('tableHTML', class(htmltable))
   
