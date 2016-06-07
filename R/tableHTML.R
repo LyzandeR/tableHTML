@@ -30,7 +30,7 @@
 #' @param rownames Can be TRUE or FALSE. Defaults to TRUE. Whether the obj's rownames
 #'   will be inlcuded.
 #'   
-#' @param class Character String. Specifies the table's class. Convinient if you have multiple
+#' @param class Character string. Specifies the table's class. Convinient if you have multiple
 #'   tables. Default is table_<data_frame_name>.
 #'   
 #' @param widths Needs to be a numeric atomic vector with the column widths. Widths are in pixels.  
@@ -38,6 +38,8 @@
 #' @param second_header A list of two elements of the same length. The first element will contain
 #'   the column spans (i.e. a numeric atomic vector) whereas the second element will contain the
 #'   names (i.e. a character atomic vector). See the examples for more info. Defauls to NULL. 
+#'   
+#' @param caption Character string. The table's caption. 
 #'
 #' @return An tableHTML object. Printing the table will result in rendering it in R studio's viewer
 #'         with the print.tableHTML method. Use \code{str(tableHTML)} to view the actual html code.
@@ -49,7 +51,7 @@
 #' tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 #' tableHTML(mtcars, 
 #'           widths = c(rep(50, 6), rep(100, 6)) , 
-#'           second_header = list(c(3,4,5), c('col1', 'col2', 'col3')))
+#'           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 #' 
 #' @export
 tableHTML <- function(obj, 

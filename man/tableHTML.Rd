@@ -18,7 +18,7 @@ data.frame class and can be coersible to a data.frame (e.g data.table, tbl, etc.
 \item{rownames}{Can be TRUE or FALSE. Defaults to TRUE. Whether the obj's rownames
 will be inlcuded.}
 
-\item{class}{Character String. Specifies the table's class. Convinient if you have multiple
+\item{class}{Character string. Specifies the table's class. Convinient if you have multiple
 tables. Default is table_<data_frame_name>.}
 
 \item{widths}{Needs to be a numeric atomic vector with the column widths. Widths are in pixels.}
@@ -26,6 +26,8 @@ tables. Default is table_<data_frame_name>.}
 \item{second_header}{A list of two elements of the same length. The first element will contain
 the column spans (i.e. a numeric atomic vector) whereas the second element will contain the
 names (i.e. a character atomic vector). See the examples for more info. Defauls to NULL.}
+
+\item{caption}{Character string. The table's caption.}
 }
 \value{
 An tableHTML object. Printing the table will result in rendering it in R studio's viewer
@@ -64,7 +66,7 @@ tableHTML(mtcars, class = 'table1')
 tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 tableHTML(mtcars, 
           widths = c(rep(50, 6), rep(100, 6)) , 
-          second_header = list(c(3,4,5), c('col1', 'col2', 'col3')))
+          second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 
 }
 
