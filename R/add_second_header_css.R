@@ -1,4 +1,4 @@
-#' Add css to tableHTML's headers 
+#' Add css to tableHTML's second headers 
 #'
 #' \code{add_css_second_header} will add css to a tableHTML's second headers
 #' 

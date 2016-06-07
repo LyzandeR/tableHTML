@@ -6,7 +6,8 @@
 \title{Create an easily css-ible HTML table}
 \usage{
 tableHTML(obj, rownames = TRUE, class = paste0("table_",
-  deparse(substitute(obj))), widths = NULL, second_header = NULL)
+  deparse(substitute(obj))), widths = NULL, second_header = NULL,
+  caption = NULL)
 
 \method{print}{tableHTML}(htmltable)
 }

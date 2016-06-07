@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_second_header_css.R
 \name{add_css_second_header}
 \alias{add_css_second_header}
-\title{Add css to tableHTML's headers}
+\title{Add css to tableHTML's second headers}
 \usage{
 add_css_second_header(tableHTML, css, second_headers)
 }
