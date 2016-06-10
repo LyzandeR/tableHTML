@@ -165,7 +165,7 @@ tableHTML <- function(obj,
   content <- paste(apply(content, 1, paste, collapse = ''), collapse = '\n')
   
   #WIDTHS----------------------------------------------------------------------------------------
-  #setting column widths if any------------------------------------------------------------------
+  #setting column widths if any
   if (!is.null(widths)) {
    colwidths <- paste(
     vapply(widths, function(x) {
