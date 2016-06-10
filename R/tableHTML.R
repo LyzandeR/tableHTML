@@ -40,6 +40,9 @@
 #'   names (i.e. a character atomic vector). See the examples for more info. Defauls to NULL. 
 #'   
 #' @param caption Character string. The table's caption. 
+#' 
+#' @param footer Character string. The table's footer. This gets added below the table and it
+#'   should not be confused with tfooter. 
 #'
 #' @return An tableHTML object. Printing the table will result in rendering it in R studio's viewer
 #'         with the print.tableHTML method. Use \code{str(tableHTML)} to view the actual html code.
@@ -52,6 +55,7 @@
 #' tableHTML(mtcars, 
 #'           widths = c(rep(50, 6), rep(100, 6)) , 
 #'           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+#' tableHTML(mtcars, caption = 'This is a caption', footer = 'This is a footer')
 #' 
 #' @export
 tableHTML <- function(obj, 
@@ -59,7 +63,8 @@ tableHTML <- function(obj,
                       class = paste0('table_', deparse(substitute(obj))),
                       widths = NULL,
                       second_header = NULL,
-                      caption = NULL) {
+                      caption = NULL,
+                      footer = NULL) {
      
   #CHECKS----------------------------------------------------------------------------------------
   #adding checks for obj
@@ -178,6 +183,12 @@ tableHTML <- function(obj,
    caption <- paste0('<caption>', caption, '</caption>\n')
   }
   
+  #FOOTER---------------------------------------------------------------------------------------
+  #adding a footer
+  if (!is.null(footer)) {
+   footer <- paste0('<caption id="footer" align="bottom">', footer, '</caption>\n')
+  }
+  
   #PUTTING IT ALL TOGETHER-----------------------------------------------------------------------
   #adding all the components in one html table
   htmltable <- 
@@ -185,6 +196,7 @@ tableHTML <- function(obj,
                            class, 
                            ' border=1 style="border-collapse: collapse;">\n',
                            caption,
+                           footer,
                            over_header, 
                            colwidths,
                            headers, 

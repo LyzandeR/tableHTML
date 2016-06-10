@@ -1,8 +1,8 @@
-#' Add css to tableHTML's caption 
+#' Add css to tableHTML's footer 
 #'
-#' \code{add_css_caption} will add css to a tableHTML's caption
+#' \code{add_css_footer} will add css to a tableHTML's footer
 #' 
-#' \code{add_css_caption} will add css to a tableHTML's caption.
+#' \code{add_css_footer} will add css to a tableHTML's footer.
 #'
 #' @param tableHTML A tableHTML object created by the tableHTML function.
 #'
@@ -14,15 +14,15 @@
 #' @return An tableHTML object. 
 #'         
 #' @examples
-#' tableHTML(mtcars, caption = 'This is a caption') %>% 
-#'   add_css_caption(css = list(c('color', 'font-size'), c('blue', '50px'))) 
+#' tableHTML(mtcars, footer = 'This is a footer') %>% 
+#'   add_css_footer(css = list(c('color', 'font-size'), c('blue', '50px'))) 
 #' 
-#' tableHTML(mtcars, caption = 'This is a caption') %>% 
-#'   add_css_caption(css = list(c('color', 'font-size'), c('blue', '50px'))) %>%
-#'   add_css_caption(css = list('background-color', 'green'))
+#' tableHTML(mtcars, footer = 'This is a footer') %>% 
+#'   add_css_footer(css = list(c('color', 'font-size'), c('blue', '50px'))) %>%
+#'   add_css_footer(css = list('background-color', 'green'))
 #' 
 #' @export
-add_css_caption <- function(tableHTML, css) {
+add_css_footer <- function(tableHTML, css) {
  
  #checks
  if (!inherits(tableHTML, 'tableHTML')) stop('tableHTML needs to be a tableHTML object')
@@ -37,8 +37,12 @@ add_css_caption <- function(tableHTML, css) {
  
  style <- paste0('style="', css_comp, '"')
  
- tabHTML <- sub('<caption style=', '<caption', tabHTML)
- tabHTML <- sub('<caption', paste0('<caption ', style), tabHTML)
+ tabHTML <- sub('<caption id="footer" align="bottom" style=', 
+                '<caption id="footer" align="bottom"', 
+                tabHTML)
+ tabHTML <- sub('<caption id="footer" align="bottom"', 
+                paste0('<caption id="footer" align="bottom" ', style), 
+                tabHTML)
  tabHTML <- sub(';""', ';', tabHTML)
  
  tabHTML

@@ -25,8 +25,7 @@ An tableHTML object.
 }
 \examples{
 tableHTML(mtcars, caption = 'This is a caption') \%>\% 
-  add_css_caption(css = list(c('color', 'font-size'), c('blue', '50px'))) \%>\%
-  add_css_caption(css = list('background-color', 'green'))
+  add_css_caption(css = list(c('color', 'font-size'), c('blue', '50px'))) 
 
 tableHTML(mtcars, caption = 'This is a caption') \%>\% 
   add_css_caption(css = list(c('color', 'font-size'), c('blue', '50px'))) \%>\%
