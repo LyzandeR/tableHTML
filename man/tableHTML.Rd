@@ -9,7 +9,7 @@ tableHTML(obj, rownames = TRUE, class = paste0("table_",
   deparse(substitute(obj))), widths = NULL, second_header = NULL,
   caption = NULL, footer = NULL)
 
-\method{print}{tableHTML}(htmltable)
+\method{print}{tableHTML}(x, ...)
 }
 \arguments{
 \item{obj}{Needs to be a data.frame or a matrix or an arbitrary object that has the 
@@ -31,6 +31,10 @@ names (i.e. a character atomic vector). See the examples for more info. Defauls 
 
 \item{footer}{Character string. The table's footer. This gets added below the table and it
 should not be confused with tfooter.}
+
+\item{x}{A tableHTML object created from the \code{tableHTML} function.}
+
+\item{...}{Optional arguments to print.}
 }
 \value{
 An tableHTML object. Printing the table will result in rendering it in R studio's viewer
@@ -64,7 +68,7 @@ anyway.
 }
 \examples{
 tableHTML(mtcars)
-tableHtML(mtcars, rownames = FALSE)
+tableHTML(mtcars, rownames = FALSE)
 tableHTML(mtcars, class = 'table1')
 tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 tableHTML(mtcars, 

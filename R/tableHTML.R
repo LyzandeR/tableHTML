@@ -43,13 +43,17 @@
 #' 
 #' @param footer Character string. The table's footer. This gets added below the table and it
 #'   should not be confused with tfooter. 
+#'   
+#' @param x A tableHTML object created from the \code{tableHTML} function.   
+#' 
+#' @param ... Optional arguments to print. 
 #'
 #' @return An tableHTML object. Printing the table will result in rendering it in R studio's viewer
 #'         with the print.tableHTML method. Use \code{str(tableHTML)} to view the actual html code.
 #'         
 #' @examples 
 #' tableHTML(mtcars)
-#' tableHtML(mtcars, rownames = FALSE)
+#' tableHTML(mtcars, rownames = FALSE)
 #' tableHTML(mtcars, class = 'table1')
 #' tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 #' tableHTML(mtcars, 
@@ -212,14 +216,14 @@ tableHTML <- function(obj,
 
 #' @rdname tableHTML
 #' @export
-print.tableHTML <- function(htmltable) {
+print.tableHTML <- function(x, ...) {
  
  if (interactive()) {
   
    viewer <- getOption("viewer")
    file <- tempfile(fileext = ".html")
    htmlfile <- htmltools::HTML(paste('<html>\n<body>',
-                               htmltable,
+                               x,
                                '</body>\n</html>',
                                sep = '\n'))
    cat(htmlfile, file = file)
@@ -227,7 +231,7 @@ print.tableHTML <- function(htmltable) {
    
  }
  
- invisible(htmltable)
+ invisible(x)
  
 }
 

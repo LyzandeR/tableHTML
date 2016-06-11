@@ -1,6 +1,6 @@
 Package: tableHTML
 Type: Package
-Title: Create HTML tables
+Title: A tool to create HTML tables
 Version: 0.2.3
 Authors@R: person("Theo", 
                   "Boutaris", 
@@ -9,7 +9,7 @@ Authors@R: person("Theo",
 Depends: R (>= 3.2.0)
 Imports: htmltools,
          magrittr
-Description: Create easily css-ible HTML tables compatible with shiny
+Description: A tool to create easily css-ible HTML tables which are compatible with shiny.
 License: MIT + file LICENSE
 LazyData: TRUE
 RoxygenNote: 5.0.1

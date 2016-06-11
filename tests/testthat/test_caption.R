@@ -11,7 +11,7 @@ test_that("Function fails for wrong inputs", {
               , NA)
  #check css list has same lengths
  expect_error(tableHTML(mtcars) %>%
-               add_css_caption(css = list(c('background-color', 'height'), 'lightgray')),
+              add_css_caption(css = list(c('background-color', 'height'), 'lightgray')),
               'same length')
 })
 
@@ -35,7 +35,7 @@ test_that("css is added with add_css_caption", {
  
 })
 
-test_that("css works fine with additional add_css_header of same style def", {
+test_that("css works fine with additional add_css_caption of same style def", {
  
  expect_true(
   grepl(
@@ -57,7 +57,7 @@ test_that("css works fine with additional add_css_header of same style def", {
  
 })
 
-test_that("css works fine with additional add_css_header of different style def", {
+test_that("css works fine with additional add_css_footer of different style def", {
  
  expect_true(
   grepl(
