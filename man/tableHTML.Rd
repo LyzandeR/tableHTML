@@ -9,7 +9,7 @@ tableHTML(obj, rownames = TRUE, class = paste0("table_",
   deparse(substitute(obj))), widths = NULL, second_header = NULL,
   caption = NULL, footer = NULL)
 
-\method{print}{tableHTML}(x, ...)
+\method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
 \arguments{
 \item{obj}{Needs to be a data.frame or a matrix or an arbitrary object that has the 
@@ -33,6 +33,11 @@ names (i.e. a character atomic vector). See the examples for more info. Defauls 
 should not be confused with tfooter.}
 
 \item{x}{A tableHTML object created from the \code{tableHTML} function.}
+
+\item{viewer}{TRUE or FALSE. Defaults to TRUE. Whether or not to render the HTML table. If 
+you are working on Rstudio (interactively) the table will be printed or Rstudio's viewer. 
+If you are working on Rgui (interactively) the table will be printed on your default browser.
+If you set this to FALSE the HTML code will be printed on screen.}
 
 \item{...}{Optional arguments to print.}
 }

@@ -47,6 +47,11 @@
 #' @param x A tableHTML object created from the \code{tableHTML} function.   
 #' 
 #' @param ... Optional arguments to print. 
+#' 
+#' @param viewer TRUE or FALSE. Defaults to TRUE. Whether or not to render the HTML table. If 
+#'   you are working on Rstudio (interactively) the table will be printed or Rstudio's viewer. 
+#'   If you are working on Rgui (interactively) the table will be printed on your default browser.
+#'   If you set this to FALSE the HTML code will be printed on screen.
 #'
 #' @return An tableHTML object. Printing the table will result in rendering it in R studio's viewer
 #'         with the print.tableHTML method. Use \code{str(tableHTML)} to view the actual html code.
@@ -216,20 +221,27 @@ tableHTML <- function(obj,
 
 #' @rdname tableHTML
 #' @export
-print.tableHTML <- function(x, ...) {
+print.tableHTML <- function(x, viewer = TRUE, ...) {
  
- if (interactive()) {
+ if (interactive() & viewer == TRUE) {
   
-   viewer <- getOption("viewer")
-   file <- tempfile(fileext = ".html")
-   htmlfile <- htmltools::HTML(paste('<html>\n<body>',
-                               x,
-                               '</body>\n</html>',
-                               sep = '\n'))
-   cat(htmlfile, file = file)
-   viewer(file)
-   
- }
+  rstudioviewer <- getOption("viewer")
+  file <- tempfile(fileext = ".html")
+  htmlfile <- htmltools::HTML(paste('<html>\n<body>',
+                                    x,
+                                    '</body>\n</html>',
+                                    sep = '\n'))
+  cat(htmlfile, file = file)
+  
+  if (is.function(rstudioviewer)) {
+   rstudioviewer(file)
+  } else {
+   utils::browseURL(file) 
+  }
+  
+ } else if (viewer == FALSE | !interactive()) {
+  cat(x, ...)
+ } 
  
  invisible(x)
  
