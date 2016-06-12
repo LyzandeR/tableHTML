@@ -7,7 +7,7 @@
 \usage{
 tableHTML(obj, rownames = TRUE, class = paste0("table_",
   deparse(substitute(obj))), widths = NULL, second_header = NULL,
-  caption = NULL, footer = NULL)
+  row_groups = NULL, caption = NULL, footer = NULL, border = 1)
 
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
@@ -27,10 +27,17 @@ tables. Default is table_<data_frame_name>.}
 the column spans (i.e. a numeric atomic vector) whereas the second element will contain the
 names (i.e. a character atomic vector). See the examples for more info. Defauls to NULL.}
 
+\item{row_groups}{A list of two elements of the same length. The first element will contain
+the row spans (i.e. a numeric atomic vector) whereas the second element will contain the
+names (i.e. a character atomic vector). See the examples for more info. Defauls to NULL.}
+
 \item{caption}{Character string. The table's caption.}
 
 \item{footer}{Character string. The table's footer. This gets added below the table and it
 should not be confused with tfooter.}
+
+\item{border}{An integer. Specifies the border of the table. Defaults to 1. 0 removes borders 
+from the table. The higher the number the thicker the table's outside border.}
 
 \item{x}{A tableHTML object created from the \code{tableHTML} function.}
 
@@ -77,9 +84,19 @@ tableHTML(mtcars, rownames = FALSE)
 tableHTML(mtcars, class = 'table1')
 tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 tableHTML(mtcars, 
-          widths = c(rep(50, 6), rep(100, 6)) , 
+          widths = c(rep(50, 6), rep(100, 6)), 
           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 tableHTML(mtcars, caption = 'This is a caption', footer = 'This is a footer')
+tableHTML(mtcars, 
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')), 
+          widths = c(200, rep(50, 5), rep(100, 6)), 
+          rownames = FALSE)
+tableHTML(mtcars, 
+          rownames = FALSE, 
+          widths = c(120, rep(50, 11)),
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+          second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+
 
 }
 

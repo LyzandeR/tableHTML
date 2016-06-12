@@ -39,10 +39,17 @@
 #'   the column spans (i.e. a numeric atomic vector) whereas the second element will contain the
 #'   names (i.e. a character atomic vector). See the examples for more info. Defauls to NULL. 
 #'   
+#' @param row_groups A list of two elements of the same length. The first element will contain
+#'   the row spans (i.e. a numeric atomic vector) whereas the second element will contain the
+#'   names (i.e. a character atomic vector). See the examples for more info. Defauls to NULL.
+#'   
 #' @param caption Character string. The table's caption. 
 #' 
 #' @param footer Character string. The table's footer. This gets added below the table and it
 #'   should not be confused with tfooter. 
+#'   
+#' @param border An integer. Specifies the border of the table. Defaults to 1. 0 removes borders 
+#'   from the table. The higher the number the thicker the table's outside border.   
 #'   
 #' @param x A tableHTML object created from the \code{tableHTML} function.   
 #' 
@@ -62,9 +69,19 @@
 #' tableHTML(mtcars, class = 'table1')
 #' tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 #' tableHTML(mtcars, 
-#'           widths = c(rep(50, 6), rep(100, 6)) , 
+#'           widths = c(rep(50, 6), rep(100, 6)), 
 #'           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 #' tableHTML(mtcars, caption = 'This is a caption', footer = 'This is a footer')
+#' tableHTML(mtcars, 
+#'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')), 
+#'           widths = c(200, rep(50, 5), rep(100, 6)), 
+#'           rownames = FALSE)
+#' tableHTML(mtcars, 
+#'           rownames = FALSE, 
+#'           widths = c(120, rep(50, 11)),
+#'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+#'           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+#'
 #' 
 #' @export
 tableHTML <- function(obj, 
@@ -72,8 +89,10 @@ tableHTML <- function(obj,
                       class = paste0('table_', deparse(substitute(obj))),
                       widths = NULL,
                       second_header = NULL,
+                      row_groups = NULL,
                       caption = NULL,
-                      footer = NULL) {
+                      footer = NULL,
+                      border = 1) {
      
   #CHECKS----------------------------------------------------------------------------------------
   #adding checks for obj
@@ -103,11 +122,18 @@ tableHTML <- function(obj,
   }
   
   #checks for widths
-  if(rownames == TRUE & !is.null(widths)) {
-   if (length(widths) != ncol(obj) + 1) stop('widths need to have the same length as the columns')
-  } else if(rownames == FALSE & !is.null(widths)) {
+  if (rownames == TRUE & !is.null(widths) & is.null(row_groups)) {
+   if (length(widths) != ncol(obj) + 1) stop('widths need to have the same length as the columns plus 1')
+  } else if (rownames == FALSE & !is.null(widths) & is.null(row_groups)) {
    if (length(widths) != ncol(obj)) stop('widths need to have the same length as the columns')
+  } else if (rownames == TRUE & !is.null(widths) & !is.null(row_groups)) {
+   if (length(widths) != ncol(obj) + 2) stop('widths need to have the same length as the columns plus 2')
+  } else if (rownames == FALSE & !is.null(widths) & !is.null(row_groups)) {
+   if (length(widths) != ncol(obj) + 1) stop('widths need to have the same length as the columns plus 1')
   }
+ 
+  if(!is.numeric(border)) stop('border needs to be an integer')
+  border <- as.integer(border)
    
   #HEADERS---------------------------------------------------------------------------------------
   #taking into account rownames
@@ -203,7 +229,9 @@ tableHTML <- function(obj,
   htmltable <- 
     htmltools::HTML(paste0('\n<table class=',
                            class, 
-                           ' border=1 style="border-collapse: collapse;">\n',
+                           ' border=', 
+                           border,
+                           ' style="border-collapse: collapse;">\n',
                            caption,
                            footer,
                            over_header, 
@@ -213,6 +241,54 @@ tableHTML <- function(obj,
                            '\n',
                            '</table>', 
                            collapse = ''))
+  
+  #ADDING ROW GROUPS-----------------------------------------------------------------------------
+  #adding row groups in table
+  
+  if (!is.null(row_groups)) {
+   
+   htmltable <-
+    sub('<tr>\n  <th id="header_1">',
+        '<tr>\n  <th id="row_group_header"></th>\n  <th id="header_1">',
+        htmltable)
+   
+   rows <- Reduce('+', row_groups[[1]], accumulate = TRUE)
+   rows <- c(1, rows[-length(rows)] + 1)
+   
+   if (!is.null(second_header)) {
+    rows <- rows + 3
+   } else {
+    rows <- rows + 2
+   }
+   
+   splits <- strsplit(htmltable, '<tr')
+   
+   splits[[1]][2:length(splits[[1]])] <- 
+    vapply(splits[[1]][2:length(splits[[1]])], function(x) paste0('<tr', x), 
+           FUN.VALUE = character(1))
+   
+   splits[[1]][rows] <- 
+    mapply(function(x, y, z) {
+     x <- sub('<tr>\n', 
+              paste0('<tr>\n  <td id="row_groups" rowspan="',
+                     z,
+                     '">',
+                     y,
+                     '</td>\n'
+                     ),
+              x)},
+     splits[[1]][rows],
+     row_groups[[2]],
+     row_groups[[1]]
+    )
+   
+   htmltable <- paste(splits[[1]], collapse = '')
+   
+   htmltable <- htmltools::HTML(htmltable)
+  }
+  
+  #ADDING CLASS AND RETURNING--------------------------------------------------------------------
+  #add class and then return htmltable
   
   class(htmltable) <- c('tableHTML', class(htmltable))
   

@@ -55,7 +55,7 @@ add_css_row <- function(tableHTML,
   rows <- rows + 1
  }
  
- splits[[1]][rows ] <- 
+ splits[[1]][rows] <- 
   vapply(splits[[1]][rows], function(x) {
    x <- sub('<tr style=', '<tr', x)
    x <- gsub('<tr', paste0('<tr ', style), x)
