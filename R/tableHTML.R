@@ -312,14 +312,14 @@ tableHTML <- function(obj,
     htmltable <- 
       htmltable %>%
        add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
-       add_css_row(css = list('border-bottom', '1px solid black'), rows = 2) %>%
-       add_css_row(css = list('border-bottom', '1px solid black'), rows = nrow(obj) + 2)
+       add_css_row(css = list('border-bottom', '3px solid black'), rows = 2) %>%
+       add_css_row(css = list('border-bottom', '2px solid black'), rows = nrow(obj) + 2)
    } else {
     htmltable <- 
      htmltable %>%
      add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
-     add_css_row(css = list('border-bottom', '1px solid black'), rows = 1) %>%
-     add_css_row(css = list('border-bottom', '1px solid black'), rows = nrow(obj) + 1)
+     add_css_row(css = list('border-bottom', '3px solid black'), rows = 1) %>%
+     add_css_row(css = list('border-bottom', '2px solid black'), rows = nrow(obj) + 1)
    }
    
   }
