@@ -51,6 +51,10 @@
 #' @param border An integer. Specifies the border of the table. Defaults to 1. 0 removes borders 
 #'   from the table. The higher the number the thicker the table's outside border.   
 #'   
+#' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices 
+#'   are: default, scientific. column widths are not provided when you select a theme. Please use
+#'   the width argument for column widths. Defaults to 'default' i.e. no css included.   
+#'   
 #' @param x A tableHTML object created from the \code{tableHTML} function.   
 #' 
 #' @param ... Optional arguments to print. 
@@ -92,7 +96,8 @@ tableHTML <- function(obj,
                       row_groups = NULL,
                       caption = NULL,
                       footer = NULL,
-                      border = 1) {
+                      border = 1,
+                      theme = 'default') {
      
   #CHECKS----------------------------------------------------------------------------------------
   #adding checks for obj
@@ -132,8 +137,10 @@ tableHTML <- function(obj,
    if (length(widths) != ncol(obj) + 1) stop('widths need to have the same length as the columns plus 1')
   }
  
-  if(!is.numeric(border)) stop('border needs to be an integer')
+  if (!is.numeric(border)) stop('border needs to be an integer')
   border <- as.integer(border)
+  
+  if (!theme %in% c('default', 'scientific')) stop('theme needs to be one of: default, scientific')
    
   #HEADERS---------------------------------------------------------------------------------------
   #taking into account rownames
@@ -291,6 +298,31 @@ tableHTML <- function(obj,
   #add class and then return htmltable
   
   class(htmltable) <- c('tableHTML', class(htmltable))
+  
+  #ADDING THEMES---------------------------------------------------------------------------------
+  #Will use the add_css family
+  if (theme == 'scientific') {
+   
+   htmltable <-
+     sub(paste0('\n<table class=', class, ' border=', border),
+         paste0('\n<table class=', class, ' border=', '0'),
+         htmltable)
+   
+   if (!is.null(second_header)) {
+    htmltable <- 
+      htmltable %>%
+       add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
+       add_css_row(css = list('border-bottom', '1px solid black'), rows = 2) %>%
+       add_css_row(css = list('border-bottom', '1px solid black'), rows = nrow(obj) + 2)
+   } else {
+    htmltable <- 
+     htmltable %>%
+     add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
+     add_css_row(css = list('border-bottom', '1px solid black'), rows = 1) %>%
+     add_css_row(css = list('border-bottom', '1px solid black'), rows = nrow(obj) + 1)
+   }
+   
+  }
   
   htmltable
 }

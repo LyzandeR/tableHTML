@@ -15,4 +15,7 @@ Description: A tool to create easily css-ible HTML tables which are compatible w
 License: MIT + file LICENSE
 LazyData: TRUE
 RoxygenNote: 5.0.1
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

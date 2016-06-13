@@ -1,0 +1,412 @@
+---
+title: "tableHTML"
+author: "Theo Boutaris"
+date: "`r Sys.Date()`"
+output: 
+  html_document
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is a package for building CSS-ible HTML tables in an easy way, which are compatible with R shiny. 
+The main function `tableHTML` will convert a data.frame or matrix or any other object that can be
+converted into a data.frame into an HTML table. Using the function on R Studio will print the table
+on the viewer. The default tables are built without any CSS in order to allow for full flexibility
+although later developements will include themes.
+
+In order to see the most basic example with tableHTML you could type:
+
+```{r basic}
+library(tableHTML)
+tableHTML(mtcars)
+```
+
+### Removing Row Names
+
+To remove row names from the HTML table you can type:
+
+```{r rownames}
+tableHTML(mtcars, rownames = FALSE)
+```
+
+### Adding a table class
+
+The class argument sets the class name for the table. The default will be of the form 
+table\_dataframeName. For example, for mtcars the HTML table's class would be table\_mtcars.
+This makes it easy to create a css value for it in case there are multiple tables.
+
+```{r, eval = FALSE}
+mytable <- tableHTML(mtcars)
+str(mytable)
+Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
+<table class=table_mtcars border=1 style="border-collapse: collapse;">
+<tr>
+  <th id=header_1> </th>
+  <th id=header_2>mpg</th>
+  <th id=header_3>cyl</th>
+truncated...
+```
+
+And with a custom class:
+
+```{r, eval = FALSE}
+mytable <- tableHTML(mtcars, class = 'myClass')
+str(mytable)
+Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
+<table class=myClass border=1 style="border-collapse: collapse;">
+<tr>
+  <th id=header_1> </th>
+  <th id=header_2>mpg</th>
+  <th id=header_3>cyl</th>
+truncated...
+```
+
+
+### Adding Second Headers that span multiple columns
+
+In case you would like to add second headers that span multiple columns you can do it by providing a
+list in the second_header argument. The first element will contain the column spans 
+(i.e. a numeric atomic vector) whereas the second element will contain the names 
+(i.e. a character atomic vector).
+
+For example:
+
+```{r second header}
+library(tableHTML)
+tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+```
+
+### Change the widths
+
+Obviously, the above tables are far from appealing since they have no css. So we can start styling
+them now. A very important feature is to be able to control the column widths. You can do this with
+the widths argument. 
+
+The widths argument specifies the columns' width in pixels. It needs to have the same length as the
+number of columns (if rownames is TRUE, rownames are also considered a column). 
+If second headers exist these will stretch according to their underlying columns' widths. 
+
+As an example:
+
+```{r widths}
+tableHTML(mtcars, widths = rep(100, 12), second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+```
+
+
+## add\_css\_* function family
+
+These functions add inline CSS to the HTML table. The package has been developed so that the 
+functions are chained with the `%>%` (pipe) operator which comes from the `magrittr` package. 
+You can chain as many of those as you want
+when building your HTML table. The CSS code is added within the HTML table. This is ok for simple
+table styling but for more complex CSS styles (like the hover selector) it would still require a
+separate css file (we will see how to work with those in shiny later on).
+
+### add\_css\_row
+
+In order to add css in specific table rows you need to use the `add_css_row` function. The function
+has three arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+3. *rows*: A numeric atomic vector with the indices of the rows on which the style definitions 
+           will be applied. **headers and second_headers are also part of the rows**. Default is NULL
+           which means that it will be applied to all rows.
+
+For example:
+
+```{r add css row 1}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11))) %>% 
+  add_css_row(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')))
+```
+
+\    
+
+And adding row indices manually:
+
+```{r add css row 2}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11))) %>% 
+  add_css_row(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')),
+              rows = 2:33)
+```
+
+\   
+
+It is very common in HTML tables to highlight odd rows with one color and even rows with another.
+We can achieve this with the rows argument and the helper funtions from the tableHTML package `odd`
+and `even`.
+
+```{r add css row 3}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11))) %>% 
+  add_css_row(css = list('background-color', '#f2f2f2'),
+              rows = odd(1:33)) %>%
+  add_css_row(css = list('background-color', '#e6f0ff'),
+              rows = even(1:33))
+```
+
+### add\_css\_column
+
+In order to add css in specific table column you need to use the `add_css_column` function. 
+The function has three arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+3. *column_names*: A character atomic vector with the names of the columns where the style
+                   definitions will be applied on. At least one column name must be provided. 
+                   If the rownames are included the column name is "rownames". headers and second_headers
+                   are not part of the columns. These need to be set from their corresponding add_css 
+                   functions.
+
+For example:
+
+```{r add css column 1}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11))) %>% 
+  add_css_column(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
+                 column_names = c('cyl', 'hp', 'rownames'))
+```
+
+\    
+
+Keep in mind that if you apply the **same** style to both rows and columns, column styles will 
+overwrite row styles:
+
+```{r add css column 2}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11))) %>% 
+  add_css_row(css = list('background-color', '#f2f2f2')) %>%
+  add_css_column(css = list('background-color', 'lightblue'), 
+                 column_names = c('cyl', 'hp', 'rownames')) 
+ 
+```
+
+### add\_css\_header
+
+In order to add css in specific table header you need to use the `add_css_header` function. 
+The function has three arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+3. *headers*: A numeric atomic vector with the indices of the headers where the style definitions 
+              will be applied on. At least one header index must be provided.
+
+For example:
+
+```{r add css header 1}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11))) %>% 
+  add_css_header(css = list('background-color', 'lightgray'), headers = c(1, 4))
+```
+
+### add\_css\_second\_header
+
+In order to add css in specific table second header you need to use the 
+`add_css_second_header` function. The function has three arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+3. *second_headers*: A numeric atomic vector with the indices of the second headers where the 
+                     style definitions will be applied on. At least one second header index must 
+                     be provided.
+For example:
+
+```{r add css second header 1}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11)), 
+            second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>% 
+  add_css_second_header(css = list(c('background-color', 'border'), 
+                                   c('lightgray', '3px solid green')),
+                         second_headers = c(1, 3))  
+```
+
+### All together
+
+An example to put everything in action:
+
+```{r all together}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11)),
+            second_header = list(c(3, 4, 5), c('team1', 'team2', 'team3'))) %>% 
+  add_css_second_header(css = list(c('height', 'background-color', 'font-size'), 
+                                   c('40px', ' #e6e6e6', '30px')),
+                        second_headers = 1:3) %>%
+  add_css_header(css = list(c('height', 'background-color'), c('30px', ' #e6e6e6')),
+                 headers = 1:12) %>%
+  add_css_row(css = list('background-color', '#f2f2f2'),
+              rows = even(1:34)) %>%
+  add_css_row(css = list('background-color', '#e6f0ff'),
+              rows = odd(1:34)) %>%
+  add_css_column(css = list('text-align', 'center'), 
+                 column_names = names(mtcars)) 
+ 
+```
+
+
+### Hover and other CSS selectors
+
+These are not supported in HTML and they can be added through CSS files. We can see how to do this
+in shiny below.
+
+## tableHTML and shiny
+
+Now that we know about how to use the function's arguments let's see how we can use tableHTML with 
+shiny. The implementation is really simple since internally tableHTML uses `htmltools::HTML` to 
+convert the table into an HTML object. Simply using `renderUI` and `uiOutput` will be enough:
+
+```{r shiny 1, eval = FALSE}
+shinyApp(
+ ui = fluidPage(
+   fluidRow(
+    #leave some spacing
+    br(),
+    column(width = 1),
+    uiOutput("mytable"))
+ ), 
+ server = function(input, output) {
+  output$mytable <- renderUI( 
+   tableHTML(mtcars)
+ )}
+)
+```
+
+Or with a more complex example:
+
+```{r shiny 2, eval = FALSE}
+shinyApp(
+ ui = fluidPage(
+   fluidRow(
+    #leave some spacing
+    br(),
+    column(width = 1),
+    uiOutput("mytable"))
+ ), 
+ server = function(input, output) {
+  output$mytable <- renderUI( 
+   mtcars %>%
+     tableHTML(widths = c(140, rep(45, 11)),
+               second_header = list(c(3, 4, 5), c('team1', 'team2', 'team3'))) %>% 
+     add_css_second_header(css = list(c('height', 'background-color', 'font-size', 'text-align'), 
+                                      c('40px', ' #e6e6e6', '30px', 'center')),
+                           second_headers = 1:3) %>%
+     add_css_header(css = list(c('height', 'background-color', 'text-align'), 
+                               c('30px', ' #e6e6e6', 'center')),
+                    headers = 1:12) %>%
+     add_css_row(css = list('background-color', '#f2f2f2'),
+                 rows = even(1:34)) %>%
+     add_css_row(css = list('background-color', '#e6f0ff'),
+                 rows = odd(1:34)) %>%
+     add_css_column(css = list('text-align', 'center'), 
+                    column_names = names(mtcars)) 
+ )}
+)
+```
+
+
+## shiny and CSS
+
+As we said previously CSS selectors cannot be used within HTML so if you use shiny you would need
+to include a separate CSS file. Before we start with shiny and CSS let's see the rules applied by
+tableHTML. tableHTML creates ids for columns, headers and overheaders and gives the table a specific 
+class name as it was mentioned previously.
+
+The rules are like this:
+
+* Table: Will get the class from the class argument in the function. The final class will be of 
+  the form table_dataframeName.
+* Columns: Will get an id which will be the same as the column name.
+* Headers: Will get an id of the form header\_headerIndex. For example the first header will have 
+  the id header\_1, the second header will have header\_2 and so on.
+* Second\_Headers: Will get an id of the form overheader\_secondHeaderIndex. For example the first 
+                   second\_header will have the id overheader\_1,
+                   the second header will have overheader\_2 and so on.
+
+Let's see this in practice. We create a CSS file e.g. mycss.css where we will write our css code. 
+Then we load this in R shiny in the following way. We have saved a ui.R file and server.R file in 
+the same directory. In that directory we have a www/ folder where we save our .css file. 
+In our case that is named mycss.css. We include this file in R using `includeCSS`:
+
+```{r shiny css, eval = FALSE}
+#ui.R
+shinyUI(
+ fluidPage(
+  fluidRow(
+   #leave some spacing
+   br(),
+   column(width = 1),
+   #include css file in shiny
+   includeCSS('www/mycss.css'),
+   uiOutput("mytable"))
+ )
+)
+
+#server.R
+shinyServer(
+function(input, output) {
+   output$mytable <- renderUI( 
+    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+   )}
+)
+```
+
+Note: You can find out more about CSS and shiny [here](http://shiny.rstudio.com/articles/css.html).
+
+In order to add a vertical column line we can use the column ids created by tableHTML. To add a vertical red line at mpg column, our css file would look like this:
+
+```{CSS}
+#mpg {
+	border-left: 5px solid red;
+}
+``` 
+
+
+In order to change the background color of one of the headers (e.g. the second) our css would look like this:
+
+```{CSS 2}
+#mpg{
+	border-left: 5px solid red;
+}
+
+#header_2 {
+	background-color: green;
+}
+``` 
+
+
+And in order to align the first of the second_headers in the center our css would look like:
+
+```{CSS 3}
+#mpg{
+	border-left: 5px solid red;
+}
+
+#header_2 {
+	background-color: green;
+}
+
+#overheader_1 {
+	text-align: center;
+}
+``` 
+
+
