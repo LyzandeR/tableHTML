@@ -85,7 +85,12 @@
 #'           widths = c(120, rep(50, 11)),
 #'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
 #'           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
-#'
+#' tableHTML(mtcars, 
+#'           rownames = FALSE, 
+#'           widths = c(120, rep(50, 11)),
+#'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+#'           second_header = list(c(3, 4), c('col1', 'col2')), 
+#'           theme = 'scientific')
 #' 
 #' @export
 tableHTML <- function(obj, 
@@ -168,7 +173,31 @@ tableHTML <- function(obj,
   }
   
   #SECOND HEADERS--------------------------------------------------------------------------------
-  #adding second headers if needed
+  #transformation of second headers if theme is scientific
+  if (theme == 'scientific') {
+   indices <- which(!second_header[[2]] %in% '')
+   
+   if (!is.null(rownames) & !is.null(row_groups)) {
+    extra <- 2
+   } else if (is.null(rownames) & !is.null(row_groups)) {
+    extra <- 1
+   } else if (!is.null(rownames) & is.null(row_groups)) {
+    extra <- 1
+   } else {
+    extra <- 0
+   }
+   
+   sum_of_column_span <- sum(second_header[[1]])
+   
+   if (ncol(obj) > sum(second_header[[1]]) + extra) {
+    second_header[[1]] <- c(second_header[[1]], 
+                            rep(1, ncol(obj) - sum_of_column_span + extra))
+    second_header[[2]] <- c(second_header[[2]], 
+                            rep('', ncol(obj) - sum_of_column_span + extra))
+   }
+  }
+  
+  #adding second headers if available
   if (!is.null(second_header)) {
     over_header <- 
       paste('<tr>', 
@@ -301,6 +330,8 @@ tableHTML <- function(obj,
   
   #ADDING THEMES---------------------------------------------------------------------------------
   #Will use the add_css family
+  
+  #theme scientific
   if (theme == 'scientific') {
    
    htmltable <-
@@ -308,24 +339,54 @@ tableHTML <- function(obj,
          paste0('\n<table class=', class, ' border=', '0'),
          htmltable)
    
+   htmltable <- 
+    sub(paste0('<td id="row_groups" rowspan="',
+               row_groups[[1]][length(row_groups[[1]])],
+               '">',
+               row_groups[[2]][length(row_groups[[2]])],
+               '</td>'),
+        paste0('<td id="row_groups"',
+               ' style="border-bottom:2px solid black;"',
+'              rowspan="',
+               row_groups[[1]][length(row_groups[[1]])],
+               '">',
+               row_groups[[2]][length(row_groups[[2]])],
+               '</td>'),
+        htmltable)
+   
    if (!is.null(second_header)) {
+    
+    #browser()
     htmltable <- 
       htmltable %>%
        add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
        add_css_row(css = list('border-bottom', '3px solid black'), rows = 2) %>%
-       add_css_row(css = list('border-bottom', '2px solid black'), rows = nrow(obj) + 2)
+       add_css_row(css = list('border-bottom', '2px solid black'), rows = nrow(obj) + 2) %>%
+       add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
+       add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '3px'))) %>%
+       add_css_second_header(css = list('border-bottom', '2px solid black'), 
+                             second_headers = indices) %>%
+       add_css_second_header(css = list('border-top', '2px solid black'), 
+                             second_headers =  1:length(second_header[[2]])) %>%
+       add_css_column(css = list('vertical-align', 'top'), column_names = 'row_groups')
    } else {
     htmltable <- 
-     htmltable %>%
-     add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
-     add_css_row(css = list('border-bottom', '3px solid black'), rows = 1) %>%
-     add_css_row(css = list('border-bottom', '2px solid black'), rows = nrow(obj) + 1)
+      htmltable %>%
+      add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
+      add_css_row(css = list('border-bottom', '3px solid black'), rows = 1) %>%
+      add_css_row(css = list('border-bottom', '2px solid black'), rows = nrow(obj) + 1) %>%
+      add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
+      add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '3px'))) %>%
+      add_css_column(css = list('vertical-align', 'top'), column_names = 'row_groups')
+     
    }
    
   }
   
   htmltable
 }
+
+#DECLARING S3 METHOD FOR PRINT-----------------------------------------------------------------
 
 #' @rdname tableHTML
 #' @export
