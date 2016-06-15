@@ -30,7 +30,7 @@ write_tableHTML <- function(tableHTML, file, complete_html = FALSE) {
  #create style
  if (complete_html) {
   
-  tabHTML <- htmltools::HTML(paste('<html>\n<body>',
+  tabHTML <- htmltools::HTML(paste('<!DOCTYPE html>\n<html>\n<body>',
                                    tabHTML,
                                    '</body>\n</html>',
                                    sep = '\n'))

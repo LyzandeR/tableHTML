@@ -7,7 +7,8 @@
 \usage{
 tableHTML(obj, rownames = TRUE, class = paste0("table_",
   deparse(substitute(obj))), widths = NULL, second_header = NULL,
-  row_groups = NULL, caption = NULL, footer = NULL, border = 1)
+  row_groups = NULL, caption = NULL, footer = NULL, border = 1,
+  theme = c("default", "scientific", "rshiny-blue"))
 
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
@@ -39,6 +40,10 @@ should not be confused with tfooter.}
 \item{border}{An integer. Specifies the border of the table. Defaults to 1. 0 removes borders 
 from the table. The higher the number the thicker the table's outside border.}
 
+\item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices 
+are: default, scientific. column widths are not provided when you select a theme. Please use
+the width argument for column widths. Defaults to 'default' i.e. no css included.}
+
 \item{x}{A tableHTML object created from the \code{tableHTML} function.}
 
 \item{viewer}{TRUE or FALSE. Defaults to TRUE. Whether or not to render the HTML table. If 
@@ -49,8 +54,9 @@ If you set this to FALSE the HTML code will be printed on screen.}
 \item{...}{Optional arguments to print.}
 }
 \value{
-An tableHTML object. Printing the table will result in rendering it in R studio's viewer
-        with the print.tableHTML method. Use \code{str(tableHTML)} to view the actual html code.
+A tableHTML object. Printing the table will result in rendering it in R studio's viewer
+        with the print.tableHTML method if using Rstudio otherwise it will use the default 
+        browser. Use \code{str(tableHTML)} to view the actual html code.
 }
 \description{
 The purpose of \code{tableHTML} is to create easily css-ible HTML tables
@@ -96,7 +102,13 @@ tableHTML(mtcars,
           widths = c(120, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
-
+tableHTML(mtcars, 
+          rownames = FALSE, 
+          widths = c(120, rep(50, 11)),
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+          second_header = list(c(3, 4), c('col1', 'col2')), 
+          theme = 'scientific')
+tableHTML(mtcars, theme = 'rshiny-blue', widths = c(140, rep(50, 11)))
 
 }
 

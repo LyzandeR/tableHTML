@@ -64,8 +64,9 @@
 #'   If you are working on Rgui (interactively) the table will be printed on your default browser.
 #'   If you set this to FALSE the HTML code will be printed on screen.
 #'
-#' @return An tableHTML object. Printing the table will result in rendering it in R studio's viewer
-#'         with the print.tableHTML method. Use \code{str(tableHTML)} to view the actual html code.
+#' @return A tableHTML object. Printing the table will result in rendering it in R studio's viewer
+#'         with the print.tableHTML method if using Rstudio otherwise it will use the default 
+#'         browser. Use \code{str(tableHTML)} to view the actual html code.
 #'         
 #' @examples 
 #' tableHTML(mtcars)
@@ -91,6 +92,7 @@
 #'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
 #'           second_header = list(c(3, 4), c('col1', 'col2')), 
 #'           theme = 'scientific')
+#' tableHTML(mtcars, theme = 'rshiny-blue', widths = c(140, rep(50, 11)))
 #' 
 #' @export
 tableHTML <- function(obj, 
@@ -102,7 +104,7 @@ tableHTML <- function(obj,
                       caption = NULL,
                       footer = NULL,
                       border = 1,
-                      theme = 'default') {
+                      theme = c('default', 'scientific', 'rshiny-blue')) {
      
   #CHECKS----------------------------------------------------------------------------------------
   #adding checks for obj
@@ -133,19 +135,21 @@ tableHTML <- function(obj,
   
   #checks for widths
   if (rownames == TRUE & !is.null(widths) & is.null(row_groups)) {
-   if (length(widths) != ncol(obj) + 1) stop('widths need to have the same length as the columns plus 1')
+   if (length(widths) != ncol(obj) + 1) stop('widths must have the same length as the columns + 1')
   } else if (rownames == FALSE & !is.null(widths) & is.null(row_groups)) {
-   if (length(widths) != ncol(obj)) stop('widths need to have the same length as the columns')
+   if (length(widths) != ncol(obj)) stop('widths must have the same length as the columns')
   } else if (rownames == TRUE & !is.null(widths) & !is.null(row_groups)) {
-   if (length(widths) != ncol(obj) + 2) stop('widths need to have the same length as the columns plus 2')
+   if (length(widths) != ncol(obj) + 2) stop('widths must have the same length as the columns + 2')
   } else if (rownames == FALSE & !is.null(widths) & !is.null(row_groups)) {
-   if (length(widths) != ncol(obj) + 1) stop('widths need to have the same length as the columns plus 1')
+   if (length(widths) != ncol(obj) + 1) stop('widths must have the same length as the columns + 1')
   }
  
+  #check for the border argument
   if (!is.numeric(border)) stop('border needs to be an integer')
   border <- as.integer(border)
   
-  if (!theme %in% c('default', 'scientific')) stop('theme needs to be one of: default, scientific')
+  #check for the theme options
+  theme <- match.arg(theme)
    
   #HEADERS---------------------------------------------------------------------------------------
   #taking into account rownames
@@ -174,7 +178,7 @@ tableHTML <- function(obj,
   
   #SECOND HEADERS--------------------------------------------------------------------------------
   #transformation of second headers if theme is scientific
-  if (theme == 'scientific') {
+  if (theme == 'scientific' & !is.null(second_header)) {
    indices <- which(!second_header[[2]] %in% '')
    
    if (!is.null(rownames) & !is.null(row_groups)) {
@@ -254,7 +258,7 @@ tableHTML <- function(obj,
    caption <- paste0('<caption>', caption, '</caption>\n')
   }
   
-  #FOOTER---------------------------------------------------------------------------------------
+  #FOOTER----------------------------------------------------------------------------------------
   #adding a footer
   if (!is.null(footer)) {
    footer <- paste0('<caption id="footer" align="bottom">', footer, '</caption>\n')
@@ -346,7 +350,7 @@ tableHTML <- function(obj,
                row_groups[[2]][length(row_groups[[2]])],
                '</td>'),
         paste0('<td id="row_groups"',
-               ' style="border-bottom:2px solid black;"',
+               ' style="border-bottom:3px solid black;"',
 '              rowspan="',
                row_groups[[1]][length(row_groups[[1]])],
                '">',
@@ -356,33 +360,66 @@ tableHTML <- function(obj,
    
    if (!is.null(second_header)) {
     
-    #browser()
     htmltable <- 
       htmltable %>%
-       add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
-       add_css_row(css = list('border-bottom', '3px solid black'), rows = 2) %>%
-       add_css_row(css = list('border-bottom', '2px solid black'), rows = nrow(obj) + 2) %>%
+       add_css_row(css = list('border-top', '3px solid black'), rows = 1) %>%
+       add_css_row(css = list('border-bottom', '2px solid black'), rows = 2) %>%
+       add_css_row(css = list('border-bottom', '3px solid black'), rows = nrow(obj) + 2) %>%
        add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
        add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '3px'))) %>%
-       add_css_second_header(css = list('border-bottom', '2px solid black'), 
+       add_css_second_header(css = list('border-bottom', '3px solid black'), 
                              second_headers = indices) %>%
-       add_css_second_header(css = list('border-top', '2px solid black'), 
+       add_css_second_header(css = list('border-top', '3px solid black'), 
                              second_headers =  1:length(second_header[[2]])) %>%
        add_css_column(css = list('vertical-align', 'top'), column_names = 'row_groups')
    } else {
     htmltable <- 
       htmltable %>%
-      add_css_row(css = list('border-top', '2px solid black'), rows = 1) %>%
-      add_css_row(css = list('border-bottom', '3px solid black'), rows = 1) %>%
-      add_css_row(css = list('border-bottom', '2px solid black'), rows = nrow(obj) + 1) %>%
+      add_css_row(css = list('border-top', '3px solid black'), rows = 1) %>%
+      add_css_row(css = list('border-bottom', '2px solid black'), rows = 1) %>%
+      add_css_row(css = list('border-bottom', '3px solid black'), rows = nrow(obj) + 1) %>%
       add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
-      add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '3px'))) %>%
+      add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px'))) %>%
       add_css_column(css = list('vertical-align', 'top'), column_names = 'row_groups')
      
    }
    
+  } else if (theme == 'rshiny-blue') {
+   
+   htmltable <-
+    sub(paste0('\n<table class=', class, ' border=', border),
+        paste0('\n<table class=', class, ' border=', '0'),
+        htmltable)
+   
+   if (!is.null(second_header)) {
+    
+    htmltable <- 
+     htmltable %>%
+     add_css_row(css = list('background-color', '#428bca'), rows = 1:2) %>%
+     add_css_row(css = list('background-color', '#f2f2f2'), rows = odd(3:(nrow(obj) + 2))) %>%
+     add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
+     add_css_column(css = list(c('vertical-align', 'background-color'), c('top', 'white')),
+                    column_names = 'row_groups') %>%
+     add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px'))) %>%
+     add_css_second_header(css = list(c('font-size', 'height'), c('25px', '30px')), 
+                           second_headers = 1:length(second_header[[2]]))
+       
+   } else {
+    
+    htmltable <- 
+     htmltable %>%
+     add_css_row(css = list('background-color', '#428bca'), rows = 1) %>%
+     add_css_row(css = list('background-color', '#f2f2f2'), rows = odd(2:(nrow(obj) + 1))) %>%
+     add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
+     add_css_column(css = list(c('vertical-align', 'background-color'), c('top', 'white')),
+                    column_names = 'row_groups') %>%
+     add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px')))
+    
+   }
+   
   }
   
+  #return
   htmltable
 }
 
@@ -415,10 +452,6 @@ print.tableHTML <- function(x, viewer = TRUE, ...) {
  invisible(x)
  
 }
-
-
-
-
 
 
 
