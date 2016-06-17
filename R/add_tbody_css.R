@@ -1,8 +1,10 @@
-#' Add css to tableHTML's footer 
+#' Add css to the tbody tag 
 #'
-#' \code{add_css_footer} will add css to a tableHTML's footer
+#' \code{add_css_tbody} will add css to the tbody tag i.e. to all table apart from the headers and
+#'   second headers.
 #' 
-#' \code{add_css_footer} will add css to a tableHTML's footer.
+#' \code{add_css_thead} will add css to the tbody tag i.e. to all table apart from the headers and
+#'   second headers.
 #'
 #' @param tableHTML A tableHTML object created by the tableHTML function.
 #'
@@ -14,15 +16,21 @@
 #' @return A tableHTML object. 
 #'         
 #' @examples
-#' tableHTML(mtcars, footer = 'This is a footer') %>% 
-#'   add_css_footer(css = list(c('color', 'font-size'), c('blue', '50px'))) 
-#' 
-#' tableHTML(mtcars, footer = 'This is a footer') %>% 
-#'   add_css_footer(css = list(c('color', 'font-size'), c('blue', '50px'))) %>%
-#'   add_css_footer(css = list('background-color', 'green'))
+#' tableHTML(mtcars) %>% 
+#'   add_css_tbody(css = list('background-color', 'lightgray')) 
+#'   
+#' tableHTML(mtcars) %>% 
+#'   add_css_tbody(css = list('background-color', 'lightgray')) %>%
+#'   add_css_tbody(css = list('background-color', 'lightblue')) 
+#'   
+#' tableHTML(mtcars) %>% 
+#'   add_css_tbody(css = list('background-color', 'lightgray')) %>%
+#'   add_css_tbody(css = list('text-align', 'center'))
+#'   
 #' 
 #' @export
-add_css_footer <- function(tableHTML, css) {
+add_css_tbody <- function(tableHTML, 
+                          css) {
  
  #checks
  if (!inherits(tableHTML, 'tableHTML')) stop('tableHTML needs to be a tableHTML object')
@@ -37,12 +45,8 @@ add_css_footer <- function(tableHTML, css) {
  
  style <- paste0('style="', css_comp, '"')
  
- tabHTML <- sub('<caption id="footer" align="bottom" style=', 
-                '<caption id="footer" align="bottom"', 
-                tabHTML)
- tabHTML <- sub('<caption id="footer" align="bottom"', 
-                paste0('<caption id="footer" align="bottom" ', style), 
-                tabHTML)
+ tabHTML <- sub('tbody style=', 'tbody', tabHTML)
+ tabHTML <- sub('tbody', paste0('tbody ', style), tabHTML)
  tabHTML <- sub(';""', ';', tabHTML)
  
  tabHTML

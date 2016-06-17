@@ -11,7 +11,7 @@
 #'   element will be an atomic vector with the same length as the first element, which will 
 #'   contain the style definitions' values (e.g. red). Check the examples for more information.
 #'
-#' @return An tableHTML object. 
+#' @return A tableHTML object. 
 #'         
 #' @examples
 #' tableHTML(mtcars, caption = 'This is a caption') %>% 
@@ -32,7 +32,7 @@ add_css_caption <- function(tableHTML, css) {
  tabHTML <- tableHTML
  
  #create style
- css_comp <- Map(function(x, y) paste0(x, ':', y, ';'), css[[1]], css[[2]])
+ css_comp <- paste0(css[[1]], ':', css[[2]], ';')
  css_comp <- paste(css_comp, collapse = '')
  
  style <- paste0('style="', css_comp, '"')

@@ -29,7 +29,8 @@ A tableHTML object.
 \code{replace_html} replaces a tableHTML string with another. The function calls sub and gsub
   internally (according to the replace_all argument) to do the replacements but in a safe way in 
   order to preserve the class of the tableHTML object. Also, \code{replace_html} has been 
-  developed so that it can be used with chaining (using the pipe operator %>%). See the examples.
+  developed so that it can be used with chaining (using the pipe operator \%>\%). 
+  See the examples to understand exactly how.
 }
 \examples{
 a <- mtcars \%>\% 

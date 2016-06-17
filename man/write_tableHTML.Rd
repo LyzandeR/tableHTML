@@ -15,7 +15,7 @@ write_tableHTML(tableHTML, file, complete_html = FALSE)
 tags are also added in the file.}
 }
 \value{
-A file.
+The function itself returns nothing but a file is created.
 }
 \description{
 \code{write_tableHTML} will write the HTML code to a file

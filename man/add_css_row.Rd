@@ -19,7 +19,7 @@ will be applied. headers and second_headers are included in the rows.Default is 
 which means that it will be applied to all rows.}
 }
 \value{
-An tableHTML object.
+A tableHTML object.
 }
 \description{
 \code{add_css_row} will add css to a tableHTML's rows

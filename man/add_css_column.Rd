@@ -19,7 +19,7 @@ definitions will be applied on. At least one column name must be provided. If th
 are included the column name is "rownames".}
 }
 \value{
-An tableHTML object.
+A tableHTML object.
 }
 \description{
 \code{add_css_column} will add css to a tableHTML's columns

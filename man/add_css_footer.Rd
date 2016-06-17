@@ -15,7 +15,7 @@ element will be an atomic vector with the same length as the first element, whic
 contain the style definitions' values (e.g. red). Check the examples for more information.}
 }
 \value{
-An tableHTML object.
+A tableHTML object.
 }
 \description{
 \code{add_css_footer} will add css to a tableHTML's footer

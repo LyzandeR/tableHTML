@@ -15,7 +15,7 @@
 #'   definitions will be applied on. At least one column name must be provided. If the rownames
 #'   are included the column name is "rownames".
 #'
-#' @return An tableHTML object. 
+#' @return A tableHTML object. 
 #'         
 #' @examples
 #' tableHTML(mtcars) %>% 
@@ -38,7 +38,7 @@ add_css_column <- function(tableHTML,
  tabHTML <- tableHTML
  
  #create style
- css_comp <- Map(function(x, y) paste0(x, ':', y, ';'), css[[1]], css[[2]])
+ css_comp <- paste0(css[[1]], ':', css[[2]], ';')
  css_comp <- paste(css_comp, collapse = '')
  
  style <- paste0('style="', css_comp, '"')

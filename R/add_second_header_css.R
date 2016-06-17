@@ -14,7 +14,7 @@
 #' @param second_headers A numeric atomic vector with the indices of the second headers where the 
 #'   style definitions will be applied on. At least one second header index must be provided.
 #'
-#' @return An tableHTML object. 
+#' @return A tableHTML object. 
 #'         
 #' @examples
 #' tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>% 
@@ -35,7 +35,7 @@ add_css_second_header <- function(tableHTML,
  tabHTML <- tableHTML
  
  #create style
- css_comp <- Map(function(x, y) paste0(x, ':', y, ';'), css[[1]], css[[2]])
+ css_comp <- paste0(css[[1]], ':', css[[2]], ';')
  css_comp <- paste(css_comp, collapse = '')
  
  style <- paste0('style="', css_comp, '"')

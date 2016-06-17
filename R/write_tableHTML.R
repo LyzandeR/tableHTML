@@ -11,7 +11,7 @@
 #' @param complete_html Either TRUE or FALSE. Defaults to FALSE. If TRUE then the <html> and <body>
 #'   tags are also added in the file.
 #'
-#' @return A file. 
+#' @return The function itself returns nothing but a file is created. 
 #'         
 #' @examples
 #' write_tableHTML(tableHTML(mtcars), file = 'myhtmlcode.html')

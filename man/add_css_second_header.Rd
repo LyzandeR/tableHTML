@@ -18,7 +18,7 @@ contain the style definitions' values (e.g. red). Check the examples for more in
 style definitions will be applied on. At least one second header index must be provided.}
 }
 \value{
-An tableHTML object.
+A tableHTML object.
 }
 \description{
 \code{add_css_second_header} will add css to a tableHTML's second headers

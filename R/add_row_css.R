@@ -16,7 +16,7 @@
 #'   will be applied. headers and second_headers are included in the rows.Default is NULL
 #'   which means that it will be applied to all rows.
 #'
-#' @return An tableHTML object. 
+#' @return A tableHTML object. 
 #'         
 #' @examples
 #' tableHTML(mtcars) %>% 
@@ -39,7 +39,7 @@ add_css_row <- function(tableHTML,
  tabHTML <- tableHTML
  
  #create style
- css_comp <- Map(function(x, y) paste0(x, ':', y, ';'), css[[1]], css[[2]])
+ css_comp <- paste0(css[[1]], ':', css[[2]], ';')
  css_comp <- paste(css_comp, collapse = '')
  
  style <- paste0('style="', css_comp, '"')

@@ -14,7 +14,7 @@
 #' @param headers A numeric atomic vector with the indices of the headers where the style
 #'   definitions will be applied on. At least one header index must be provided.
 #'
-#' @return An tableHTML object. 
+#' @return A tableHTML object. 
 #'         
 #' @examples
 #' tableHTML(mtcars) %>% 
@@ -37,7 +37,7 @@ add_css_header <- function(tableHTML,
  tabHTML <- tableHTML
  
  #create style
- css_comp <- Map(function(x, y) paste0(x, ':', y, ';'), css[[1]], css[[2]])
+ css_comp <- paste0(css[[1]], ':', css[[2]], ';')
  css_comp <- paste(css_comp, collapse = '')
  
  style <- paste0('style="', css_comp, '"')

@@ -267,18 +267,22 @@ tableHTML <- function(obj,
   #PUTTING IT ALL TOGETHER-----------------------------------------------------------------------
   #adding all the components in one html table
   htmltable <- 
-    htmltools::HTML(paste0('\n<table class=',
+    htmltools::HTML(paste0('\n<table style="border-collapse:collapse;" class=',
                            class, 
                            ' border=', 
                            border,
-                           ' style="border-collapse: collapse;">\n',
+                           '>\n',
                            caption,
                            footer,
-                           over_header, 
                            colwidths,
-                           headers, 
+                           '<thead>\n',
+                           over_header,
+                           headers,
+                           '</thead>\n',
+                           '<tbody>\n',
                            content, 
                            '\n',
+                           '</tbody>\n',
                            '</table>', 
                            collapse = ''))
   
