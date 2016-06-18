@@ -20,6 +20,7 @@ to make the HTML tables they way you want them to look. The point of the example
 demonstrate nice looking HTML tables (apart from the demonstration of the themes).
 
 ```{r example 1}
+library(tableHTML)
 tableHTML(mtcars, 
           rownames = FALSE, 
           widths = c(120, rep(50, 11)),
