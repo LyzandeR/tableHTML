@@ -266,6 +266,12 @@ tableHTML <- function(obj,
   
   #PUTTING IT ALL TOGETHER-----------------------------------------------------------------------
   #adding all the components in one html table
+  
+  #taking into account the theme
+  if (theme %in% c('scientific', 'rshiny-blue')) {
+   border <- 0 
+  }
+  
   htmltable <- 
     htmltools::HTML(paste0('\n<table style="border-collapse:collapse;" class=',
                            class, 
@@ -342,11 +348,6 @@ tableHTML <- function(obj,
   #theme scientific
   if (theme == 'scientific') {
    
-   htmltable <-
-     sub(paste0('\n<table class=', class, ' border=', border),
-         paste0('\n<table class=', class, ' border=', '0'),
-         htmltable)
-   
    htmltable <- 
     sub(paste0('<td id="row_groups" rowspan="',
                row_groups[[1]][length(row_groups[[1]])],
@@ -389,11 +390,6 @@ tableHTML <- function(obj,
    }
    
   } else if (theme == 'rshiny-blue') {
-   
-   htmltable <-
-    sub(paste0('\n<table class=', class, ' border=', border),
-        paste0('\n<table class=', class, ' border=', '0'),
-        htmltable)
    
    if (!is.null(second_header)) {
     
