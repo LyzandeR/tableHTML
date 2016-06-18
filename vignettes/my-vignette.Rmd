@@ -17,8 +17,8 @@ knitr::opts_chunk$set(echo = TRUE)
 This is a package for building CSS-ible HTML tables in an easy way, which are compatible with R shiny. 
 The main function `tableHTML` will convert a data.frame or matrix or any other object that can be
 converted into a data.frame into an HTML table. Using the function on R Studio will print the table
-on the viewer. The default tables are built without any CSS in order to allow for full flexibility
-although later developements will include themes.
+on the viewer otherwise it will use the default browser. The default tables are built without any 
+CSS in order to allow for full flexibility although two themes are included.
 
 In order to see the most basic example with tableHTML you could type:
 
@@ -71,7 +71,7 @@ truncated...
 ### Adding Second Headers that span multiple columns
 
 In case you would like to add second headers that span multiple columns you can do it by providing a
-list in the second_header argument. The first element will contain the column spans 
+list in the `second_header` argument. The first element will contain the column spans 
 (i.e. a numeric atomic vector) whereas the second element will contain the names 
 (i.e. a character atomic vector).
 
@@ -80,6 +80,21 @@ For example:
 ```{r second header}
 library(tableHTML)
 tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+```
+
+### Adding Row Groups that spa multiple rows
+
+In case you would like to add row groups that span multiple rows you can do it by providing a
+list in the `row_groups` argument. The first element will contain the row spans 
+(i.e. a numeric atomic vector) whereas the second element will contain the names 
+(i.e. a character atomic vector).
+
+For example:
+
+```{r row groups}
+tableHTML(mtcars, 
+          rownames = FALSE, 
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')))
 ```
 
 ### Change the widths
@@ -98,8 +113,59 @@ As an example:
 tableHTML(mtcars, widths = rep(100, 12), second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 ```
 
+### Change the border
 
-## add\_css\_* function family
+By default the table border is set to 1. If you set to 0 it will remove all the lines (the grid) 
+completely. Setting it to an integer greater than 1 will increase the size of the table's outside
+border.
+
+```{r border}
+tableHTML(mtcars, border = 0)
+```
+
+### Adding a caption
+
+If you want a caption (title) for your table you can add one with the caption argument.
+
+```{r caption}
+tableHTML(mtcars, caption = 'This is  a table')
+```
+
+
+### Adding a footer
+
+If you want a footer for your table you can add one with the footer argument.
+
+```{r footer}
+tableHTML(mtcars, footer = 'This is  a footer')
+```
+
+### Specifying a theme
+
+Although the package has been designed so that it gives the utmost freedom to the user to style the
+HTML table as they please, two themes have been included for those who need something quick and nice.
+The package offers two themes for now: scientific and rshiny-blue. Not specifying a theme defaults to
+`theme = 'default'` which means a table with no css (so that it can be css-ed later on). For obvious 
+reasons widths have not been included in themes so they would need to be added manually from the 
+function call.
+     
+**Notice**: When working with themes you can still add extra css (using the add\_css\_* family from
+below) but you will not be able to overwrite the styling that is there e.g. to change the width of
+the lines.
+
+```{r theme-scientific}
+tableHTML(mtcars, widths = c(140, rep(50, 11)), theme = 'scientific')
+```
+
+\     
+
+```{r theme-rshiny-blue}
+tableHTML(mtcars, widths = c(140, rep(50, 11)), theme = 'rshiny-blue')
+```
+
+------
+
+## add\_css\_* family
 
 These functions add inline CSS to the HTML table. The package has been developed so that the 
 functions are chained with the `%>%` (pipe) operator which comes from the `magrittr` package. 
@@ -110,7 +176,7 @@ separate css file (we will see how to work with those in shiny later on).
 
 ### add\_css\_row
 
-In order to add css in specific table rows you need to use the `add_css_row` function. The function
+In order to add css to specific table rows you need to use the `add_css_row` function. The function
 has three arguments:
 
 1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
@@ -127,7 +193,7 @@ For example:
 ```{r add css row 1}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11))) %>% 
-  add_css_row(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')))
+  add_css_row(css = list(c('background-color', 'border'), c('lightblue', '2px solid lightgray')))
 ```
 
 \    
@@ -137,7 +203,7 @@ And adding row indices manually:
 ```{r add css row 2}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11))) %>% 
-  add_css_row(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')),
+  add_css_row(css = list(c('background-color', 'border'), c('lightblue', '2px solid lightgray')),
               rows = 2:33)
 ```
 
@@ -158,7 +224,7 @@ mtcars %>%
 
 ### add\_css\_column
 
-In order to add css in specific table column you need to use the `add_css_column` function. 
+In order to add css to specific table columns you need to use the `add_css_column` function. 
 The function has three arguments:
 
 1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
@@ -177,7 +243,7 @@ For example:
 ```{r add css column 1}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11))) %>% 
-  add_css_column(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
+  add_css_column(css = list(c('background-color', 'border'), c('lightblue', '3px solid lightgray')), 
                  column_names = c('cyl', 'hp', 'rownames'))
 ```
 
@@ -195,9 +261,31 @@ mtcars %>%
  
 ```
 
+In general inner tag style definitions will overwrite outer tag style definitions.    
+
+For example:
+
+```{r, eval = FALSE}
+mytable <- tableHTML(mtcars)
+print(mytable, viewer = FALSE)
+<table class=table_mtcars border=1 style="border-collapse: collapse;">
+<tr>
+  <th id=header_1> </th>
+  <th id=header_2>mpg</th>
+  <th id=header_3>cyl</th>
+</tr> 
+truncated...
+```
+
+`add_css_row` will add the style definitions in `<tr>` whereas `add_css_header` will add the css
+in `<th>`. Since the `<th>` tag is within the `<tr>` tag, the style definitions of `th` will 
+overwrite those of `tr`. This is only true for the **same** style definitions i.e. if you specify
+a `background-color` for both the first row and the headers.
+
+
 ### add\_css\_header
 
-In order to add css in specific table header you need to use the `add_css_header` function. 
+In order to add css to specific table headers you need to use the `add_css_header` function. 
 The function has three arguments:
 
 1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
@@ -218,7 +306,7 @@ mtcars %>%
 
 ### add\_css\_second\_header
 
-In order to add css in specific table second header you need to use the 
+In order to add css to specific table second headers you need to use the 
 `add_css_second_header` function. The function has three arguments:
 
 1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
@@ -240,6 +328,123 @@ mtcars %>%
                          second_headers = c(1, 3))  
 ```
 
+### add\_css\_caption
+
+In order to add css to the caption you need to use the 
+`add_css_caption` function. The function has two arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+
+```{r add css caption}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11)), 
+            caption = 'This is a table') %>% 
+  add_css_caption(css = list(c('color', 'font-size', 'text-align'), c('blue', '20px', 'left')))  
+```
+
+### add\_css\_footer
+
+In order to add css to the caption you need to use the 
+`add_css_caption` function. The function has two arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+
+```{r add css footer}
+mtcars %>%
+  tableHTML(widths = c(140, rep(45, 11)), 
+            footer = 'This is a footer') %>% 
+  add_css_footer(css = list(c('color', 'font-size', 'text-align'), c('blue', '20px', 'left')))  
+```
+
+### add\_css\_thead
+
+In order to add css to both the headers and second headers (if any) you need to use the 
+`add_css_thead` function. The function has two arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+
+```{r add css thead}
+mtcars %>%
+  tableHTML() %>% 
+  add_css_thead(css = list('background-color', 'lightgray')) 
+```
+
+### add\_css\_tbody
+
+In order to add css to all the table apart from the headers or second headers you need to use the 
+`add_css_tbody` function. The function has two arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+
+```{r add css tbody}
+mtcars %>%
+  tableHTML() %>% 
+  add_css_tbody(css = list('background-color', 'lightgray')) 
+```
+
+\    
+
+**Note**: As mentioned above inner tag styling overwrites the same outer tag styling. In this case
+`tr` (add\_css\_row), and `td` (add\_css\_column) styling will overwrite the same styling specified
+in `thead` or `tbody`.
+
+To demonstrate this with an example:
+
+```{r thead example 1}
+mtcars %>%
+  tableHTML() %>% 
+  add_css_thead(css = list('background-color', 'lightgray')) %>%
+  add_css_row(css = list('background-color', 'blue'), rows = 1)
+```
+
+\    
+
+```{r thead example 2}
+mtcars %>%
+  tableHTML() %>% 
+  add_css_tbody(css = list('background-color', 'lightgray')) %>%
+  add_css_row(css = list('background-color', 'blue'), rows = c(4, 6))
+```
+
+### add\_css\_table
+
+In order to add css to the whole table you need to use the 
+`add_css_table` function. The function has two arguments:
+
+1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
+2. *css*: A list of two elements with the corresponding css. The first element of the list should 
+          be an atomic vector with the style definitions (e.g. background-color). The second element
+          will be an atomic vector with the same length as the first element, which will contain the
+          style definitions' values (e.g. red).
+
+```{r add css table}
+mtcars %>%
+  tableHTML() %>% 
+  add_css_table(css = list('background-color', 'lightgray')) 
+```
+
+\      
+
+`<table>` is the outest tag in an HTML table which means that any **same** style definitions in any
+other tags will overwrite the table tag's style definitions in the same way as described in the
+above cases.
+
 ### All together
 
 An example to put everything in action:
@@ -247,7 +452,9 @@ An example to put everything in action:
 ```{r all together}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11)),
-            second_header = list(c(3, 4, 5), c('team1', 'team2', 'team3'))) %>% 
+            second_header = list(c(3, 4, 5), c('team1', 'team2', 'team3')),
+            caption = 'Table of Cars',
+            footer = 'Figure 1. Stats for famous cars') %>% 
   add_css_second_header(css = list(c('height', 'background-color', 'font-size'), 
                                    c('40px', ' #e6e6e6', '30px')),
                         second_headers = 1:3) %>%
@@ -258,15 +465,36 @@ mtcars %>%
   add_css_row(css = list('background-color', '#e6f0ff'),
               rows = odd(1:34)) %>%
   add_css_column(css = list('text-align', 'center'), 
-                 column_names = names(mtcars)) 
- 
+                 column_names = names(mtcars)) %>%
+  add_css_caption(css = list(c('text-align', 'font-size', 'color'), c('center', '20px', 'black'))) %>%
+  add_css_footer(css = list(c('text-align', 'color'), c('left', 'black')))
 ```
 
+### replace_html
+
+This is a function that can help you with very specific tasks that cannot be accompliced with the 
+above functions (e.g. adding a css style to a specific cell) or with fixing a potential bug 
+that I don't know about (in which case please report it on the 
+[issues](https://github.com/LyzandeR/tableHTML/issues)) page. The function has been developed so 
+that it works with the chaining paradigm. The function uses `sub` or `gsub` internally in order to
+replace an HTML sting pattern with another.
+
+```{r replace html}
+mtcars %>%
+ tableHTML(widths = c(140, rep(45, 11))) %>%
+ replace_html(' <td id="mpg">21</td>', '<td id="mpg" style="background-color:lightyellow">21</td>')
+```
+
+\     
+
+**Note**: A good way to work with this function is to print the table 
+(`print(tableHTML(mtcars), viewer = FALSE)`), see how the part you want to
+change is written and change that with the appropriate text.
 
 ### Hover and other CSS selectors
 
-These are not supported in HTML and they can be added through CSS files. We can see how to do this
-in shiny below.
+These are not supported in inline HTML but they can be added through CSS files. We can see how to 
+do this in shiny below.
 
 ## tableHTML and shiny
 
@@ -334,7 +562,8 @@ The rules are like this:
 
 * Table: Will get the class from the class argument in the function. The final class will be of 
   the form table_dataframeName.
-* Columns: Will get an id which will be the same as the column name.
+* Columns: Will get an id which will be the same as the column name. If there are rownames these 
+  will have the rownames id. If there are row groups these will have the row_groups id.
 * Headers: Will get an id of the form header\_headerIndex. For example the first header will have 
   the id header\_1, the second header will have header\_2 and so on.
 * Second\_Headers: Will get an id of the form overheader\_secondHeaderIndex. For example the first 
@@ -379,6 +608,7 @@ In order to add a vertical column line we can use the column ids created by tabl
 }
 ``` 
 
+Our HTML table will look like this:
 
 In order to change the background color of one of the headers (e.g. the second) our css would look like this:
 
@@ -408,5 +638,9 @@ And in order to align the first of the second_headers in the center our css woul
 	text-align: center;
 }
 ``` 
+
+You 've made it to the end of this tutorial on tableHTML! Follow the latest development on the 
+development page on [github](https://github.com/LyzandeR/tableHTML)
+
 
 
