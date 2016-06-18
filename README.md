@@ -1,5 +1,11 @@
 # tableHTML
 
+### Build Status
+
+[![Travis-CI Build Status](https://travis-ci.org/LyzandeR/tableHTML.svg?branch=master)](https://travis-ci.org/LyzandeR/tableHTML)
+
+# Description
+
 This is a package for creating easily CSS-ible HTML tables, which are compatible with R shiny.
 
 # Installation
