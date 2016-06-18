@@ -42,10 +42,24 @@ add_css_header <- function(tableHTML,
  
  style <- paste0('style="', css_comp, '"')
  
- for (i in headers) {
-  tabHTML <- gsub(paste0('id="header_', i, '" style='), paste0('id="header_', i, '"'), tabHTML)
-  tabHTML <- gsub(paste0('id="header_', i, '"'), paste0('id="header_', i, '" ', style), tabHTML)
-  tabHTML <- gsub(';""', ';', tabHTML)
+ if (grepl('id="row_group_header"', tabHTML)) {
+  
+  tabHTML <- sub('id="row_group_header"', 'id="header_0"', tabHTML)
+  
+  for (i in (headers - 1)) {
+   tabHTML <- gsub(paste0('id="header_', i, '" style='), paste0('id="header_', i, '"'), tabHTML)
+   tabHTML <- gsub(paste0('id="header_', i, '"'), paste0('id="header_', i, '" ', style), tabHTML)
+   tabHTML <- gsub(';""', ';', tabHTML)
+  } 
+  
+ } else {
+ 
+  for (i in headers) {
+   tabHTML <- gsub(paste0('id="header_', i, '" style='), paste0('id="header_', i, '"'), tabHTML)
+   tabHTML <- gsub(paste0('id="header_', i, '"'), paste0('id="header_', i, '" ', style), tabHTML)
+   tabHTML <- gsub(';""', ';', tabHTML)
+  }
+  
  }
  
  tabHTML
