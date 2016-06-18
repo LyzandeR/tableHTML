@@ -42,9 +42,7 @@ add_css_header <- function(tableHTML,
  
  style <- paste0('style="', css_comp, '"')
  
- if (grepl('id="row_group_header"', tabHTML)) {
-  
-  tabHTML <- sub('id="row_group_header"', 'id="header_0"', tabHTML)
+ if (grepl('id="header_0"', tabHTML)) {
   
   for (i in (headers - 1)) {
    tabHTML <- gsub(paste0('id="header_', i, '" style='), paste0('id="header_', i, '"'), tabHTML)

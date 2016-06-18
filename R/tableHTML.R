@@ -299,7 +299,7 @@ tableHTML <- function(obj,
    
    htmltable <-
     sub('<tr>\n  <th id="header_1">',
-        '<tr>\n  <th id="row_group_header"></th>\n  <th id="header_1">',
+        '<tr>\n  <th id="header_0"></th>\n  <th id="header_1">',
         htmltable)
    
    rows <- Reduce('+', row_groups[[1]], accumulate = TRUE)

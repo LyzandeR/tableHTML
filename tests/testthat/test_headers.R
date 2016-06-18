@@ -86,8 +86,22 @@ test_that("css works fine with additional add_css_header of different style def"
                    headers = 2)
   )
  )
- 
 })
 
-
+test_that("css works fine row groups", {
+ 
+ expect_true(
+  grepl(
+   'header_0',
+   tableHTML(mtcars, 
+             border = 1,
+             rownames = TRUE, 
+             widths = c(110, 140, rep(50, 11)),
+             row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+             second_header = list(c(2, 5, 6), c('', 'col2', 'col3'))) %>%
+     add_css_header(css = list('background-color', 'lightgreen'), headers = 1) %>%
+     add_css_header(css = list('background-color', 'lightgreen'), headers = 3)
+  )
+ )
+})
 
