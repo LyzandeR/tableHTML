@@ -51,6 +51,8 @@
 #' @param border An integer. Specifies the border of the table. Defaults to 1. 0 removes borders 
 #'   from the table. The higher the number the thicker the table's outside border.   
 #'   
+#' @param collapse Whether to collapse the table or not. Can be TRUE or FALSE. Defaults to TRUE.  
+#'   
 #' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices 
 #'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme. 
 #'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.   
@@ -104,6 +106,7 @@ tableHTML <- function(obj,
                       caption = NULL,
                       footer = NULL,
                       border = 1,
+                      collapse = TRUE,
                       theme = c('default', 'scientific', 'rshiny-blue')) {
      
   #CHECKS----------------------------------------------------------------------------------------
@@ -417,6 +420,11 @@ tableHTML <- function(obj,
     
    }
    
+  }
+  
+  #Collapse table according to collapse argument
+  if (!collapse) {
+   htmltable <- replace_html(htmltable, 'style="border-collapse:collapse;"', '')
   }
   
   #return

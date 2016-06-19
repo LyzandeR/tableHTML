@@ -8,7 +8,7 @@
 tableHTML(obj, rownames = TRUE, class = paste0("table_",
   deparse(substitute(obj))), widths = NULL, second_header = NULL,
   row_groups = NULL, caption = NULL, footer = NULL, border = 1,
-  theme = c("default", "scientific", "rshiny-blue"))
+  collapse = TRUE, theme = c("default", "scientific", "rshiny-blue"))
 
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
@@ -39,6 +39,8 @@ should not be confused with tfooter.}
 
 \item{border}{An integer. Specifies the border of the table. Defaults to 1. 0 removes borders 
 from the table. The higher the number the thicker the table's outside border.}
+
+\item{collapse}{Whether to collapse the table or not. Can be TRUE or FALSE. Defaults to TRUE.}
 
 \item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices 
 are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme. 
