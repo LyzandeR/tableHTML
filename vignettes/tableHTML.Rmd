@@ -140,6 +140,16 @@ If you want a footer for your table you can add one with the footer argument.
 tableHTML(mtcars, footer = 'This is  a footer')
 ```
 
+### Collapse the table
+
+By default tableHTML collapses the table, so that there is no spacing between cells. You can change
+this behaviour by using the collapse argument.
+
+```{r collapse, eval = FALSE}
+tableHTML(mtcars, collapse = FALSE)
+```
+
+
 ### Specifying a theme
 
 Although the package has been designed so that it gives the utmost freedom to the user to style the

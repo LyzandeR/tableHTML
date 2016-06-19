@@ -57,7 +57,7 @@ test_that("css works fine with additional add_css_caption of same style def", {
  
 })
 
-test_that("css works fine with additional add_css_footer of different style def", {
+test_that("css works fine with additional add_css_caption of different style def", {
  
  expect_true(
   grepl(

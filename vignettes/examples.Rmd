@@ -17,7 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
 The following are a set of more complex examples of the tableHTML package. The goal of these 
 examples is to show you what you can do with the package and all the different ways you can use it 
 to make the HTML tables they way you want them to look. The point of the examples is not to 
-demonstrate nice looking HTML tables (apart from the demonstration of the themes).
+demonstrate nice looking HTML tables (apart from the demonstration of the themes).     
+
+### Row groups and Second Headers
 
 ```{r example 1}
 library(tableHTML)
@@ -27,6 +29,8 @@ tableHTML(mtcars,
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 ```
+
+### Add row css and column css
 
 ```{r example 2}
 tableHTML(mtcars, 
@@ -39,6 +43,8 @@ tableHTML(mtcars,
  add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
  add_css_column(css = list('background-color', 'white'), column_names = 'row_groups')
 ```
+
+### Add row, column, second header and header css
 
 ```{r example 3}
 tableHTML(mtcars, 
@@ -58,6 +64,8 @@ tableHTML(mtcars,
  add_css_header(css = list('background-color', 'lightgreen'), headers = 3:13)
 ```
 
+### scientific theme
+
 ```{r example 4}
 tableHTML(mtcars, 
           border = 1,
@@ -67,6 +75,8 @@ tableHTML(mtcars,
           second_header = list(c(2, 5, 6), c('col1', '', 'col3')),
           theme = 'scientific')
 ```
+
+### rshiny-blue theme
 
 ```{r example 5}
 tableHTML(mtcars, 
