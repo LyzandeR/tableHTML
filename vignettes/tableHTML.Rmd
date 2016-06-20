@@ -149,6 +149,7 @@ this behaviour by using the collapse argument.
 tableHTML(mtcars, collapse = FALSE)
 ```
 
+![  ](collapsed.PNG)
 
 ### Specifying a theme
 
@@ -620,6 +621,8 @@ In order to add a vertical column line we can use the column ids created by tabl
 
 Our HTML table will look like this:
 
+![ ](shiny_vertical_line.PNG)
+
 In order to change the background color of one of the headers (e.g. the second) our css would look like this:
 
 ```{CSS 2}
@@ -631,6 +634,8 @@ In order to change the background color of one of the headers (e.g. the second) 
 	background-color: green;
 }
 ``` 
+
+![   ](shiny_header_color.PNG)
 
 
 And in order to align the first of the second_headers in the center our css would look like:
@@ -648,6 +653,8 @@ And in order to align the first of the second_headers in the center our css woul
 	text-align: center;
 }
 ``` 
+
+![  ](shiny_overheader_center.PNG)
 
 You 've made it to the end of this tutorial on tableHTML! Follow the latest development on the 
 development page on [github](https://github.com/LyzandeR/tableHTML)
