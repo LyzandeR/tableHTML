@@ -1,6 +1,6 @@
 Package: tableHTML
 Type: Package
-Title: A tool to create HTML tables
+Title: A Tool to Create HTML Tables
 Version: 0.2.9
 Authors@R: person("Theo", 
                   "Boutaris", 
