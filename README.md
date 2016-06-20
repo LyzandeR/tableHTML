@@ -1,14 +1,14 @@
 # tableHTML
 
-### Build Status
+#### Build Status
 
 [![Travis-CI Build Status](https://travis-ci.org/LyzandeR/tableHTML.svg?branch=master)](https://travis-ci.org/LyzandeR/tableHTML)
 
-# Description
+#### Description
 
 This is a package for creating easily CSS-ible HTML tables, which are compatible with R shiny.
 
-# Installation
+## Installation
 
 To install the package you need to have the `devtools` package installed. To install devtools type in your console: `install.packages('devtools')`.
 
@@ -18,7 +18,7 @@ Then to install tableHTML run the following on your console:
 devtools::install_github('lyzander/tableHTML')
 ```
 
-# Usage
+## Usage
 
 By typing on your console:
 
