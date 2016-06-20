@@ -16,7 +16,8 @@ contain the style definitions' values (e.g. red). Check the examples for more in
 
 \item{column_names}{A character atomic vector with the names of the columns where the style
 definitions will be applied on. At least one column name must be provided. If the rownames
-are included the column name is "rownames".}
+are included the column name is "rownames". If row_groups are are included the column name
+is "row_groups".}
 }
 \value{
 A tableHTML object.

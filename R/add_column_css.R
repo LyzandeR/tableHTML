@@ -13,7 +13,8 @@
 #'   
 #' @param column_names A character atomic vector with the names of the columns where the style
 #'   definitions will be applied on. At least one column name must be provided. If the rownames
-#'   are included the column name is "rownames".
+#'   are included the column name is "rownames". If row_groups are are included the column name
+#'   is "row_groups".
 #'
 #' @return A tableHTML object. 
 #'         
