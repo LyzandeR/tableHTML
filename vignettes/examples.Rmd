@@ -216,6 +216,21 @@ tableHTML(mtcars,
  add_css_column(css = list('background-color', 'lightyellow'), column_names = 'row_groups') 
 ```
 
+### Overwriting border-collapse:collapse on shiny
+
+```{r example 15}
+tableHTML(mtcars, 
+          collapse = TRUE,
+          rownames = TRUE, 
+          widths = c(100, 140, rep(50, 11)),
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3'))) %>%
+ add_css_row(css = list('background-color', 'lightgray'), rows = odd(2:33)) %>%
+ add_css_row(css = list('background-color', 'lightblue'), rows = even(2:33)) %>%
+ add_css_row(css = list('background-color', 'lightgreen'), rows = 1) %>%
+ add_css_column(css = list('background-color', 'lightyellow'), column_names = 'row_groups') %>%
+ replace_html('border-collapse:collapse', 
+              'border-collapse:separate !important; border-spacing:2px !important')
+```
 \     
 
 
