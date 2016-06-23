@@ -110,7 +110,7 @@ tableHTML(mtcars,
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
-          collapse = FALSE,
+          collapse = 'separate',
           widths = c(100, 140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
           second_header = list(c(3, 4, 6), c('col1', 'col2', 'col3'))) %>%
@@ -127,7 +127,7 @@ tableHTML(mtcars,
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
-          collapse = TRUE,
+          collapse = 'collapse',
           widths = c(140, rep(50, 11)),
           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
@@ -141,7 +141,7 @@ tableHTML(mtcars,
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
-          collapse = TRUE,
+          collapse = 'collapse',
           widths = c(140, rep(50, 11)),
           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
@@ -181,7 +181,7 @@ tableHTML(mtcars,
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
-          collapse = TRUE,
+          collapse = 'collapse',
           widths = c(140, rep(50, 11)), 
           second_header = list(c(3, 4, 5), c('col1', '', 'col3'))) %>%
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
@@ -195,7 +195,7 @@ tableHTML(mtcars,
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
-          collapse = TRUE,
+          collapse = 'collapse',
           widths = c(140, rep(50, 11)), 
           second_header = list(c(3, 4), c('col1', 'col2'))) %>%
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
@@ -216,21 +216,14 @@ tableHTML(mtcars,
  add_css_column(css = list('background-color', 'lightyellow'), column_names = 'row_groups') 
 ```
 
-### Overwriting border-collapse:collapse on shiny
+### Using non-collapsed tables in shiny
 
 ```{r example 15}
-tableHTML(mtcars, 
-          collapse = TRUE,
-          rownames = TRUE, 
-          widths = c(100, 140, rep(50, 11)),
-          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3'))) %>%
- add_css_row(css = list('background-color', 'lightgray'), rows = odd(2:33)) %>%
- add_css_row(css = list('background-color', 'lightblue'), rows = even(2:33)) %>%
- add_css_row(css = list('background-color', 'lightgreen'), rows = 1) %>%
- add_css_column(css = list('background-color', 'lightyellow'), column_names = 'row_groups') %>%
- replace_html('border-collapse:collapse', 
-              'border-collapse:separate !important; border-spacing:2px !important')
+tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px') %>%
+    add_css_table(css = list(c('background-color'), c('lightgray'))) %>% 
+    add_css_table(css = list('color', 'blue'))
 ```
+
 \     
 
 

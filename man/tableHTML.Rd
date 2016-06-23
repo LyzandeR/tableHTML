@@ -8,7 +8,8 @@
 tableHTML(obj, rownames = TRUE, class = paste0("table_",
   deparse(substitute(obj))), widths = NULL, second_header = NULL,
   row_groups = NULL, caption = NULL, footer = NULL, border = 1,
-  collapse = TRUE, theme = c("default", "scientific", "rshiny-blue"))
+  collapse = c("collapse", "separate", "separate_shiny"), spacing = "2px",
+  theme = c("default", "scientific", "rshiny-blue"))
 
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
@@ -40,7 +41,14 @@ should not be confused with tfooter.}
 \item{border}{An integer. Specifies the border of the table. Defaults to 1. 0 removes borders 
 from the table. The higher the number the thicker the table's outside border.}
 
-\item{collapse}{Whether to collapse the table or not. Can be TRUE or FALSE. Defaults to TRUE.}
+\item{collapse}{Whether to collapse the table or not. By default the tables are collapsed. The 
+choices for this argument are 'collapse', 'separate' and 'separate_shiny'. Check the details
+about which one to use.}
+
+\item{spacing}{Character string. This is only used if collapse is either separate or 
+separate_shiny and sets the spacing between the table's cells. It defaults to 2px. Can be one 
+or two length values (provided as a string). If two length values are provided the first one
+sets the horizontal spacing whereas the second sets the vertical spacing. See the examples.}
 
 \item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices 
 are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme. 
@@ -83,8 +91,18 @@ In particular:
       will have overheader_2 and so on.
 }
 
-Notice that rows do not get a specific id or class as they are easily accessible from css 
-anyway.
+Notice that rows do not get a specific id or class.
+
+If you would like to use a non-collapsed table i.e. leave spacing between cells, then
+you would need to use the \code{collapse} argument. Setting it to separate would create a 
+non-collapsed table. However, this choice will not work in shiny. The reason is that shiny
+uses \code{table {border-collapse: collapse; border-spacing:0;}} in its css by default through 
+bootstrap 3. In order to overcome this problem in shiny, \code{collapse} needs to be set to 
+separate_shiny instead of separate. By setting collapse to separate_shiny tableHTML uses 
+\code{!important} in order to overwrite the standard behaviour of bootstrap 3. \code{!important} 
+needs to be used with caution since it overwrites css styles, so unless you are using shiny 
+(or any other place where the above css is automatically loaded) you should be using 
+\code{collapse = 'separate'}.
 }
 \examples{
 tableHTML(mtcars)
@@ -111,6 +129,8 @@ tableHTML(mtcars,
           second_header = list(c(3, 4), c('col1', 'col2')), 
           theme = 'scientific')
 tableHTML(mtcars, theme = 'rshiny-blue', widths = c(140, rep(50, 11)))
+tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px')
+tableHTML(mtcars, collapse = 'separate', spacing = '5px 2px')
 
 }
 
