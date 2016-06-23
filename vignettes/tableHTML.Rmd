@@ -146,10 +146,35 @@ By default tableHTML collapses the table, so that there is no spacing between ce
 this behaviour by using the collapse argument.
 
 ```{r collapse, eval = FALSE}
-tableHTML(mtcars, collapse = FALSE)
+tableHTML(mtcars, collapse = 'separate')
 ```
 
 ![  ](collapsed.PNG)
+
+\     
+
+In order to use a non-collapsed table on shiny you need to use the `collapse = 'separate_shiny'`
+argument. shiny uses bootstrap 3 by default which uses 
+`table {border-collapse: collapse; border-spacing:0;}` in its css. 
+
+```{r collapse 2}
+tableHTML(mtcars, collapse = 'separate_shiny')
+```
+
+### Spacing
+
+If collapse is either separate or separate_shiny then you can use the spacing argument to change
+the spacing between the cells. This only works if collapse is separate or separate_shiny otherwise
+it is not taken into account. You can use one or two length distances. If two length distances are
+used, the first specifies the horizontal spacing and the second one the vertical spacing.
+
+```{r spacing 1}
+tableHTML(mtcars, collapse = 'separate_shiny', spacing = '2px')
+```
+
+```{r spacing 2}
+tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px')
+```
 
 ### Specifying a theme
 
