@@ -172,6 +172,8 @@ used, the first specifies the horizontal spacing and the second one the vertical
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '2px')
 ```
 
+\     
+
 ```{r spacing 2}
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px')
 ```
