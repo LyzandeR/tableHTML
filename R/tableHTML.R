@@ -179,8 +179,12 @@ tableHTML <- function(obj,
   
   #make sure the first character of spacing is a number
   if (collapse %in% c('separate', 'separate_shiny')) {
-   if (is.na(as.numeric(gsub('[^0-9]+', '', spacing)))) {
-    stop('The spacing argument needs to start with an integer')
+   distances <- gsub('\\s+', ' ', spacing)
+   distances <- strsplit(distances, ' ')[[1]]
+   for (i in distances) { 
+    if (is.na(as.numeric(sub('[[:alpha:]]+', '', i)))) {
+     stop('distances in spacing need to start with a number e.g. "1px 2px"')
+    }
    }
   }
    
