@@ -515,7 +515,7 @@ above functions (e.g. adding a css style to a specific cell) or with fixing a po
 that I don't know about (in which case please report it on the 
 [issues](https://github.com/LyzandeR/tableHTML/issues)) page. The function has been developed so 
 that it works with the chaining paradigm. The function uses `sub` or `gsub` internally in order to
-replace an HTML sting pattern with another.
+replace an HTML string pattern with another.
 
 ```{r replace html}
 mtcars %>%
