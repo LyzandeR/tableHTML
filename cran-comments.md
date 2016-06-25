@@ -1,4 +1,4 @@
-## Resubmittion
+## Re-submission
 
 Changed the LICENSE file to abide by CRAN's rules.
 
