@@ -1,5 +1,9 @@
 # tableHTML
 
+#### Released Version
+
+[![CRAN version](http://www.r-pkg.org/badges/version/tableHTML)](http://cran.rstudio.com/web/packages/tableHTML/index.html)
+
 #### Build Status
 
 [![Travis-CI Build Status](https://travis-ci.org/LyzandeR/tableHTML.svg?branch=master)](https://travis-ci.org/LyzandeR/tableHTML)
