@@ -33,4 +33,10 @@ tableHTML(mtcars)
 
 you can see a first example of an HTML table!
 
-To find out about all the functions, how to use the package with shiny and see a lot of examples visit the [online documentation](https://lyzander.github.io/tableHTML/).
+## Links - Cran / Tutorial / Examples
+
+To find out about all the functions and how to use the package with shiny you can visit the [online tutorial](https://lyzander.github.io/tableHTML/).
+
+To see a gallery of examples you can visit the [examples page](https://cran.r-project.org/web/packages/tableHTML/vignettes/examples.html).
+
+To see the released version you can visit [CRAN](https://cran.r-project.org/web/packages/tableHTML/index.html)
