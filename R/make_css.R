@@ -30,5 +30,5 @@ make_css <- function(...) {
     
    })
  
- HTML(paste(all_css, collapse = '\n'))
+ htmltools::HTML(paste(all_css, collapse = '\n'))
 }
