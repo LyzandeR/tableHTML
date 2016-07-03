@@ -18,6 +18,9 @@
 #'   class). If the first element is a vector of length greater than one then the selectors will be
 #'   comma separated in the css. The second element will be a vector of the css definitions and the 
 #'   third element will a vector of the values of those definitions.
+#'   
+#' @param file Character sting. If a file name is provided then the css code will be printed into
+#'   that file. If the argument is NULL (default) then a string will be returned.  
 #'
 #' @return A css file. 
 #'         
@@ -29,16 +32,25 @@
 #'          list('th', c('background-color', 'height'), c('lightgreen', '30px')))         
 #' 
 #' @export
-make_css <- function(...) {
+make_css <- function(..., file = NULL) {
  
  css_defs <- list(...)
+ 
+ #make sure all arguments are lists
+ unused <-
+  lapply(css_defs, function(x) {
+   if ((!is.list(x)) | (length(x) != 3L)) {
+    stop('Each element in ... needs to be a list of three elements')
+   }
+   NULL
+  })
  
  #create the css string
  all_css <- 
    vapply(css_defs, function(x) {
     
      #make the styles
-     css_comp <- paste0(x[[2]], ':', x[[3]], ';')
+     css_comp <- paste0(x[[2]], ': ', x[[3]], ';')
      style <- paste(css_comp, collapse = '\n  ')
      
      #comma separate selectors if > 1
@@ -53,7 +65,15 @@ make_css <- function(...) {
    }, FUN.VALUE = character(1))
  
  #return a big string with all the selectors and style definitions 
- htmltools::HTML(paste(all_css, collapse = '\n'))
+ css_string <- htmltools::HTML(paste(all_css, collapse = '\n'))
+ 
+ #check if file is provided and return either a file or a string
+ if (is.null(file)) {
+  css_string
+ } else {
+  cat(css_string, file = file)
+  invisible(NULL)
+ }
  
 }
 
