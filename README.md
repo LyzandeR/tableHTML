@@ -14,7 +14,13 @@ This is a package for creating easily CSS-ible HTML tables, which are compatible
 
 ## Installation
 
-To install the package you need to have the `devtools` package installed. To install devtools type in your console: `install.packages('devtools')`.
+To install the latest released version from CRAN you just need to run on your console:
+
+```r
+install.packages('tableHTML')
+```
+
+To install the development version you need to have the `devtools` package installed. To install devtools type in your console: `install.packages('devtools')`.
 
 Then to install tableHTML run the following on your console:
 
