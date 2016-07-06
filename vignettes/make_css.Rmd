@@ -51,7 +51,7 @@ make_css(list('table td', c('text-align', 'font-size'), c('center', '20px')))
 You can even use selectors like hover using the following way
 
 ```{r example 3}
-make_css(list('table td::hover', 'background-color', 'lightyellow'))
+make_css(list('table td:hover', 'background-color', 'lightyellow'))
 ```
 
 And a more complicated example that uses some of the above:
@@ -73,3 +73,25 @@ make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px'
 ```
 
 Now we can see how to use this file with shiny.
+     
+There are two ways to use `make_css` with shiny. The first one would be directly at ui.R like this:
+
+```{r shiny css, eval = FALSE}
+#ui.R
+shinyApp(
+ ui = fluidPage(
+   fluidRow(
+    #leave some spacing
+    br(),
+    tags$style(make_css(list('tr:hover', 'background-color', 'lightyellow'))),
+    column(width = 1),
+    uiOutput("mytable"))
+ ), 
+ server = function(input, output) {
+  output$mytable <- renderUI( 
+   tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+ )}
+)
+```
+
+
