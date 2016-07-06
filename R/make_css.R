@@ -37,13 +37,14 @@ make_css <- function(..., file = NULL) {
  css_defs <- list(...)
  
  #make sure all arguments are lists
- unused <-
-  lapply(css_defs, function(x) {
+ for (x in css_defs) {
    if ((!is.list(x)) | (length(x) != 3L)) {
     stop('Each element in ... needs to be a list of three elements')
    }
-   NULL
-  })
+   if (length(x[[2]]) != length(x[[3]])) {
+    stop('The second and third elements of each list need to have the same length')
+   }
+ }
  
  #create the css string
  all_css <- 
