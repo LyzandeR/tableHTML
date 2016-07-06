@@ -1,0 +1,75 @@
+---
+title: "tableHTML"
+author: "Theo Boutaris"
+date: "`r Sys.Date()`"
+output: 
+  html_document
+vignette: >
+  %\VignetteIndexEntry{Creating a css file}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this tutorial we can see how to use `make_css` to create a css file. We can then use this file
+in our web application (including shiny) or html file. Initially, we can see how to use this 
+function on its own and then the ways we can combine it with shiny.
+
+A simple example of how to use `make_css` would be:
+
+```{r basic}
+library(tableHTML)
+make_css(list('table', c('text-align', 'font-size'), c('center', '20px')),
+         list('th', c('background-color', 'height'), c('lightgreen', '30px')))
+```
+
+As seen from the above example `make_css` takes a series of lists as arguments. The number of lists
+provided depends on the user and how big the css file will be according to their needs. The lists
+need to have a length of three and they need to follow a specific format i.e.:
+
+* The first element of each list will be the selector. If a vector is provided then the selectors
+  will be comma separated.
+* The second element of each list will be the style definitions. This can be a vector as well.
+* The third element of each list will be the values of the style definitions. This needs to be
+  of the same lenght as the second element.
+  
+```{r example 1}
+make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px')),
+         list('th', c('background-color', 'height'), c('lightgreen', '30px')))
+```
+
+You can use any selector that you would normally use in a css file
+
+```{r example 2}
+#adding a special selector
+make_css(list('table td', c('text-align', 'font-size'), c('center', '20px')))
+```
+
+You can even use selectors like hover using the following way
+
+```{r example 3}
+make_css(list('table td::hover', 'background-color', 'lightyellow'))
+```
+
+And a more complicated example that uses some of the above:
+
+```{r example 4}
+#adding a special selector
+make_css(list(c('.myclass', '.myclass2', '#myid', '.myclass[type="text"]'), 
+              c('padding', 'margin-bottom', 'background-color', 'box-shadow'),
+              c('15px', '15px', 'rgba(0,0,0,0.5)', '0 1px 2px #ccc, inset 0 1px 0 #fff')))
+```
+
+The way we used `make_css` above will create a string of the css. In order to save that to a file
+we need to use the file argument in the following way:
+
+```{r saving to file, eval = FALSE}
+make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px')),
+         list('th', c('background-color', 'height'), c('lightgreen', '30px')),
+         file = 'mycss.css')
+```
+
+Now we can see how to use this file with shiny.
