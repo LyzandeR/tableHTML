@@ -109,14 +109,14 @@ using `includeCSS` in the way it was described in the
 create a css file using `make_css`:
 
 
-```{r shiny css 2}
+```{r shiny css 2, eval = FALSE}
 #when workin on shiny the css file is best placed in the www/ folder of the shiny app.
 #This will then be read by includeCSS in the normal way.
 #check the above link for more info.
 make_css(list('tr:hover', 'background-color', 'lightyellow'), file = 'www/mycss.css')
 ```
 
-```{r shiny app with includeCSS}
+```{r shiny app with includeCSS, eval = FALSE}
 #ui.R
 shinyUI(
  fluidPage(
