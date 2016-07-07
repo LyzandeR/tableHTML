@@ -1,11 +1,11 @@
 ---
-title: "tableHTML"
+title: "make_css"
 author: "Theo Boutaris"
 date: "`r Sys.Date()`"
 output: 
   html_document
 vignette: >
-  %\VignetteIndexEntry{Creating a css file}
+  %\VignetteIndexEntry{make_css and shiny}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -72,9 +72,16 @@ make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px'
          file = 'mycss.css')
 ```
 
+## shiny
+
 Now we can see how to use this file with shiny.
      
-There are two ways to use `make_css` with shiny. The first one would be directly at ui.R like this:
+There are two ways to use `make_css` with shiny. 
+
+#### Directly
+
+The first one would be directly at ui.R using `tags$style` (which is what `includeCSS` uses behind
+the scenes after it loads the file):
 
 ```{r shiny css, eval = FALSE}
 #ui.R
@@ -94,4 +101,40 @@ shinyApp(
 )
 ```
 
+#### Creating a file and loading it with includeCSS
 
+The second way is the obvious way i.e. creating a file with all the css and then loading it in shiny
+using `includeCSS` in the way it was described in the 
+[tableHTML tutorial](https://lyzander.github.io/tableHTML/#shiny-and-css). As a fast example we 
+create a css file using `make_css`:
+
+
+```{r shiny css 2}
+#when workin on shiny the css file is best placed in the www/ folder of the shiny app.
+#This will then be read by includeCSS in the normal way.
+#check the above link for more info.
+make_css(list('tr:hover', 'background-color', 'lightyellow'), file = 'www/mycss.css')
+```
+
+```{r shiny app with includeCSS}
+#ui.R
+shinyUI(
+ fluidPage(
+  fluidRow(
+   #leave some spacing
+   br(),
+   column(width = 1),
+   #include css file in shiny
+   includeCSS('www/mycss.css'),
+   uiOutput("mytable"))
+ )
+)
+
+#server.R
+shinyServer(
+function(input, output) {
+   output$mytable <- renderUI( 
+    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+   )}
+)
+```
