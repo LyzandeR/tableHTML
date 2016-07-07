@@ -20,10 +20,12 @@ function on its own and then the ways we can combine it with shiny.
 
 A simple example of how to use `make_css` would be:
 
-```{r basic}
+```{r basic, echo = TRUE}
 library(tableHTML)
-make_css(list('table', c('text-align', 'font-size'), c('center', '20px')),
-         list('th', c('background-color', 'height'), c('lightgreen', '30px')))
+mycss <- make_css(list('table', c('text-align', 'font-size'), c('center', '20px')),
+                  list('th', c('background-color', 'height'), c('lightgreen', '30px')))
+print(mycss)
+
 ```
 
 As seen from the above example `make_css` takes a series of lists as arguments. The number of lists
@@ -37,30 +39,34 @@ need to have a length of three and they need to follow a specific format i.e.:
   of the same lenght as the second element.
   
 ```{r example 1}
-make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px')),
-         list('th', c('background-color', 'height'), c('lightgreen', '30px')))
+#another example
+mycss <- make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px')),
+                  list('th', c('background-color', 'height'), c('lightgreen', '30px')))
+print(mycss)
 ```
 
 You can use any selector that you would normally use in a css file
 
 ```{r example 2}
 #adding a special selector
-make_css(list('table td', c('text-align', 'font-size'), c('center', '20px')))
+mycss <- make_css(list('table td', c('text-align', 'font-size'), c('center', '20px')))
+print(mycss)
 ```
 
 You can even use selectors like hover using the following way
 
 ```{r example 3}
-make_css(list('table td:hover', 'background-color', 'lightyellow'))
+mycss <- make_css(list('table td:hover', 'background-color', 'lightyellow'))
+print(mycss)
 ```
 
 And a more complicated example that uses some of the above:
 
 ```{r example 4}
-#adding a special selector
-make_css(list(c('.myclass', '.myclass2', '#myid', '.myclass[type="text"]'), 
-              c('padding', 'margin-bottom', 'background-color', 'box-shadow'),
-              c('15px', '15px', 'rgba(0,0,0,0.5)', '0 1px 2px #ccc, inset 0 1px 0 #fff')))
+mycss <- make_css(list(c('.myclass', '.myclass2', '#myid', '.myclass[type="text"]'), 
+                       c('padding', 'margin-bottom', 'background-color', 'box-shadow'),
+                       c('15px', '15px', 'rgba(0,0,0,0.5)', '0 1px 2px #ccc, inset 0 1px 0 #fff')))
+print(mycss)
 ```
 
 The way we used `make_css` above will create a string of the css. In order to save that to a file
@@ -78,12 +84,13 @@ Now we can see how to use this file with shiny.
      
 There are two ways to use `make_css` with shiny. 
 
-#### Directly
+* #### Directly
 
 The first one would be directly at ui.R using `tags$style` (which is what `includeCSS` uses behind
 the scenes after it loads the file):
 
 ```{r shiny css, eval = FALSE}
+library(shiny)
 #ui.R
 shinyApp(
  ui = fluidPage(
@@ -101,7 +108,7 @@ shinyApp(
 )
 ```
 
-#### Creating a file and loading it with includeCSS
+* #### Creating a file and loading it with includeCSS
 
 The second way is the obvious way i.e. creating a file with all the css and then loading it in shiny
 using `includeCSS` in the way it was described in the 
@@ -110,7 +117,7 @@ create a css file using `make_css`:
 
 
 ```{r shiny css 2, eval = FALSE}
-#when workin on shiny the css file is best placed in the www/ folder of the shiny app.
+#when working on shiny the css file is best placed in the www/ folder of the shiny app.
 #This will then be read by includeCSS in the normal way.
 #check the above link for more info.
 make_css(list('tr:hover', 'background-color', 'lightyellow'), file = 'www/mycss.css')
