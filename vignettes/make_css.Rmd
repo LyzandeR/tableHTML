@@ -78,13 +78,13 @@ make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px'
          file = 'mycss.css')
 ```
 
-## shiny
+# make_css and shiny
 
 Now we can see how to use this file with shiny.
      
 There are two ways to use `make_css` with shiny. 
 
-* #### Directly
+### Directly
 
 The first one would be directly at ui.R using `tags$style` (which is what `includeCSS` uses behind
 the scenes after it loads the file):
@@ -108,7 +108,7 @@ shinyApp(
 )
 ```
 
-* #### Creating a file and loading it with includeCSS
+### Creating a file and loading it with includeCSS
 
 The second way is the obvious way i.e. creating a file with all the css and then loading it in shiny
 using `includeCSS` in the way it was described in the 
