@@ -84,10 +84,10 @@ Now we can see how to use this file with shiny.
      
 There are two ways to use `make_css` with shiny. 
 
-### Directly
+### Directly in the ui.R
 
-The first one would be directly at ui.R using `tags$style` (which is what `includeCSS` uses behind
-the scenes after it loads the file):
+The first one would be directly in the ui.R using `tags$style` (which is what `includeCSS` uses 
+behind the scenes after it loads the file):
 
 ```{r shiny css, eval = FALSE}
 library(shiny)
