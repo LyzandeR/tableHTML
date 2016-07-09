@@ -4,6 +4,7 @@
 #' 
 #' \code{add_css_row} will add css to a tableHTML's rows. The only thing you need to be cautious 
 #' about is the rows argument. \code{headers} and \code{second_headers} are still considered rows.
+#' \code{add_css_row} affects the tr tag of the HTML code internally.
 #'
 #' @param tableHTML A tableHTML object created by the tableHTML function.
 #'

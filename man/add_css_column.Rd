@@ -26,7 +26,10 @@ A tableHTML object.
 \code{add_css_column} will add css to a tableHTML's columns
 }
 \details{
-\code{add_css_column} will add css to a tableHTML's columns.
+\code{add_css_column} will add css to a tableHTML's columns. \code{add_css_column} will only
+  add css to the columns without the headers or second headers (i.e. it only affects the td tag
+  internally and not the th tag). If you want to add css to the headers or second headers please
+  use \code{add_css_header} or \code{add_css_second_header}.
 }
 \examples{
 tableHTML(mtcars) \%>\% 

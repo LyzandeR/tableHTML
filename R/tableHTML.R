@@ -12,7 +12,9 @@
 #' \itemize{
 #'   \item \strong{Table:} Will get the class from the class argument in the function. 
 #'       The final class will be of the form table_<class_name>.
-#'   \item \strong{Columns:} Will get an id which will be the same as the column name
+#'   \item \strong{Columns:} Will get an id which will be the same as the column name. If rownames
+#'       exist these will get the rownames id. If row groups exist these will get the row_groups id.
+#'       Check the \code{add_css_column} function for examples.
 #'   \item \strong{Headers:} Will get an id of the form header_<header index>. 
 #'       For example the first header will have the id header_1, the second header 
 #'       will have header_2 and so on.
@@ -33,6 +35,11 @@
 #' needs to be used with caution since it overwrites css styles, so unless you are using shiny 
 #' (or any other place where the above css is automatically loaded) you should be using 
 #' \code{collapse = 'separate'}.
+#' 
+#' Printing the table will result in rendering it in R studio's viewer
+#' with the print.tableHTML method if using Rstudio otherwise it will use the default 
+#' browser. Use \code{print(tableHTML(obj), viewer = FALSE)} or \code{str(tableHTML(obj))} 
+#' to view the actual html code.
 #'
 #' @param obj Needs to be a data.frame or a matrix or an arbitrary object that has the 
 #'   data.frame class and can be coersible to a data.frame (e.g data.table, tbl, etc.)
@@ -83,9 +90,7 @@
 #'   If you are working on Rgui (interactively) the table will be printed on your default browser.
 #'   If you set this to FALSE the HTML code will be printed on screen.
 #'
-#' @return A tableHTML object. Printing the table will result in rendering it in R studio's viewer
-#'         with the print.tableHTML method if using Rstudio otherwise it will use the default 
-#'         browser. Use \code{str(tableHTML)} to view the actual html code.
+#' @return A tableHTML object. 
 #'         
 #' @examples 
 #' tableHTML(mtcars)

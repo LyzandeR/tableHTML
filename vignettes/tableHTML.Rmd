@@ -14,7 +14,7 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This is a package for building CSS-ible HTML tables in an easy way, which are compatible with R shiny. 
+This is a package for building CSS-ible HTML tables in an easy way, which are compatible with shiny. 
 The main function `tableHTML` will convert a data.frame or matrix or any other object that can be
 converted into a data.frame into an HTML table. Using the function on R Studio will print the table
 on the viewer otherwise it will use the default browser. The default tables are built without any 
@@ -39,18 +39,18 @@ tableHTML(mtcars, rownames = FALSE)
 
 The class argument sets the class name for the table. The default will be of the form 
 table\_dataframeName. For example, for mtcars the HTML table's class would be table\_mtcars.
-This makes it easy to create a css value for it in case there are multiple tables.
+This makes it easier to add css to it in case there are multiple tables.
 
 ```{r, eval = FALSE}
 mytable <- tableHTML(mtcars)
 str(mytable)
-Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
-<table class=table_mtcars border=1 style="border-collapse: collapse;">
-<tr>
-  <th id=header_1> </th>
-  <th id=header_2>mpg</th>
-  <th id=header_3>cyl</th>
-truncated...
+# Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
+# <table class=table_mtcars border=1 style="border-collapse: collapse;">
+# <tr>
+#   <th id=header_1> </th>
+#   <th id=header_2>mpg</th>
+#   <th id=header_3>cyl</th>
+# truncated...
 ```
 
 And with a custom class:
@@ -58,13 +58,13 @@ And with a custom class:
 ```{r, eval = FALSE}
 mytable <- tableHTML(mtcars, class = 'myClass')
 str(mytable)
-Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
-<table class=myClass border=1 style="border-collapse: collapse;">
-<tr>
-  <th id=header_1> </th>
-  <th id=header_2>mpg</th>
-  <th id=header_3>cyl</th>
-truncated...
+# Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
+# <table class=myClass border=1 style="border-collapse: collapse;">
+# <tr>
+#   <th id=header_1> </th>
+#   <th id=header_2>mpg</th>
+#   <th id=header_3>cyl</th>
+# truncated...
 ```
 
 
@@ -82,7 +82,7 @@ library(tableHTML)
 tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 ```
 
-### Adding Row Groups that spa multiple rows
+### Adding Row Groups that span multiple rows
 
 In case you would like to add row groups that span multiple rows you can do it by providing a
 list in the `row_groups` argument. The first element will contain the row spans 
@@ -110,7 +110,9 @@ If second headers exist these will stretch according to their underlying columns
 As an example:
 
 ```{r widths}
-tableHTML(mtcars, widths = rep(100, 12), second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+tableHTML(mtcars, 
+          widths = rep(100, 12), 
+          second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 ```
 
 ### Change the border
@@ -155,7 +157,10 @@ tableHTML(mtcars, collapse = 'separate')
 
 In order to use a non-collapsed table on shiny you need to use the `collapse = 'separate_shiny'`
 argument. shiny uses bootstrap 3 by default which uses 
-`table {border-collapse: collapse; border-spacing:0;}` in its css. 
+`table {border-collapse: collapse; border-spacing:0;}` in its css. `collapse = 'separate_shiny'`
+will use the `!important` keyword in HTML which overwrites the default bootstrap 3 styling. Web
+developers argue that using `!important` can be dangerous since it overwrites previously set styles,
+so only use it on shiny or other web applications where tables are collapsed by default.
 
 ```{r collapse 2}
 tableHTML(mtcars, collapse = 'separate_shiny')
@@ -262,7 +267,10 @@ mtcars %>%
 
 ### add\_css\_column
 
-In order to add css to specific table columns you need to use the `add_css_column` function. 
+In order to add css to specific table columns you need to use the `add_css_column` function.
+The function will add css to the columns, but not to the headers and second_headers. To add css
+to those you would need to use `add_css_header` and `add_css_second_header` respectively. In HTML
+terminology `add_css_row` modifies the _td_ tag.
 The function has three arguments:
 
 1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
@@ -272,9 +280,8 @@ The function has three arguments:
           style definitions' values (e.g. red).
 3. *column_names*: A character atomic vector with the names of the columns where the style
                    definitions will be applied on. At least one column name must be provided. 
-                   If the rownames are included the column name is "rownames". headers and second_headers
-                   are not part of the columns. These need to be set from their corresponding add_css 
-                   functions.
+                   If the rownames are included the column name is implied to be "rownames". If
+                   row groups are included the column name is implied to be "row_groups" headers.
 
 For example:
 
@@ -404,7 +411,7 @@ mtcars %>%
 
 ### add\_css\_thead
 
-In order to add css to both the headers and second headers (if any) you need to use the 
+In order to add css to both the headers and second headers (if any) you could use the 
 `add_css_thead` function. The function has two arguments:
 
 1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
@@ -421,7 +428,7 @@ mtcars %>%
 
 ### add\_css\_tbody
 
-In order to add css to all the table apart from the headers or second headers you need to use the 
+In order to add css to all the table apart from the headers or second headers you could use the 
 `add_css_tbody` function. The function has two arguments:
 
 1. *tableHTML*: A tableHTML object (created by `tableHTML()`)
@@ -527,12 +534,12 @@ mtcars %>%
 
 **Note**: A good way to work with this function is to print the table 
 (`print(tableHTML(mtcars), viewer = FALSE)`), see how the part you want to
-change is written and change that with the appropriate text.
+change is written and change that with the appropriate HTML text.
 
 ### Hover and other CSS selectors
 
 These are not supported in inline HTML but they can be added through CSS files. We can see how to 
-do this in shiny below.
+do this in shiny below. 
 
 ## tableHTML and shiny
 
@@ -593,8 +600,8 @@ shinyApp(
 
 As we said previously CSS selectors cannot be used within HTML so if you use shiny you would need
 to include a separate CSS file. Before we start with shiny and CSS let's see the rules applied by
-tableHTML. tableHTML creates ids for columns, headers and overheaders and gives the table a specific 
-class name as it was mentioned previously.
+tableHTML. tableHTML creates ids for columns, headers and second headers and gives the table a 
+specific class name as it was mentioned previously.
 
 The rules are like this:
 
@@ -609,8 +616,8 @@ The rules are like this:
                    the second header will have overheader\_2 and so on.
 
 Let's see this in practice. We create a CSS file e.g. mycss.css where we will write our css code. 
-Then we load this in R shiny in the following way. We have saved a ui.R file and server.R file in 
-the same directory. In that directory we have a www/ folder where we save our .css file. 
+Then we load this in R shiny in the following way: In the directory where we saved the ui.R file and
+the server.R file we also create a www/ folder where we save our .css file. 
 In our case that is named mycss.css. We include this file in R using `includeCSS`:
 
 ```{r shiny css, eval = FALSE}
@@ -638,7 +645,10 @@ function(input, output) {
 
 Note: You can find out more about CSS and shiny [here](http://shiny.rstudio.com/articles/css.html).
 
-In order to add a vertical column line we can use the column ids created by tableHTML. To add a vertical red line at mpg column, our css file would look like this:
+You can also check the `make_css` function of the package which helps you create a css file.
+
+In order to add a vertical column line we can use the column ids created by tableHTML. To add a 
+vertical red line at mpg column, our css file would look like this:
 
 ```{CSS}
 #mpg {
@@ -650,7 +660,8 @@ Our HTML table will look like this:
 
 ![ ](shiny_vertical_line.PNG)
 
-In order to change the background color of one of the headers (e.g. the second) our css would look like this:
+In order to change the background color of one of the headers (e.g. the second) our 
+CSS would look like this:
 
 ```{CSS 2}
 #mpg{
