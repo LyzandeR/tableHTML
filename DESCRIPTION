@@ -1,7 +1,7 @@
 Package: tableHTML
 Type: Package
 Title: A Tool to Create HTML Tables
-Version: 0.2.10
+Version: 0.2.11
 Authors@R: person("Theo", 
                   "Boutaris", 
                   email = "teoboot2007@hotmail.com", 
