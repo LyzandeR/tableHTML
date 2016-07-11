@@ -28,9 +28,9 @@ print(mycss)
 
 ```
 
-As seen from the above example `make_css` takes a series of lists as arguments. The number of lists
-provided depends on the user and how big the css file will be according to their needs. The lists
-need to have a length of three and they need to follow a specific format i.e.:
+As seen from the above example `make_css` takes an arbitrary number of lists as arguments. 
+The number of lists provided depends on the user and how big the css file will be according to their
+needs. Each list needs to have a length of three and needs to follow a specific format i.e.:
 
 * The first element of each list will be the selector. If a vector is provided then the selectors
   will be comma separated.
@@ -45,7 +45,7 @@ mycss <- make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center
 print(mycss)
 ```
 
-You can use any selector that you would normally use in a css file
+You can use any selector that you would normally use in a css file:
 
 ```{r example 2}
 #adding a special selector
@@ -53,7 +53,7 @@ mycss <- make_css(list('table td', c('text-align', 'font-size'), c('center', '20
 print(mycss)
 ```
 
-You can even use selectors like hover using the following way
+You can even use selectors like hover using the following way:
 
 ```{r example 3}
 mycss <- make_css(list('table td:hover', 'background-color', 'lightyellow'))
@@ -79,9 +79,7 @@ make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px'
 ```
 
 # make_css and shiny
-
-Now we can see how to use this file with shiny.
-     
+ 
 There are two ways to use `make_css` with shiny. 
 
 ### Directly in the ui.R
@@ -110,11 +108,10 @@ shinyApp(
 
 ### Creating a file and loading it with includeCSS
 
-The second way is the obvious way i.e. creating a file with all the css and then loading it in shiny
-using `includeCSS` in the way it was described in the 
+The second way is the standard way i.e. creating a file with all the css and then loading it in 
+shiny using `includeCSS` in the way it was described in the 
 [tableHTML tutorial](https://lyzander.github.io/tableHTML/#shiny-and-css). As a fast example we 
 create a css file using `make_css`:
-
 
 ```{r shiny css 2, eval = FALSE}
 #when working on shiny the css file is best placed in the www/ folder of the shiny app.
@@ -145,3 +142,5 @@ function(input, output) {
    )}
 )
 ```
+
+This would complete our tutorial on the `make_css` functio!

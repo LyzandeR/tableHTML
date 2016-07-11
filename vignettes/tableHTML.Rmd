@@ -548,6 +548,7 @@ shiny. The implementation is really simple since internally tableHTML uses `html
 convert the table into an HTML object. Simply using `renderUI` and `uiOutput` will be enough:
 
 ```{r shiny 1, eval = FALSE}
+library(shiny)
 shinyApp(
  ui = fluidPage(
    fluidRow(
