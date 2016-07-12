@@ -31,6 +31,9 @@
 #' make_css(list(c('table', 'td'), c('text-align', 'font-size'), c('center', '20px')),
 #'          list('th', c('background-color', 'height'), c('lightgreen', '30px')))         
 #' 
+#' make_css(list('tr:hover', c('text-align', 'font-size'), c('center', '20px')),
+#'          list('th', c('background-color', 'height'), c('lightgreen', '30px')))    
+#' 
 #' @export
 make_css <- function(..., file = NULL) {
  
