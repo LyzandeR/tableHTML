@@ -40,6 +40,9 @@
 #' with the print.tableHTML method if using Rstudio otherwise it will use the default 
 #' browser. Use \code{print(tableHTML(obj), viewer = FALSE)} or \code{str(tableHTML(obj))} 
 #' to view the actual html code.
+#' 
+#' In order to use tableHTML with shiny you can use the functions renderUI (in server.R) and 
+#' uiOutput (in ui.R) directly, since the tableHTML is an HTML object.
 #'
 #' @param obj Needs to be a data.frame or a matrix or an arbitrary object that has the 
 #'   data.frame class and can be coersible to a data.frame (e.g data.table, tbl, etc.)
