@@ -21,6 +21,27 @@ additional classes for the tag.}
 This function is used to implement tableHTML in a shiny app. It is used in the shiny
 ui.R file. Internally, it just calls uiOutput, since tableHTML creates HTML code.
 }
+\examples{
+\dontrun{
+
+library(shiny)
+shinyApp(
+ ui = fluidPage(
+  fluidRow(
+  #leave some spacing
+  br(),
+  column(width = 1),
+  tableHTML_output("mytable"))
+ ), 
+server = function(input, output) {
+ output$mytable <- render_tableHTML( 
+  tableHTML(mtcars)
+ )}
+)
+
+}
+
+}
 \seealso{
 \code{uiOutput}
 }

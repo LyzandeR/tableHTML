@@ -19,6 +19,27 @@ render_tableHTML(expr, env = parent.frame(), quoted = FALSE, func = NULL)
 This function is used to implement tableHTML in a shiny app. This function is used in the shiny
 server.R file. Internally, it just calls renderUI, since tableHTML creates HTML code.
 }
+\examples{
+\dontrun{
+
+library(shiny)
+shinyApp(
+ ui = fluidPage(
+  fluidRow(
+  #leave some spacing
+  br(),
+  column(width = 1),
+  tableHTML_output("mytable"))
+ ), 
+server = function(input, output) {
+ output$mytable <- render_tableHTML( 
+  tableHTML(mtcars)
+ )}
+)
+
+}
+
+}
 \seealso{
 \code{renderUI}
 }

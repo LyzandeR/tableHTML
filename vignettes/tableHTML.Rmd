@@ -545,7 +545,11 @@ do this in shiny below.
 
 Now that we know about how to use the function's arguments let's see how we can use tableHTML with 
 shiny. The implementation is really simple since internally tableHTML uses `htmltools::HTML` to 
-convert the table into an HTML object. Simply using `renderUI` and `uiOutput` will be enough:
+convert the table into an HTML object. Simply using `render_tableHTML` and `tableHTML_output` 
+will be enough. In reality these functions are just `renderUI` and `uiOutput` which can also be used
+instead, since tableHTML creates HTML code.
+
+Let's see an example
 
 ```{r shiny 1, eval = FALSE}
 library(shiny)
@@ -555,10 +559,10 @@ shinyApp(
     #leave some spacing
     br(),
     column(width = 1),
-    uiOutput("mytable"))
+    tableHTML_output("mytable"))
  ), 
  server = function(input, output) {
-  output$mytable <- renderUI( 
+  output$mytable <- render_tableHTML( 
    tableHTML(mtcars)
  )}
 )
@@ -573,10 +577,10 @@ shinyApp(
     #leave some spacing
     br(),
     column(width = 1),
-    uiOutput("mytable"))
+    tableHTML_output("mytable"))
  ), 
  server = function(input, output) {
-  output$mytable <- renderUI( 
+  output$mytable <- render_tableHTML( 
    mtcars %>%
      tableHTML(widths = c(140, rep(45, 11)),
                second_header = list(c(3, 4, 5), c('team1', 'team2', 'team3'))) %>% 
@@ -631,14 +635,14 @@ shinyUI(
    column(width = 1),
    #include css file in shiny
    includeCSS('www/mycss.css'),
-   uiOutput("mytable"))
+   tableHTML_output("mytable"))
  )
 )
 
 #server.R
 shinyServer(
 function(input, output) {
-   output$mytable <- renderUI( 
+   output$mytable <- render_tableHTML( 
     tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
    )}
 )

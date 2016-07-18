@@ -11,6 +11,26 @@
 #' 
 #' @seealso \code{uiOutput} 
 #' 
+#' @examples 
+#' \dontrun{
+#' 
+#' library(shiny)
+#' shinyApp(
+#'  ui = fluidPage(
+#'   fluidRow(
+#'   #leave some spacing
+#'   br(),
+#'   column(width = 1),
+#'   tableHTML_output("mytable"))
+#'  ), 
+#' server = function(input, output) {
+#'  output$mytable <- render_tableHTML( 
+#'   tableHTML(mtcars)
+#'  )}
+#' )
+#' 
+#' }
+#' 
 #' @export
 tableHTML_output <- shiny::uiOutput
 
@@ -25,6 +45,26 @@ tableHTML_output <- shiny::uiOutput
 #' @param func Deprecated. Please use expr instead.  
 #' 
 #' @seealso \code{renderUI} 
+#' 
+#' @examples 
+#' \dontrun{
+#' 
+#' library(shiny)
+#' shinyApp(
+#'  ui = fluidPage(
+#'   fluidRow(
+#'   #leave some spacing
+#'   br(),
+#'   column(width = 1),
+#'   tableHTML_output("mytable"))
+#'  ), 
+#' server = function(input, output) {
+#'  output$mytable <- render_tableHTML( 
+#'   tableHTML(mtcars)
+#'  )}
+#' )
+#' 
+#' }
 #' 
 #' @export
 render_tableHTML <- shiny::renderUI

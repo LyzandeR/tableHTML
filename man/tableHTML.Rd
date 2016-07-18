@@ -108,9 +108,6 @@ Printing the table will result in rendering it in R studio's viewer
 with the print.tableHTML method if using Rstudio otherwise it will use the default 
 browser. Use \code{print(tableHTML(obj), viewer = FALSE)} or \code{str(tableHTML(obj))} 
 to view the actual html code.
-
-In order to use tableHTML with shiny you can use the functions renderUI (in server.R) and 
-uiOutput (in ui.R) directly, since the tableHTML is an HTML object.
 }
 \examples{
 tableHTML(mtcars)

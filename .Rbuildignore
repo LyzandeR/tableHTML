@@ -3,3 +3,4 @@
 readme_files/
 ^\.travis\.yml$
 cran-comments.md
+news.md
