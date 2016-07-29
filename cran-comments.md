@@ -1,6 +1,4 @@
-## Re-submission
-
-Changed the LICENSE file to abide by CRAN's rules.
+## Submiting new version 0.2.11 for tableHTML
 
 ## Test environments
 * local windows, R 3.2.0, R 3.3.0, R devel (also winbuilder on CRAN)
