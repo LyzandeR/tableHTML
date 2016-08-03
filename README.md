@@ -45,4 +45,4 @@ To find out about all the functions and how to use the package with shiny you ca
 
 To see a gallery of examples you can visit the [examples page](https://cran.r-project.org/web/packages/tableHTML/vignettes/examples.html).
 
-To see the released version you can visit [CRAN](https://cran.r-project.org/web/packages/tableHTML/index.html)
+To see the released version you can visit [CRAN](https://cran.r-project.org/package=tableHTML)
