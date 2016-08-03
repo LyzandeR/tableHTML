@@ -2,7 +2,7 @@
 
 #### Released Version
 
-[![CRAN version](http://www.r-pkg.org/badges/version/tableHTML)](http://cran.rstudio.com/web/packages/tableHTML/index.html)
+[![CRAN version](http://www.r-pkg.org/badges/version/tableHTML)](https://cran.r-project.org/package=tableHTML)
 
 #### Build Status
 
