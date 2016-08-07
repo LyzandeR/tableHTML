@@ -45,6 +45,6 @@ To find out about all the functions and how to use the package with shiny you ca
 
 To see a gallery of examples you can visit the [examples page](https://cran.r-project.org/web/packages/tableHTML/vignettes/examples.html).
 
-For a tutorial on how to build a css file and how to use that in shiny (in a fast way) you can visit the [make_css and shiny](https://cran.r-project.org/web/packages/tableHTML/vignettes/make_css.html). 
+For a tutorial on how to build a css file and how to use that in shiny (in a fast way) you can visit the [make_css and shiny](https://cran.r-project.org/web/packages/tableHTML/vignettes/make_css.html) link. 
 
 To see the released version you can visit [CRAN](https://cran.r-project.org/package=tableHTML)
