@@ -143,4 +143,4 @@ function(input, output) {
 )
 ```
 
-This would complete our tutorial on the `make_css` functio!
+This would complete our tutorial on the `make_css` function!

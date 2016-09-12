@@ -4,7 +4,8 @@
 \alias{render_tableHTML}
 \title{Implementing tableHTML in shiny}
 \usage{
-render_tableHTML(expr, env = parent.frame(), quoted = FALSE, func = NULL)
+render_tableHTML(expr, env = parent.frame(), quoted = FALSE,
+  outputArgs = list())
 }
 \arguments{
 \item{expr}{A tableHTML object.}
@@ -13,7 +14,8 @@ render_tableHTML(expr, env = parent.frame(), quoted = FALSE, func = NULL)
 
 \item{quoted}{A boolean value. Whether the expression is quoted or not.}
 
-\item{func}{Deprecated. Please use expr instead.}
+\item{outputArgs}{A list of arguments to be passed through to the implicit call to uiOutput when 
+renderUI is used in an interactive R Markdown document.}
 }
 \description{
 This function is used to implement tableHTML in a shiny app. This function is used in the shiny

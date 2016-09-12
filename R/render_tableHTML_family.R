@@ -42,7 +42,8 @@ tableHTML_output <- shiny::uiOutput
 #' @param expr A tableHTML object. 
 #' @param env An environment.
 #' @param quoted  A boolean value. Whether the expression is quoted or not.
-#' @param func Deprecated. Please use expr instead.  
+#' @param outputArgs A list of arguments to be passed through to the implicit call to uiOutput when 
+#'        renderUI is used in an interactive R Markdown document.
 #' 
 #' @seealso \code{renderUI} 
 #' 
@@ -68,5 +69,4 @@ tableHTML_output <- shiny::uiOutput
 #' 
 #' @export
 render_tableHTML <- shiny::renderUI
-
 
