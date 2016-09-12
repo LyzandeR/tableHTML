@@ -69,4 +69,5 @@ tableHTML_output <- shiny::uiOutput
 #' 
 #' @export
 render_tableHTML <- shiny::renderUI
+globalVariables('func')
 
