@@ -69,10 +69,5 @@ test_that("characters < and > get escaped correctly", {
  df <- data.frame(a = factor(c('ldskjf', ';sldfkj</%>;lkdjhf', 'http://www.acb.com/test.php')))
  expect_true(grepl('<td id="tableHTML_column_1">;sldfkj&#60;/%&#62;;lkdjhf</td>', 
                    tableHTML(df))) 
- 
- mtcars2 <- mtcars[1:3, 1:3]
- headers <- c('a', '','sdg<!-<>*&()$%£+_-=dsgf')
- expect_true(grepl("sdg&#60;!-&#60;&#62;*", 
-                   tableHTML(mtcars2, headers = headers))) 
 
 })
