@@ -79,5 +79,14 @@ test_that("css works fine with additional add_css_caption of different style def
  
 })
 
+test_that("output has attribute", {
+ expect_identical(
+  attr(tableHTML(mtcars, headers = letters[1:11]) %>%
+        add_css_caption(css = list('height', '30px')), 'headers'), 
+  letters[1:11]
+ )
+ 
+})
+
 
 

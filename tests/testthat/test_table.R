@@ -78,5 +78,12 @@ test_that("css works fine with additional add_css_table of different style def",
  
 })
 
-
+test_that("output has attribute", {
+ expect_identical(
+  attr(tableHTML(mtcars, headers = letters[1:11]) %>% 
+        add_css_table(css = list('background-color', 'lightgreen')), 'headers'), 
+  letters[1:11]
+ )
+ 
+})
 

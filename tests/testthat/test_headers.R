@@ -105,3 +105,11 @@ test_that("css works fine row groups", {
  )
 })
 
+test_that("output has attribute", {
+ expect_identical(
+  attr(tableHTML(mtcars, headers = letters[1:11]) %>% 
+        add_css_header(css = list('background-color', 'lightgreen'), headers = 3), 'headers'), 
+  letters[1:11]
+ )
+ 
+})

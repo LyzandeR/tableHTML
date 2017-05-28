@@ -90,5 +90,14 @@ test_that("css works fine with additional add_css_second_header of different sty
  
 })
 
+test_that("output has attribute", {
+ expect_identical(
+  attr(tableHTML(mtcars, headers = letters[1:11]) %>% 
+        add_css_second_header(css = list('background-color', 'lightgreen'), second_headers = 3), 
+       'headers'), 
+  letters[1:11]
+ )
+ 
+})
 
 
