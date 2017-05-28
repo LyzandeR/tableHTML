@@ -29,7 +29,7 @@ add_css_footer <- function(tableHTML, css) {
  if (length(css[[1]]) != length(css[[2]])) stop('css needs to be a list of two elements of the
                                                 same length') 
  
- tabHTML <- tableHTML
+ attributes <- attributes(tableHTML)
  
  #create style
  css_comp <- paste0(css[[1]], ':', css[[2]], ';')
@@ -37,15 +37,17 @@ add_css_footer <- function(tableHTML, css) {
  
  style <- paste0('style="', css_comp, '"')
  
- tabHTML <- sub('<caption id="footer" align="bottom" style=', 
+ tableHTML <- sub('<caption id="footer" align="bottom" style=', 
                 '<caption id="footer" align="bottom"', 
-                tabHTML)
- tabHTML <- sub('<caption id="footer" align="bottom"', 
+                tableHTML)
+ tableHTML <- sub('<caption id="footer" align="bottom"', 
                 paste0('<caption id="footer" align="bottom" ', style), 
-                tabHTML)
- tabHTML <- sub(';""', ';', tabHTML)
+                tableHTML)
+ tableHTML <- sub(';""', ';', tableHTML)
  
- tabHTML
+ attributes(tableHTML) <- attributes
+ 
+ tableHTML
  
 }
 

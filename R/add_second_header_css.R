@@ -32,7 +32,7 @@ add_css_second_header <- function(tableHTML,
  if (length(css[[1]]) != length(css[[2]])) stop('css needs to be a list of two elements of the
                                                 same length') 
  
- tabHTML <- tableHTML
+ attributes <- attributes(tableHTML)
  
  #create style
  css_comp <- paste0(css[[1]], ':', css[[2]], ';')
@@ -41,14 +41,18 @@ add_css_second_header <- function(tableHTML,
  style <- paste0('style="', css_comp, '"')
  
  for (i in second_headers) {
-  tabHTML <- gsub(paste0('id="overheader_', i, '" style='), paste0('id="overheader_', i, '"'),
-                  tabHTML)
-  tabHTML <- gsub(paste0('id="overheader_', i, '"'), paste0('id="overheader_', i, '" ', style),
-                  tabHTML)
-  tabHTML <- gsub(';""', ';', tabHTML)
+  tableHTML <- gsub(paste0('id="tableHTML_second_header_', i, '" style='), 
+                    paste0('id="tableHTML_second_header_', i, '"'),
+                  tableHTML)
+  tableHTML <- gsub(paste0('id="tableHTML_second_header_', i, '"'), 
+                    paste0('id="tableHTML_second_header_', i, '" ', style),
+                  tableHTML)
+  tableHTML <- gsub(';""', ';', tableHTML)
  }
  
- tabHTML
+ attributes(tableHTML) <- attributes
+ 
+ tableHTML
  
 }
 

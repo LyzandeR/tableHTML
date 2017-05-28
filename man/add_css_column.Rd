@@ -4,7 +4,7 @@
 \alias{add_css_column}
 \title{Add css to tableHTML's columns}
 \usage{
-add_css_column(tableHTML, css, column_names)
+add_css_column(tableHTML, css, columns, column_names = NULL)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object created by the tableHTML function.}
@@ -14,10 +14,13 @@ should be an atomic vector with the style definitions (e.g. background-color). T
 element will be an atomic vector with the same length as the first element, which will 
 contain the style definitions' values (e.g. red). Check the examples for more information.}
 
-\item{column_names}{A character atomic vector with the names of the columns where the style
-definitions will be applied on. At least one column name must be provided. If the rownames
-are included the column name is "rownames". If row_groups are are included the column name
-is "row_groups".}
+\item{columns}{A character atomic vector with the names of the columns or a numeric atomic vector
+with the positions of the columns where the style definitions will be applied on. At least one
+column must be provided. If the rownames are included the column name is "tableHTML_rownames"
+and the position is 0. If row_groups are are included the column name is "tableHTML_row_groups"
+and the position is -1.}
+
+\item{column_names}{Deprecated. Please use the argument columns.}
 }
 \value{
 A tableHTML object.
@@ -34,19 +37,26 @@ A tableHTML object.
 \examples{
 tableHTML(mtcars) \%>\% 
   add_css_column(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')),
-                 column_names = 'mpg') 
+                 columns = 'mpg') 
 
 tableHTML(mtcars) \%>\% 
   add_css_column(css = list(c('background-color', 'border'), c('lightgray', '3px solid green')), 
-                 column_names = c('mpg', 'disp', 'rownames'))
+                 columns = c('mpg', 'disp', 'rownames'))
                  
 tableHTML(mtcars, 
           rownames = FALSE, 
           widths = c(120, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3'))) \%>\%
-  add_css_column(css = list('background-color', 'lightgray'), column_names = 'row_groups') \%>\%
+  add_css_column(css = list('background-color', 'lightgray'), columns = 'row_groups') \%>\%
   add_css_header(css = list('background-color', 'lightgray'), headers = 1)
-                 
-                 
+  
+tableHTML(mtcars, 
+          rownames = TRUE, 
+          widths = c(140, rep(50, 12)),
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+          second_headers = list(c(3, 4), c('col1', 'col2'))) \%>\% 
+  add_css_column(list('background-color', 'green'), -1) \%>\%
+  add_css_column(list('background-color', 'red'), 0)
+
 }
 

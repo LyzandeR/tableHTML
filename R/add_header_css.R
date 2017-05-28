@@ -34,7 +34,7 @@ add_css_header <- function(tableHTML,
  if (length(css[[1]]) != length(css[[2]])) stop('css needs to be a list of two elements of the
                                                 same length') 
  
- tabHTML <- tableHTML
+ attributes <- attributes(tableHTML)
  
  #create style
  css_comp <- paste0(css[[1]], ':', css[[2]], ';')
@@ -42,25 +42,31 @@ add_css_header <- function(tableHTML,
  
  style <- paste0('style="', css_comp, '"')
  
- if (grepl('id="header_0"', tabHTML)) {
+ if (grepl('id="tableHTML_header_0"', tableHTML)) {
   
   for (i in (headers - 1)) {
-   tabHTML <- gsub(paste0('id="header_', i, '" style='), paste0('id="header_', i, '"'), tabHTML)
-   tabHTML <- gsub(paste0('id="header_', i, '"'), paste0('id="header_', i, '" ', style), tabHTML)
-   tabHTML <- gsub(';""', ';', tabHTML)
+   tableHTML <- gsub(paste0('id="tableHTML_header_', i, '" style='), 
+                     paste0('id="tableHTML_header_', i, '"'), tableHTML)
+   tableHTML <- gsub(paste0('id="tableHTML_header_', i, '"'), 
+                     paste0('id="tableHTML_header_', i, '" ', style), tableHTML)
+   tableHTML <- gsub(';""', ';', tableHTML)
   } 
   
  } else {
  
   for (i in headers) {
-   tabHTML <- gsub(paste0('id="header_', i, '" style='), paste0('id="header_', i, '"'), tabHTML)
-   tabHTML <- gsub(paste0('id="header_', i, '"'), paste0('id="header_', i, '" ', style), tabHTML)
-   tabHTML <- gsub(';""', ';', tabHTML)
+   tableHTML <- gsub(paste0('id="tableHTML_header_', i, '" style='), 
+                     paste0('id="tableHTML_header_', i, '"'), tableHTML)
+   tableHTML <- gsub(paste0('id="tableHTML_header_', i, '"'), 
+                     paste0('id="tableHTML_header_', i, '" ', style), tableHTML)
+   tableHTML <- gsub(';""', ';', tableHTML)
   }
   
  }
  
- tabHTML
+ attributes(tableHTML) <- attributes
+ 
+ tableHTML
  
 }
 

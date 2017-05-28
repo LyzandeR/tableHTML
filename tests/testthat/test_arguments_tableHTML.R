@@ -16,9 +16,9 @@ test_that("rows are ok", {
 
 test_that("columns and ids are ok", {
  #number of tds is ok
- expect_identical(length(gregexpr('<td id="mpg"', tableHTML(mtcars))[[1]]), nrow(mtcars))
- expect_identical(length(gregexpr('<td id="cyl"', tableHTML(mtcars))[[1]]), nrow(mtcars))
- expect_identical(length(gregexpr('<td id="rownames"', tableHTML(mtcars))[[1]]), nrow(mtcars))
+ expect_identical(length(gregexpr('<td id="tableHTML_column_1"', tableHTML(mtcars))[[1]]), nrow(mtcars))
+ expect_identical(length(gregexpr('<td id="tableHTML_column_2"', tableHTML(mtcars))[[1]]), nrow(mtcars))
+ expect_identical(length(gregexpr('<td id="tableHTML_rownames"', tableHTML(mtcars))[[1]]), nrow(mtcars))
 })
 
 test_that("widths are ok", {
@@ -31,19 +31,19 @@ test_that("widths are ok", {
  
 test_that("headers are ok", {
  #number of headers is ok
- expect_identical(length(gregexpr('<th id="header_', tableHTML(mtcars))[[1]]), ncol(mtcars) + 1L)
- expect_true(grepl('<th id="header_8"', tableHTML(mtcars))) 
+ expect_identical(length(gregexpr('<th id="tableHTML_header_', tableHTML(mtcars))[[1]]), ncol(mtcars) + 1L)
+ expect_true(grepl('<th id="tableHTML_header_8"', tableHTML(mtcars))) 
 })
  
 test_that("second headers are ok", {
  #number of second headers is ok
  expect_identical(
-  length(gregexpr('id="overheader_', 
+  length(gregexpr('id="tableHTML_second_header_', 
                   tableHTML(mtcars, 
-                            second_header = list(c(3, 4, 5), 
+                            second_headers = list(c(3, 4, 5), 
                                                  c('col1', 'col2', 'col3'))))[[1]]), 3L
  )
- expect_true(grepl('id="overheader_1"', 
+ expect_true(grepl('id="tableHTML_second_header_1"', 
                    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))))) 
 })
 

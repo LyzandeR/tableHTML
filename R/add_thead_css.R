@@ -35,7 +35,7 @@ add_css_thead <- function(tableHTML,
  if (length(css[[1]]) != length(css[[2]])) stop('css needs to be a list of two elements of the
                                                 same length') 
  
- tabHTML <- tableHTML
+ attributes <- attributes(tableHTML)
  
  #create style
  css_comp <- paste0(css[[1]], ':', css[[2]], ';')
@@ -43,11 +43,13 @@ add_css_thead <- function(tableHTML,
  
  style <- paste0('style="', css_comp, '"')
  
- tabHTML <- sub('thead style=', 'thead', tabHTML)
- tabHTML <- sub('thead', paste0('thead ', style), tabHTML)
- tabHTML <- sub(';""', ';', tabHTML)
+ tableHTML <- sub('thead style=', 'thead', tableHTML)
+ tableHTML <- sub('thead', paste0('thead ', style), tableHTML)
+ tableHTML <- sub(';""', ';', tableHTML)
  
- tabHTML
+ attributes(tableHTML) <- attributes
+ 
+ tableHTML
  
 }
 

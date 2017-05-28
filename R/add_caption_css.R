@@ -29,7 +29,7 @@ add_css_caption <- function(tableHTML, css) {
  if (length(css[[1]]) != length(css[[2]])) stop('css needs to be a list of two elements of the
                                                 same length') 
  
- tabHTML <- tableHTML
+ attributes <- attributes(tableHTML)
  
  #create style
  css_comp <- paste0(css[[1]], ':', css[[2]], ';')
@@ -37,11 +37,13 @@ add_css_caption <- function(tableHTML, css) {
  
  style <- paste0('style="', css_comp, '"')
  
- tabHTML <- sub('<caption style=', '<caption', tabHTML)
- tabHTML <- sub('<caption', paste0('<caption ', style), tabHTML)
- tabHTML <- sub(';""', ';', tabHTML)
+ tableHTML <- sub('<caption style=', '<caption', tableHTML)
+ tableHTML <- sub('<caption', paste0('<caption ', style), tableHTML)
+ tableHTML <- sub(';""', ';', tableHTML)
  
- tabHTML
+ attributes(tableHTML) <- attributes
+ 
+ tableHTML
  
 }
 

@@ -20,7 +20,7 @@ test_that("css is added with add_css_second_header", {
  #find style+
  expect_true(
   grepl(
-   'id="overheader_1" style="background-color:lightgray;height:30px;">',
+   'id="tableHTML_second_header_1" style="background-color:lightgray;height:30px;">',
    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
     add_css_second_header(css = list(c('background-color', 'height'), c('lightgray', '30px')),
                           second_headers = 1)
@@ -29,7 +29,7 @@ test_that("css is added with add_css_second_header", {
  
  expect_true(
   grepl(
-   'id="overheader_2" style="background-color:lightgray;height:30px;">',
+   'id="tableHTML_second_header_2" style="background-color:lightgray;height:30px;">',
    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
     add_css_second_header(css = list(c('background-color', 'height'), c('lightgray', '30px')),
                           second_headers = 2)
@@ -42,7 +42,7 @@ test_that("css works fine with additional add_css_second_header of same style de
  
  expect_true(
   grepl(
-   'id="overheader_1" style="background-color:red;background-color:lightgray;height:30px;">',
+   'id="tableHTML_second_header_1" style="background-color:red;background-color:lightgray;height:30px;">',
    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
     add_css_second_header(css = list(c('background-color', 'height'), c('lightgray', '30px')),
                           second_headers = 1) %>%
@@ -53,7 +53,7 @@ test_that("css works fine with additional add_css_second_header of same style de
  
  expect_true(
   grepl(
-   'id="overheader_2" style="background-color:red;background-color:lightgray;height:30px;">',
+   'id="tableHTML_second_header_2" style="background-color:red;background-color:lightgray;height:30px;">',
    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
     add_css_second_header(css = list(c('background-color', 'height'), c('lightgray', '30px')),
                           second_headers = 2) %>%
@@ -68,7 +68,7 @@ test_that("css works fine with additional add_css_second_header of different sty
  
  expect_true(
   grepl(
-   'id="overheader_2" style="height:30px;background-color:lightgray;height:30px;">',
+   'id="tableHTML_second_header_2" style="height:30px;background-color:lightgray;height:30px;">',
    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
     add_css_second_header(css = list(c('background-color', 'height'), c('lightgray', '30px')),
                           second_headers = 2) %>%
@@ -79,7 +79,7 @@ test_that("css works fine with additional add_css_second_header of different sty
  
  expect_true(
   grepl(
-   'id="overheader_1" style="height:30px;background-color:lightgray;height:30px;">',
+   'id="tableHTML_second_header_1" style="height:30px;background-color:lightgray;height:30px;">',
    tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
     add_css_second_header(css = list(c('background-color', 'height'), c('lightgray', '30px')),
                           second_headers = 1) %>%

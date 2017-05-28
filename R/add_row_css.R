@@ -37,7 +37,7 @@ add_css_row <- function(tableHTML,
  if (length(css[[1]]) != length(css[[2]])) stop('css needs to be a list of two elements of the
                                                 same length') 
  
- tabHTML <- tableHTML
+ attributes <- attributes(tableHTML)
  
  #create style
  css_comp <- paste0(css[[1]], ':', css[[2]], ';')
@@ -45,7 +45,7 @@ add_css_row <- function(tableHTML,
  
  style <- paste0('style="', css_comp, '"')
  
- splits <- strsplit(tabHTML, '<tr')
+ splits <- strsplit(tableHTML, '<tr')
  
  splits[[1]][2:length(splits[[1]])] <- 
   vapply(splits[[1]][2:length(splits[[1]])], function(x) paste0('<tr', x), FUN.VALUE = character(1))
@@ -69,6 +69,8 @@ add_css_row <- function(tableHTML,
  new_tab <- htmltools::HTML(new_tab)
  
  class(new_tab) <- c('tableHTML', class(new_tab))
+ 
+ attributes(new_tab) <- attributes
  
  new_tab
  

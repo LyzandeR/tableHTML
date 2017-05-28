@@ -8,7 +8,12 @@ test_that("Function fails for wrong inputs", {
  expect_error(tableHTML(mtcars) %>% 
                add_css_column(css = list(c('background-color', 'border'), 
                                       c('lightgray', '3px solid green')),
-                              column_names = 'mpg') , NA)
+                              columns = 'mpg') , NA)
+ #check deprecated
+ expect_error(tableHTML(mtcars) %>% 
+               add_css_column(css = list(c('background-color', 'border'), 
+                                         c('lightgray', '3px solid green')),
+                              column_names = 'mpg') , 'deprecated')
  #check css list has same lengths
  expect_error(tableHTML(mtcars) %>%
                add_css_column(css = list(c('background-color', 'height'), 'lightgray')),
@@ -19,19 +24,19 @@ test_that("css is added with add_css_column", {
  #find style+
  expect_true(
   grepl(
-   '<td id="mpg" style="background-color:lightgray;height:30px;">',
+   '<td id="tableHTML_column_1" style="background-color:lightgray;height:30px;">',
    tableHTML(mtcars) %>%
     add_css_column(css = list(c('background-color', 'height'), c('lightgray', '30px')),
-                   column_names = 'mpg')
+                   columns = 'mpg')
   )
  )
  
  expect_true(
   grepl(
-   '<td id="cyl" style="background-color:lightgray;height:30px;">',
+   '<td id="tableHTML_column_2" style="background-color:lightgray;height:30px;">',
    tableHTML(mtcars) %>%
     add_css_column(css = list(c('background-color', 'height'), c('lightgray', '30px')),
-                   column_names = 'cyl')
+                   columns = 'cyl')
   )
  )
  
@@ -41,23 +46,23 @@ test_that("css works fine with additional add_css_column of same style def", {
  
  expect_true(
   grepl(
-   '<td id="cyl" style="background-color:red;background-color:lightgray;height:30px;"',
+   '<td id="tableHTML_column_2" style="background-color:red;background-color:lightgray;height:30px;"',
    tableHTML(mtcars) %>%
     add_css_column(css = list(c('background-color', 'height'), c('lightgray', '30px')),
-                   column_names = 'cyl') %>%
+                   columns = 'cyl') %>%
     add_css_column(css = list('background-color', 'red'),
-                   column_names = 'cyl')
+                   columns = 'cyl')
   )
  )
  
  expect_true(
   grepl(
-   '<td id="mpg" style="background-color:red;background-color:lightgray;height:30px;"',
+   '<td id="tableHTML_column_1" style="background-color:red;background-color:lightgray;height:30px;"',
    tableHTML(mtcars) %>%
     add_css_column(css = list(c('background-color', 'height'), c('lightgray', '30px')),
-                   column_names = 'mpg') %>%
+                   columns = 'mpg') %>%
     add_css_column(css = list('background-color', 'red'),
-                   column_names = 'mpg')
+                   columns = 'mpg')
   )
  )
  
@@ -67,23 +72,23 @@ test_that("css works fine with additional add_css_column of different style def"
  
  expect_true(
   grepl(
-   '<td id="mpg" style="height:30px;background-color:lightgray;height:30px;"',
+   '<td id="tableHTML_column_1" style="height:30px;background-color:lightgray;height:30px;"',
    tableHTML(mtcars) %>%
     add_css_column(css = list(c('background-color', 'height'), c('lightgray', '30px')),
-                   column_names = 'mpg') %>%
+                   columns = 'mpg') %>%
     add_css_column(css = list('height', '30px'),
-                   column_names = 'mpg')
+                   columns = 'mpg')
   )
  )
  
  expect_true(
   grepl(
-   '<td id="cyl" style="height:30px;background-color:lightgray;height:30px;"',
+   '<td id="tableHTML_column_2" style="height:30px;background-color:lightgray;height:30px;"',
    tableHTML(mtcars) %>%
     add_css_column(css = list(c('background-color', 'height'), c('lightgray', '30px')),
-                   column_names = 'cyl') %>%
+                   columns = 'cyl') %>%
     add_css_column(css = list('height', '30px'),
-                   column_names = 'cyl')
+                   columns = 'cyl')
   )
  )
  

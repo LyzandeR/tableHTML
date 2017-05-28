@@ -48,11 +48,14 @@
 #'   will be inlcuded.
 #'   
 #' @param class Character string. Specifies the table's class. Convinient if you have multiple
-#'   tables. Default is table_<data_frame_name>.
+#'   tables. Default is table_xxxx (random 4-digit number).
+#'   
+#' @param headers character vector. The headers for the HTML table. If not provided the original
+#'   data.frame headers will be used.
 #'   
 #' @param widths Needs to be a numeric atomic vector with the column widths. Widths are in pixels.  
 #'
-#' @param second_header A list of two elements of the same length. The first element will contain
+#' @param second_headers A list of two elements of the same length. The first element will contain
 #'   the column spans (i.e. a numeric atomic vector) whereas the second element will contain the
 #'   names (i.e. a character atomic vector). See the examples for more info. Defauls to NULL. 
 #'   
@@ -96,10 +99,10 @@
 #' tableHTML(mtcars)
 #' tableHTML(mtcars, rownames = FALSE)
 #' tableHTML(mtcars, class = 'table1')
-#' tableHTML(mtcars, second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+#' tableHTML(mtcars, second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 #' tableHTML(mtcars, 
 #'           widths = c(rep(50, 6), rep(100, 6)), 
-#'           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+#'           second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 #' tableHTML(mtcars, caption = 'This is a caption', footer = 'This is a footer')
 #' tableHTML(mtcars, 
 #'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')), 
@@ -109,12 +112,12 @@
 #'           rownames = FALSE, 
 #'           widths = c(140, rep(50, 11)),
 #'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-#'           second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
+#'           second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 #' tableHTML(mtcars, 
 #'           rownames = FALSE, 
 #'           widths = c(140, rep(50, 11)),
 #'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-#'           second_header = list(c(3, 4), c('col1', 'col2')), 
+#'           second_headers = list(c(3, 4), c('col1', 'col2')), 
 #'           theme = 'scientific')
 #' tableHTML(mtcars, theme = 'rshiny-blue', widths = c(140, rep(50, 11)))
 #' tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px')
@@ -123,9 +126,10 @@
 #' @export
 tableHTML <- function(obj, 
                       rownames = TRUE,
-                      class = paste0('table_', deparse(substitute(obj))),
+                      class = paste0('table_', sample(1000:9999, 1)),
                       widths = NULL,
-                      second_header = NULL,
+                      headers = NULL,
+                      second_headers = NULL,
                       row_groups = NULL,
                       caption = NULL,
                       footer = NULL,
@@ -138,26 +142,28 @@ tableHTML <- function(obj,
   #adding checks for obj
   if (is.matrix(obj)) {
    obj <- as.data.frame(obj)
-  } else if (!inherits(obj, 'data.frame')) {
+  } else if (inherits(obj, 'data.frame')) {
+   obj <- as.data.frame(obj)
+  } else {
    stop('obj needs to be either a data.frame or a matrix')  
   }
 
   #checks for second header
-  if (!is.null(second_header)) {
-   if (!is.list(second_header)) {
-    stop('second_header needs to be a list')
+  if (!is.null(second_headers)) {
+   if (!is.list(second_headers)) {
+    stop('second_headers needs to be a list')
    }
-   if (length(second_header) != 2L) {
-    stop('second_header needs to be a list of length two')
+   if (length(second_headers) != 2L) {
+    stop('second_headers needs to be a list of length two')
    }
-   if (!is.numeric(second_header[[1]])) {
-    stop("second_header\'s first element needs to be numeric")
+   if (!is.numeric(second_headers[[1]])) {
+    stop("second_headers\'s first element needs to be numeric")
    }
-   if (!is.character(second_header[[2]])) {
-    stop("second_header\'s second element needs to be character")
+   if (!is.character(second_headers[[2]])) {
+    stop("second_headers\'s second element needs to be character")
    }
-   if (length(second_header[[1]]) != length(second_header[[2]])) {
-    stop("second_header\'s  elements need to have the same length")
+   if (length(second_headers[[1]]) != length(second_headers[[2]])) {
+    stop("second_headers\'s  elements need to have the same length")
    }
   }
   
@@ -192,14 +198,41 @@ tableHTML <- function(obj,
     }
    }
   }
-   
+  
+  if (!is.null(headers)) {
+   if (length(headers) != length(names(obj))) {
+    stop('The length of the headers needs to be the same as number of columns of the data.frame')
+   }
+  } else {
+   headers <- names(obj)
+  }
+  
+  #escape character > and < in the data and headers because it will close or open tags
+  obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
+   x <- gsub('>', '&#62;', x)
+   x <- gsub('<', '&#60;', x)
+   x
+  })
+  headers <- gsub('>', '&#62;', force(headers))
+  headers <- gsub('<', '&#60;', force(headers))
+  
+  #make sure headers do not contain empty string 
+  headers[headers == ''] <- ' '
+  
+  #headers to be exported
+  headers_exported <- headers
+  
   #HEADERS---------------------------------------------------------------------------------------
+  
+  #adding new headers in case the user has provided those
+  names(obj) <- headers
+  
   #taking into account rownames
   if (rownames == TRUE) {
     headers <- paste('<tr>',
-                     '  <th id="header_1"> </th>', 
+                     '  <th id="tableHTML_header_1"> </th>', 
                      paste(vapply(seq_along(names(obj)) + 1, function(x) {
-                              paste0('  <th id="header_', x, '">', 
+                              paste0('  <th id="tableHTML_header_', x, '">', 
                                     names(obj)[x - 1], 
                                     '</th>')
                               },
@@ -210,7 +243,7 @@ tableHTML <- function(obj,
   } else {
     headers <- paste('<tr>', 
                      paste(vapply(seq_along(names(obj)), function(x) {
-                              paste0('  <th id="header_', x, '">', names(obj)[x], '</th>') 
+                              paste0('  <th id="tableHTML_header_', x, '">', names(obj)[x], '</th>') 
                               },
                               FUN.VALUE = character(1)),
                               collapse = '\n'),
@@ -220,8 +253,8 @@ tableHTML <- function(obj,
   
   #SECOND HEADERS--------------------------------------------------------------------------------
   #transformation of second headers if theme is scientific
-  if (theme == 'scientific' & !is.null(second_header)) {
-   indices <- which(!second_header[[2]] %in% '')
+  if (theme == 'scientific' & !is.null(second_headers)) {
+   indices <- which(!second_headers[[2]] %in% '')
    
    if (!is.null(rownames) & !is.null(row_groups)) {
     extra <- 2
@@ -233,27 +266,27 @@ tableHTML <- function(obj,
     extra <- 0
    }
    
-   sum_of_column_span <- sum(second_header[[1]])
+   sum_of_column_span <- sum(second_headers[[1]])
    
-   if (ncol(obj) > sum(second_header[[1]]) + extra) {
-    second_header[[1]] <- c(second_header[[1]], 
+   if (ncol(obj) > sum(second_headers[[1]]) + extra) {
+    second_headers[[1]] <- c(second_headers[[1]], 
                             rep(1, ncol(obj) - sum_of_column_span + extra))
-    second_header[[2]] <- c(second_header[[2]], 
+    second_headers[[2]] <- c(second_headers[[2]], 
                             rep('', ncol(obj) - sum_of_column_span + extra))
    }
   }
   
   #adding second headers if available
-  if (!is.null(second_header)) {
+  if (!is.null(second_headers)) {
     over_header <- 
       paste('<tr>', 
-            paste(vapply(seq_along(second_header[[1]]), function(x) {
+            paste(vapply(seq_along(second_headers[[1]]), function(x) {
                     paste0('  <th colspan=', 
-                           second_header[[1]][x], 
-                           ' id="overheader_',  
+                           second_headers[[1]][x], 
+                           ' id="tableHTML_second_header_',  
                            x,
                            '">',
-                    second_header[[2]][x],
+                    second_headers[[2]][x],
                     '</th>')
                     }, 
                    FUN.VALUE = character(1)),
@@ -266,13 +299,13 @@ tableHTML <- function(obj,
   
   #TABLE'S BODY----------------------------------------------------------------------------------
   #adding body
-  content <- lapply(names(obj), function(x) {
-    paste0('  <td id="', x, '">', obj[[x]], '</td>\n')
+  content <- lapply(seq_along(names(obj)), function(x) {
+    paste0('  <td id="tableHTML_column_', x, '">', obj[[x]], '</td>\n')
   })
   
   #adding rownames in the body
   if (rownames == TRUE) {
-    content <- c(list(paste0('  <td id="rownames">', 
+    content <- c(list(paste0('  <td id="tableHTML_rownames">', 
                              row.names(obj), 
                              '</td>\n')), 
                  content)
@@ -340,14 +373,14 @@ tableHTML <- function(obj,
   if (!is.null(row_groups)) {
    
    htmltable <-
-    sub('<tr>\n  <th id="header_1">',
-        '<tr>\n  <th id="header_0"></th>\n  <th id="header_1">',
+    sub('<tr>\n  <th id="tableHTML_header_1">',
+        '<tr>\n  <th id="tableHTML_header_0"></th>\n  <th id="tableHTML_header_1">',
         htmltable)
    
    rows <- Reduce('+', row_groups[[1]], accumulate = TRUE)
    rows <- c(1, rows[-length(rows)] + 1)
    
-   if (!is.null(second_header)) {
+   if (!is.null(second_headers)) {
     rows <- rows + 3
    } else {
     rows <- rows + 2
@@ -362,7 +395,7 @@ tableHTML <- function(obj,
    splits[[1]][rows] <- 
     mapply(function(x, y, z) {
      x <- sub('<tr>\n', 
-              paste0('<tr>\n  <td id="row_groups" rowspan="',
+              paste0('<tr>\n  <td id="tableHTML_row_groups" rowspan="',
                      z,
                      '">',
                      y,
@@ -380,9 +413,10 @@ tableHTML <- function(obj,
   }
   
   #ADDING CLASS AND RETURNING--------------------------------------------------------------------
-  #add class and then return htmltable
+  #add class and attribute and then return htmltable
   
   class(htmltable) <- c('tableHTML', class(htmltable))
+  attr(htmltable, 'headers') <- headers_exported
   
   #ADDING THEMES---------------------------------------------------------------------------------
   #Will use the add_css family
@@ -391,12 +425,12 @@ tableHTML <- function(obj,
   if (theme == 'scientific') {
    
    htmltable <- 
-    sub(paste0('<td id="row_groups" rowspan="',
+    sub(paste0('<td id="tableHTML_row_groups" rowspan="',
                row_groups[[1]][length(row_groups[[1]])],
                '">',
                row_groups[[2]][length(row_groups[[2]])],
                '</td>'),
-        paste0('<td id="row_groups"',
+        paste0('<td id="tableHTML_row_groups"',
                ' style="border-bottom:3px solid black;"',
 '              rowspan="',
                row_groups[[1]][length(row_groups[[1]])],
@@ -405,46 +439,46 @@ tableHTML <- function(obj,
                '</td>'),
         htmltable)
    
-   if (!is.null(second_header)) {
+   if (!is.null(second_headers)) {
     
     htmltable <- 
       htmltable %>%
        add_css_row(css = list('border-top', '3px solid black'), rows = 1) %>%
        add_css_row(css = list('border-bottom', '2px solid black'), rows = 2) %>%
        add_css_row(css = list('border-bottom', '3px solid black'), rows = nrow(obj) + 2) %>%
-       add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
+       add_css_column(css = list('text-align', 'center'), columns = names(obj)) %>%
        add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '3px'))) %>%
        add_css_second_header(css = list('border-bottom', '3px solid black'), 
                              second_headers = indices) %>%
        add_css_second_header(css = list('border-top', '3px solid black'), 
-                             second_headers =  1:length(second_header[[2]])) %>%
-       add_css_column(css = list('vertical-align', 'top'), column_names = 'row_groups')
+                             second_headers =  1:length(second_headers[[2]])) %>%
+       add_css_column(css = list('vertical-align', 'top'), columns = 'row_groups')
    } else {
     htmltable <- 
       htmltable %>%
       add_css_row(css = list('border-top', '3px solid black'), rows = 1) %>%
       add_css_row(css = list('border-bottom', '2px solid black'), rows = 1) %>%
       add_css_row(css = list('border-bottom', '3px solid black'), rows = nrow(obj) + 1) %>%
-      add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
+      add_css_column(css = list('text-align', 'center'), columns = names(obj)) %>%
       add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px'))) %>%
-      add_css_column(css = list('vertical-align', 'top'), column_names = 'row_groups')
+      add_css_column(css = list('vertical-align', 'top'), columns = 'row_groups')
      
    }
    
   } else if (theme == 'rshiny-blue') {
    
-   if (!is.null(second_header)) {
+   if (!is.null(second_headers)) {
     
     htmltable <- 
      htmltable %>%
      add_css_row(css = list('background-color', '#428bca'), rows = 1:2) %>%
      add_css_row(css = list('background-color', '#f2f2f2'), rows = odd(3:(nrow(obj) + 2))) %>%
-     add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
+     add_css_column(css = list('text-align', 'center'), columns = names(obj)) %>%
      add_css_column(css = list(c('vertical-align', 'background-color'), c('top', 'white')),
-                    column_names = 'row_groups') %>%
+                    columns = 'row_groups') %>%
      add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px'))) %>%
      add_css_second_header(css = list(c('font-size', 'height'), c('25px', '30px')), 
-                           second_headers = 1:length(second_header[[2]]))
+                           second_headers = 1:length(second_headers[[2]]))
        
    } else {
     
@@ -452,9 +486,9 @@ tableHTML <- function(obj,
      htmltable %>%
      add_css_row(css = list('background-color', '#428bca'), rows = 1) %>%
      add_css_row(css = list('background-color', '#f2f2f2'), rows = odd(2:(nrow(obj) + 1))) %>%
-     add_css_column(css = list('text-align', 'center'), column_names = names(obj)) %>%
+     add_css_column(css = list('text-align', 'center'), columns = names(obj)) %>%
      add_css_column(css = list(c('vertical-align', 'background-color'), c('top', 'white')),
-                    column_names = 'row_groups') %>%
+                    columns = 'row_groups') %>%
      add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px')))
     
    }

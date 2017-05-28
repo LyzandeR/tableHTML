@@ -44,6 +44,8 @@ replace_html <- function(tableHTML,
  #checks
  if (!inherits(tableHTML, 'tableHTML')) stop('tableHTML needs to be a tableHTML object')
  
+ attributes <- attributes(tableHTML)
+ 
  #check the dots
  args <- list(...)
  
@@ -66,6 +68,8 @@ replace_html <- function(tableHTML,
  }
  
  class(tableHTML) <- classes
+ 
+ attributes(tableHTML) <- attributes
  
  tableHTML
  

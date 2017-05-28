@@ -25,19 +25,17 @@ write_tableHTML <- function(tableHTML, file, complete_html = FALSE) {
  #checks
  if (!inherits(tableHTML, 'tableHTML')) stop('tableHTML needs to be a tableHTML object')
  
- tabHTML <- tableHTML
- 
  #create style
  if (complete_html) {
   
-  tabHTML <- htmltools::HTML(paste('<!DOCTYPE html>\n<html>\n<body>',
-                                   tabHTML,
-                                   '</body>\n</html>',
-                                   sep = '\n'))
+  tableHTML <- htmltools::HTML(paste('<!DOCTYPE html>\n<html>\n<body>',
+                                     tableHTML,
+                                     '</body>\n</html>',
+                                     sep = '\n'))
   
  }
  
- cat(tabHTML, file = file)
+ cat(tableHTML, file = file)
  
  invisible(NULL)
  
