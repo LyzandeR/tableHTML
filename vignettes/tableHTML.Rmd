@@ -38,14 +38,14 @@ tableHTML(mtcars, rownames = FALSE)
 ### Adding a table class
 
 The class argument sets the class name for the table. The default will be of the form 
-table\_dataframeName. For example, for mtcars the HTML table's class would be table\_mtcars.
-This makes it easier to add css to it in case there are multiple tables.
+table\_xxx (random 4-digit number). This makes it easier to add css to it in case there 
+are multiple tables.
 
 ```{r, eval = FALSE}
 mytable <- tableHTML(mtcars)
 str(mytable)
 # Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
-# <table class=table_mtcars border=1 style="border-collapse: collapse;">
+# <table class=table_1901 border=1 style="border-collapse: collapse;">
 # <tr>
 #   <th id=header_1> </th>
 #   <th id=header_2>mpg</th>
@@ -278,10 +278,11 @@ The function has three arguments:
           be an atomic vector with the style definitions (e.g. background-color). The second element
           will be an atomic vector with the same length as the first element, which will contain the
           style definitions' values (e.g. red).
-3. *column_names*: A character atomic vector with the names of the columns where the style
-                   definitions will be applied on. At least one column name must be provided. 
-                   If the rownames are included the column name is implied to be "rownames". If
-                   row groups are included the column name is implied to be "row_groups" headers.
+3. *columns*: A character/numeric atomic vector with the names/indices of the columns where the style
+              definitions will be applied on. At least one column name/index must be provided. 
+              If the rownames are included the column name is implied to be "rownames" and the 
+              index 0. If row groups are included the column name is implied to be "row_groups" 
+              and the index -1.
 
 For example:
 
@@ -313,12 +314,12 @@ For example:
 ```{r, eval = FALSE}
 mytable <- tableHTML(mtcars)
 print(mytable, viewer = FALSE)
-<table class=table_mtcars border=1 style="border-collapse: collapse;">
+<table style="border-collapse:collapse;" class=table_2079 border=1>
+<thead>
 <tr>
-  <th id=header_1> </th>
-  <th id=header_2>mpg</th>
-  <th id=header_3>cyl</th>
-</tr> 
+  <th id="tableHTML_header_1"> </th>
+  <th id="tableHTML_header_2">mpg</th>
+  <th id="tableHTML_header_3">cyl</th>
 truncated...
 ```
 
@@ -547,8 +548,7 @@ do this in shiny below.
 Now that we know about how to use the function's arguments let's see how we can use tableHTML with 
 shiny. The implementation is really simple since internally tableHTML uses `htmltools::HTML` to 
 convert the table into an HTML object. Simply using `render_tableHTML` and `tableHTML_output` 
-will be enough. In reality these functions are just `renderUI` and `uiOutput` which can also be used
-instead, since tableHTML creates HTML code.
+will be enough. 
 
 Let's see an example
 

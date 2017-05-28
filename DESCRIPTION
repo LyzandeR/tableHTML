@@ -1,7 +1,7 @@
 Package: tableHTML
 Type: Package
 Title: A Tool to Create HTML Tables
-Version: 0.2.12
+Version: 1.0.1
 Authors@R: person("Theo", 
                   "Boutaris", 
                   email = "teoboot2007@hotmail.com", 
@@ -12,7 +12,8 @@ Depends: R (>= 3.2.0)
 Imports: htmltools,
          magrittr,
          shiny
-Description: A tool to easily create and style HTML tables, which are compatible with shiny.
+Description: tableHTML can be used to create and style HTML tables with CSS. HTML tables can be exported and used in any application that accepts HTML.
+             It is compatible with shiny and rmarkdown. It also provides functions to create CSS files and add those to shiny. 
 License: MIT + file LICENSE
 LazyData: TRUE
 RoxygenNote: 5.0.1
