@@ -47,9 +47,9 @@ str(mytable)
 # Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
 # <table class=table_1901 border=1 style="border-collapse: collapse;">
 # <tr>
-#   <th id=tableHTML_header_1> </th>
-#   <th id=tableHTML_header_2>mpg</th>
-#   <th id=tableHTML_header_3>cyl</th>
+#   <th id="tableHTML_header_1"> </th>
+#   <th id="tableHTML_header_2">mpg</th>
+#   <th id="tableHTML_header_3">cyl</th>
 # truncated...
 ```
 
@@ -61,9 +61,9 @@ str(mytable)
 # Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
 # <table class=myClass border=1 style="border-collapse: collapse;">
 # <tr>
-#   <th id=tableHTML_header_1> </th>
-#   <th id=tableHTML_header_2>mpg</th>
-#   <th id=tableHTML_header_3>cyl</th>
+#   <th id="tableHTML_header_1"> </th>
+#   <th id="tableHTML_header_2">mpg</th>
+#   <th id="tableHTML_header_3">cyl</th>
 # truncated...
 ```
 
