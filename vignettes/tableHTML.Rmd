@@ -656,7 +656,7 @@ In order to add a vertical column line we can use the column ids created by tabl
 vertical red line at mpg column, our css file would look like this:
 
 ```{CSS}
-#mpg {
+#tableHTML_column_1 {
 	border-left: 5px solid red;
 }
 ``` 
@@ -669,11 +669,11 @@ In order to change the background color of one of the headers (e.g. the second) 
 CSS would look like this:
 
 ```{CSS 2}
-#mpg{
+#tableHTML_column_1 {
 	border-left: 5px solid red;
 }
 
-#header_2 {
+#tableHTML_header_2 {
 	background-color: green;
 }
 ``` 
@@ -684,15 +684,15 @@ CSS would look like this:
 And in order to align the first of the second_headers in the center our css would look like:
 
 ```{CSS 3}
-#mpg{
+#tableHTML_column_1 {
 	border-left: 5px solid red;
 }
 
-#header_2 {
+#tableHTML_header_2 {
 	background-color: green;
 }
 
-#overheader_1 {
+#tableHTML_second_header_1 {
 	text-align: center;
 }
 ``` 
