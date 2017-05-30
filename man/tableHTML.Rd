@@ -82,16 +82,16 @@ the details section.
 In particular:
 \itemize{
   \item \strong{Table:} Will get the class from the class argument in the function. 
-      The final class will be of the form table_<class_name>.
-  \item \strong{Columns:} Will get an id which will be the same as the column name. If rownames
-      exist these will get the rownames id. If row groups exist these will get the row_groups id.
-      Check the \code{add_css_column} function for examples.
-  \item \strong{Headers:} Will get an id of the form header_<header index>. 
-      For example the first header will have the id header_1, the second header 
-      will have header_2 and so on.
-  \item \strong{Second_Header:} Will get an id of the form overheader_<second header index>.  
-      For example the first second_header will have the id overheader_1, the second header  
-      will have overheader_2 and so on.
+  \item \strong{Columns:} Will get an id which will be of the form tableHTML_column_x (where x 
+      is the column position). If rownames exist these will get the tableHTML_rownames id. If 
+      row groups exist these will get the tableHTML_row_groups id. Check the \code{add_css_column} 
+      function for examples.
+  \item \strong{Headers:} Will get an id of the form tableHTML_header_x (where x is the header position). 
+      For example the first header will have the id tableHTML_header_1, the second header 
+      will have tableHTLM_header_2 and so on. If rownames exist these will get the tableHTML_header_0 id.
+  \item \strong{Second_Header:} Will get an id of the form tableHTML_second_header_x (where x is the 
+      second header position). For example the first second_header will have the id tableHTML_second_header_1, 
+      the second header will have tableHTML_second_header_2 and so on.
 }
 
 Notice that rows do not get a specific id or class.
