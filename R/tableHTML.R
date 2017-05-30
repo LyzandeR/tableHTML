@@ -17,7 +17,7 @@
 #'       function for examples.
 #'   \item \strong{Headers:} Will get an id of the form tableHTML_header_x (where x is the header position). 
 #'       For example the first header will have the id tableHTML_header_1, the second header 
-#'       will have tableHTLM_header_2 and so on. 
+#'       will have tableHTLM_header_2 and so on. If rownames exist these will get the tableHTML_header_0 id.
 #'   \item \strong{Second_Header:} Will get an id of the form tableHTML_second_header_x (where x is the 
 #'       second header position). For example the first second_header will have the id tableHTML_second_header_1, 
 #'       the second header will have tableHTML_second_header_2 and so on.
