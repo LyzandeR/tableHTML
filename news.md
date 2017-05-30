@@ -1,3 +1,13 @@
+# tableHTML 1.0.1
+
+* Fixed a bug where characters < or > in the data would open / close tags and would cause problem with the rendering of the table.
+* Argument column_names in `add_css_column` has been deprecated. Use `columns` instead.
+* Argument columns in `add_css_column` `add_css_column` now can accept both column names and indices.
+* Changed the way ids are created for table (table_xxxx), column (tableHTML_column_x), header (tableHTML_header_x)
+* Added argument `headers` in `tableHTML()` to allow the user input alternative headers.
+* Fixed other small bugs.
+* Small code optimisations.
+
 # tableHTML 0.2.11
 
 * Added `make_css` function. This function makes it easy to generate a css file. In shiny it can be used either to create a a file or directly in the ui.R file. You can see the `make_css` vignette for a detailed explanation.
