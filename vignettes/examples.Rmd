@@ -158,7 +158,7 @@ tableHTML(mtcars,
           border = 5,
           rownames = TRUE, 
           widths = c(140, rep(50, 11)),
-          second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
+          second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
  add_css_thead(css = list('background-color', 'lightgray')) %>%
  add_css_tbody(css = list('background-color', 'lightblue')) 
 ```
@@ -169,7 +169,7 @@ tableHTML(mtcars,
 tableHTML(mtcars, 
           rownames = TRUE, 
           widths = c(140, rep(50, 11)),
-          second_header = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
+          second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
  add_css_table(css = list('background-color', 'lightgray')) %>%
  add_css_tbody(css = list('background-color', 'lightblue')) %>%
  add_css_row(css = list('background-color', 'red'), row = 5) %>%
@@ -184,7 +184,7 @@ tableHTML(mtcars,
           rownames = TRUE, 
           collapse = 'collapse',
           widths = c(140, rep(50, 11)), 
-          second_header = list(c(3, 4, 5), c('col1', '', 'col3'))) %>%
+          second_headers = list(c(3, 4, 5), c('col1', '', 'col3'))) %>%
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
  add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
  add_css_thead(css = list('background-color', 'lightblue'))
@@ -198,7 +198,7 @@ tableHTML(mtcars,
           rownames = TRUE, 
           collapse = 'collapse',
           widths = c(140, rep(50, 11)), 
-          second_header = list(c(3, 4), c('col1', 'col2'))) %>%
+          second_headers = list(c(3, 4), c('col1', 'col2'))) %>%
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
  add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
  add_css_thead(css = list('background-color', 'lightblue'))
