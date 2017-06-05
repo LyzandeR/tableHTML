@@ -6,7 +6,7 @@ Authors@R: person("Theo",
                   "Boutaris", 
                   email = "teoboot2007@hotmail.com", 
                   role = c("aut", "cre", "cph"))
-URL: https://lyzander.github.io/tableHTML                  
+URL: https://github.com/LyzandeR/tableHTML                  
 BugReports: https://github.com/LyzandeR/tableHTML/issues
 Depends: R (>= 3.2.0)
 Imports: htmltools,
