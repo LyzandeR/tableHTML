@@ -1,9 +1,6 @@
 ## Resubmission 
 
-Added quotes to software names on the Description file as per Uwe's email:
-
-please single quote all the software names in the Description 
-field.,e.g. 'shiny', ...
+Vignette links in readme now use the canonical form.
 
 ## Submiting new version 1.0.1 for tableHTML 
 
