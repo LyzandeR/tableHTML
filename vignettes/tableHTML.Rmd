@@ -653,7 +653,7 @@ function(input, output) {
 
 Note: You can find out more about CSS and shiny [here](http://shiny.rstudio.com/articles/css.html).
 
-You can also check the [make_css](https://cran.r-project.org/web/packages/tableHTML/vignettes/make_css.html) 
+You can also check the [make_css](https://cran.r-project.org/package=tableHTML/vignettes/make_css.html) 
 function of the package which helps you create a css file and use that within shiny.
 
 In order to add a vertical column line we can use the column ids created by tableHTML. To add a 
