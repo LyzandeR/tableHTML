@@ -110,7 +110,7 @@ shinyApp(
 
 The second way is the standard way i.e. creating a file with all the css and then loading it in 
 shiny using `includeCSS` in the way it was described in the 
-[tableHTML tutorial](https://cran.r-project.org/package=tableHTML/vignettes/tableHTML.html). As a fast example we 
+[tableHTML tutorial](https://cran.r-project.org/package=tableHTML/vignettes/tableHTML.html#shiny-and-CSS). As a fast example we 
 create a css file using `make_css`:
 
 ```{r shiny css 2, eval = FALSE}
