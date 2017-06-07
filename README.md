@@ -43,7 +43,7 @@ you can see a first example of an HTML table!
 
 To find out about all the functions and how to use the package with shiny you can visit the [online tutorial](https://cran.r-project.org/package=tableHTML/vignettes/tableHTML.html).
 
-To see a gallery of examples you can visit the [examples page](https://cran.r-project.org/package=tableHTML/vignettes/examples.html).
+To see a gallery of examples you can visit the [examples page](https://cran.r-project.org/web/packages/tableHTML/vignettes/examples.html).
 
 For a tutorial on how to build a css file and how to use that in shiny (in a fast way) you can visit the [make_css and shiny](https://cran.r-project.org/package=tableHTML/vignettes/make_css.html) link. 
 
