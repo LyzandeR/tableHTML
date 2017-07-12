@@ -82,7 +82,12 @@
 #'   
 #' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices 
 #'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme. 
-#'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.   
+#'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.  
+#'   
+#' @param escape  Can be TRUE or FALSE. Defaults to TRUE. Escapes characters < and > because they
+#'   can close (or open) the table's HTML tags if they exist within the data.frame's text. This 
+#'   means that all < and > characters within the tableHTML will be converted to &#60 and &#62
+#'   respectively.
 #'   
 #' @param x A tableHTML object created from the \code{tableHTML} function.   
 #' 
@@ -136,7 +141,8 @@ tableHTML <- function(obj,
                       border = 1,
                       collapse = c('collapse', 'separate', 'separate_shiny'),
                       spacing = '2px',
-                      theme = c('default', 'scientific', 'rshiny-blue')) {
+                      theme = c('default', 'scientific', 'rshiny-blue'),
+                      escape = TRUE) {
      
   #CHECKS----------------------------------------------------------------------------------------
   #adding checks for obj
@@ -208,13 +214,15 @@ tableHTML <- function(obj,
   }
   
   #escape character > and < in the data and headers because it will close or open tags
-  obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
-   x <- gsub('>', '&#62;', x)
-   x <- gsub('<', '&#60;', x)
-   x
-  })
-  headers <- gsub('>', '&#62;', force(headers))
-  headers <- gsub('<', '&#60;', force(headers))
+  if (escape) {
+   obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
+    x <- gsub('>', '&#62;', x)
+    x <- gsub('<', '&#60;', x)
+    x
+   })
+   headers <- gsub('>', '&#62;', force(headers))
+   headers <- gsub('<', '&#60;', force(headers))
+  }
   
   #make sure headers do not contain empty string 
   headers[headers == ''] <- ' '
