@@ -37,4 +37,3 @@ tableHTML(mtcars) \%>\%
   
 
 }
-

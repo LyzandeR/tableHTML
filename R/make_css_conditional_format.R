@@ -1,8 +1,8 @@
-#' Get css properties for conditional formatting
+#' Get css properties for custom colour rank theme
 #'
-#' \code{make_css_conditional_format} will create a list of css properties needed for custom conditional formatting.
+#' \code{make_css_colour_rank_theme} will create a list of css properties needed for custom conditional formatting.
 #' 
-#' \code{make_css_conditional_format} will add conditional css to a tableHTML's columns. \code{add_conditional_css_column} will only
+#' \code{make_css_colour_rank_theme} will add conditional css to a tableHTML's columns. \code{add_conditional_css_column} will only
 #'   add css to the columns without the headers or second headers (i.e. it only affects the td tag
 #'   internally and not the th tag). If you want to add css to the headers or second headers please
 #'   use \code{add_css_header} or \code{add_css_second_header}. 
@@ -13,7 +13,7 @@
 #'   
 #' @inheritParams grDevices::colorRampPalette
 #' @inheritParams base::order
-#' @inheritParams add_css_condtional_column
+#' @inheritParams add_css_conditional_column
 #'
 #' @return A list of css properties 
 #'         
@@ -21,14 +21,15 @@
 #' 
 #' tableHTML <- tableHTML(mtcars)
 #' 
-#' css <- make_css_conditional_format(mtcars$mpg, c("orange", "yellow","springgreen","royalblue"))
+#' css <- make_css_colour_rank_theme(mtcars$mpg, c("orange", "yellow","springgreen","royalblue"))
 #' 
-#' tableHTML %>% add_css_conditional_column(conditional_theme = "Custom", css = css, column = 1)
+#' tableHTML %>% add_css_conditional_column(conditional = "colour_rank",
+#'                                         colour_rank_theme = "Custom", css = css, column = 1)
 #' 
 #' @export
 
-make_css_conditional_format<- function(column_data,
-                                       colors,
+make_css_colour_rank_theme <- function(column_data,
+                                       colour_rank_theme_colours,
                                        decreasing = FALSE, 
                                        same_scale = TRUE) {
   
@@ -41,9 +42,8 @@ make_css_conditional_format<- function(column_data,
   
   css <- lapply(column_data, function(cd) {
     
-    
     css_colours <- character(length(cd))
-    colour_palette <- colorRampPalette(colors)
+    colour_palette <- colorRampPalette(colour_rank_theme_colours)
     
     col_df <- data.frame(value = unique(cols_context(cd))[order(unique(cols_context(cd)), decreasing = decreasing)],
                          colour = colour_palette(length(unique(cols_context(cd)))),
@@ -60,7 +60,7 @@ make_css_conditional_format<- function(column_data,
     
     
   })
-  
+
   names(css) <- col_names
   
   return(css)

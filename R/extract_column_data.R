@@ -63,7 +63,7 @@ extract_column_data <- function(tableHTML, indices, levels) {
             
           }
         }))
-      
+
       data_col <- convert_type(data_col, type = col_classes[i], levels = levels)
       
       data_cols <- append(data_cols, list(data_col))
