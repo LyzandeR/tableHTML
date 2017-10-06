@@ -24,27 +24,27 @@ test_that("columns and ids are ok", {
 test_that("widths are ok", {
  #number of widths is ok
  expect_identical(
-  length(gregexpr('<col width="100">', tableHTML(mtcars, widths = rep(100, 12)))[[1]]), 
+  length(gregexpr('<col width="100">', tableHTML(mtcars, widths = rep(100, 12)))[[1]]),
   ncol(mtcars) + 1L
  )
 })
- 
+
 test_that("headers are ok", {
  #number of headers is ok
  expect_identical(length(gregexpr('<th id="tableHTML_header_', tableHTML(mtcars))[[1]]), ncol(mtcars) + 1L)
- expect_true(grepl('<th id="tableHTML_header_8"', tableHTML(mtcars))) 
+ expect_true(grepl('<th id="tableHTML_header_8"', tableHTML(mtcars)))
 })
- 
+
 test_that("second headers are ok", {
  #number of second headers is ok
  expect_identical(
-  length(gregexpr('id="tableHTML_second_header_', 
-                  tableHTML(mtcars, 
-                            second_headers = list(c(3, 4, 5), 
+  length(gregexpr('id="tableHTML_second_header_',
+                  tableHTML(mtcars,
+                            second_headers = list(c(3, 4, 5),
                                                  c('col1', 'col2', 'col3'))))[[1]]), 3L
  )
- expect_true(grepl('id="tableHTML_second_header_1"', 
-                   tableHTML(mtcars, second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))))) 
+ expect_true(grepl('id="tableHTML_second_header_1"',
+                   tableHTML(mtcars, second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))))
 })
 
 
@@ -57,17 +57,27 @@ test_that("argument headers has the right length", {
 })
 
 test_that("output has attribute", {
- 
+
  expect_identical(
   attr(tableHTML(mtcars, headers = letters[1:11]), 'headers'), letters[1:11]
  )
- 
+
 })
 
 test_that("characters < and > get escaped correctly", {
- 
+
  df <- data.frame(a = factor(c('ldskjf', ';sldfkj</%>;lkdjhf', 'http://www.acb.com/test.php')))
- expect_true(grepl('<td id="tableHTML_column_1">;sldfkj&#60;/%&#62;;lkdjhf</td>', 
-                   tableHTML(df))) 
+ expect_true(grepl('<td id="tableHTML_column_1">;sldfkj&#60;/%&#62;;lkdjhf</td>',
+                   tableHTML(df)))
+
+})
+
+test_that("attributes exist", {
+
+ htmltable <- tableHTML(mtcars)
+ expect_identical(attr(htmltable, 'headers'), names(mtcars))
+ expect_identical(attr(htmltable, 'nrows'), 32L)
+ expect_identical(attr(htmltable, 'ncols'), 11L)
+ expect_identical(attr(htmltable, 'col_classes'), rep('numeric', 11))
 
 })
