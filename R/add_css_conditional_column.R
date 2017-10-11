@@ -11,14 +11,15 @@
 #' @param conditional Choose a conditional that should be used to apply css to rows in columns. '==' and '!=' evaluate equality
 #' and inequality resp. '<', '<=', '>', and '>=' evaluate the respective operators with the values of 
 #' columns on the left. 'between' is SQL like, i.e. inclusive. 'top_n' highlights the n highest values columns, 'bottom_n' 
-#' hightlights the lowest n values. 'max' and 'min' are equivalent of top_1 and bottom_1. 'colour-rank' applies 
+#' hightlights the lowest n values. 'max' and 'min' are equivalent of top_1 and bottom_1. 'contains' uses \code{grepl()} to see 
+#' if values of a column contain a pattern specified in \code{value}. 'colour-rank' applies 
 #' one of the \code{colour_rank_theme}s. 
 #'
 #' @param n the number of rows to highlight in 'top_n' and 'bottom_n'. If no value for n is provided, 1 is assumed
 #' with a warning.
 #' 
-#' @param value the comparison value for "==", "!=", ">", ">=", "<", and "<=". value is the right hand side of
-#' the equation.
+#' @param value the comparison value for "==", "!=", ">", ">=", "<", "<=", and "contains". value is the right hand side of
+#' the equation or the pattern in case of "contains".
 #' 
 #' @param between a numeric vector of length 2 that defines a range, where \code{between[1]} is the lower bound 
 #' and \code{between[2]} is the upper bound of the range. between is inclusive. 
@@ -54,22 +55,37 @@
 #' @examples
 #' 
 #' 
+#' qu_25_75 <- quantile(mtcars$disp, c(0.25, 0.75))
+#' 
+#' tableHTML(mtcars) %>%
+#'   add_css_conditional_column(conditional = "<", value = qu_25_75[1], css = list('background-color', "green"), columns = c("disp")) %>%
+#'   add_css_conditional_column(conditional = "between", between = qu_25_75, css = list('background-color', "orange"), columns = c("disp")) %>%
+#'   add_css_conditional_column(conditional = ">", value = qu_25_75[2], css = list('background-color', "red"), columns = c("disp"))
+#' 
+#' tableHTML(mtcars, theme = "rshiny-blue") %>%
+#'   add_css_header(css = list(c("background-color", "color"), c("darkgray", "white")), headers = 1:12) %>%
+#'   add_css_conditional_column(conditional = "min", css = list('background-color', "#99CCA0"), columns = c("wt")) %>%
+#'   add_css_conditional_column(conditional = "max", value = qu_25_75[1], css = list('background-color', "#EA9393"), columns = c("disp")) %>%
+#'   add_css_conditional_column(conditional = "contains", value = "Toyota", css = list(c('background-color', "color"), c("lightgrey", "darkred")), columns = c("rownames"))  %>%
+#'   add_css_conditional_column(conditional = "contains", value = "Mazda", css = list(c('background-color', "color"), c("steelblue", "lightgray")), columns = c("rownames")) %>%
+#'   add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "White-Blue", columns = 11)
+#' 
 #' tableHTML(mtcars, theme = "scientific") %>% 
 #'  add_css_conditional_column(conditional = "colour_rank", colour_rank_theme =  "RAG",
 #'   columns = 1) %>%
 #'  add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "Rainbow", columns = 5, decreasing = TRUE)
 #'  
 #' css <- make_css_colour_rank_theme(list(qsec = mtcars$qsec),
-#'                                    colours = RColorBrewer::brewer.pal(9, "Set1"))
-#' tableHTML (mtcars) %>%
+#'                                    colors = RColorBrewer::brewer.pal(9, "Set1"))
+#' tableHTML(mtcars) %>%
 #'   add_css_conditional_column(conditional = "colour_rank", 
 #'   colour_rank_theme =  "Custom", 
-#'                                css = css, 
+#'                                colour_rank_css = css, 
 #'                                columns = 7, 
 #'                                decreasing = FALSE,
 #'                                same_scale = FALSE)
 #'   
-#' tableHTML %>%
+#' tableHTML(mtcars) %>%
 #'   add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "RAG",
 #'                                columns = c(1, 5)) %>%
 #'   add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "White-Blue",
@@ -82,24 +98,41 @@
 #' @export
 
 add_css_conditional_column <- function(tableHTML,
+                                       columns,
                                        conditional = c("colour_rank", "==", "!=", "min", "max", "top_n", "bottom_n", ">", ">=",
-                                                       "<", "<=", "between"),
+                                                       "<", "<=", "between", "contains"),
                                        n = NULL,
                                        value = NULL,
                                        between = NULL,
                                        css = NULL,
                                        colour_rank_theme = c("Custom", "RAG", "Spectral", "Rainbow",
                                                              "White-Green", "White-Red", "White-Blue"),
-                                       columns,
                                        colour_rank_css = NULL,
                                        decreasing = FALSE, 
                                        same_scale = TRUE,
                                        levels = NULL) {
-  
+  #browser()
   #checks
   if (!inherits(tableHTML, 'tableHTML')) stop('tableHTML needs to be a tableHTML object')
+
+  if (!suppressWarnings(sum(is.na(as.numeric(columns)))) %in% c(0, length(columns))) {
+    stop("columns must either be numeric or text, but not both")
+  }
+  
   #persist attributes
   attributes <- attributes(tableHTML)
+  
+  if (c("row_groups") %in% columns) {
+    if (!attributes$row_groups) {
+      stop('tableHTML does not have row_groups')
+    }
+  }
+  
+  if (c("rownames") %in% columns) {
+    if (!attributes$rownames) {
+      stop('tableHTML does not have rownames')
+    }
+  }
   
   conditional <- match.arg(conditional)
   
@@ -119,7 +152,7 @@ add_css_conditional_column <- function(tableHTML,
     }
   }
   
-  if (conditional %in% c("==", "!=", ">", ">=", "<", "<=")) {
+  if (conditional %in% c("==", "!=", ">", ">=", "<", "<=", "contains")) {
     if (is.null(value)) {
       stop('comparison value needed for comparison')
     }
@@ -131,6 +164,9 @@ add_css_conditional_column <- function(tableHTML,
     }
     if (suppressWarnings(any(is.na(as.numeric(between))))) {
       stop('begin and end values of begin must be numeric')
+    }
+    if (class(between) != "numeric" | length(between) != 2) {
+      stop('between needs to be a vector with 2 elements')
     }
     if (between[1] >= between[2]) {
       stop('begin must be smaller than end in between')
@@ -155,7 +191,7 @@ add_css_conditional_column <- function(tableHTML,
     }
     if (is.null(names(colour_rank_css))) {
       stop('colour_rank_css must be a named list')
-    } 
+    }
     if (min(names(colour_rank_css) %in% c(attributes$headers, "rownames", "row_groups")) < 1 ) {
       stop('names of colour_rank_css do not correspond to tableHTML columns')
     }
@@ -183,7 +219,7 @@ add_css_conditional_column <- function(tableHTML,
     }
     indices <- sort(indices)
   }
- 
+  
   all_names <- c(c('row_groups', 'rownames'),
                  attributes$headers)[which(c(-1, 0, 1:attributes$ncols) %in% indices)]
   

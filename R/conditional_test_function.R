@@ -26,6 +26,7 @@ conditional_test_function <- function(column_data,
            "<" = cd < arguments$comparison_value,
            "<=" = cd <= arguments$comparison_value,
            ">" = cd > arguments$comparison_value,
+           contains = grepl(arguments$comparison_value, cd),
            min = cd == min(cols_context(cd)),
            max = cd == max(cols_context(cd))
            )

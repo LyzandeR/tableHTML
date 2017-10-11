@@ -4,12 +4,15 @@
 \alias{make_css_colour_rank_theme}
 \title{Get css properties for custom colour rank theme}
 \usage{
-make_css_colour_rank_theme(column_data, colour_rank_theme_colours,
-  decreasing = FALSE, same_scale = TRUE)
+make_css_colour_rank_theme(column_data, colors, decreasing = FALSE,
+  same_scale = TRUE)
 }
 \arguments{
 \item{column_data}{A named list of vectors of values that are in a tableHTML column which
 should be mapped to a colour palette.}
+
+\item{colors}{colors to interpolate; must be a valid argument to
+    \code{\link{col2rgb}()}.}
 
 \item{decreasing}{logical.  Should the sort order be increasing or
     decreasing? For the \code{"radix"} method, this can be a vector of
@@ -36,9 +39,9 @@ A list of css properties
 
 tableHTML <- tableHTML(mtcars)
 
-css <- make_css_colour_rank_theme(mtcars$mpg, c("orange", "yellow","springgreen","royalblue"))
+css <- make_css_colour_rank_theme(list(mpg = mtcars$mpg), c("orange", "yellow","springgreen","royalblue"))
 
 tableHTML \%>\% add_css_conditional_column(conditional = "colour_rank",
-                                        colour_rank_theme = "Custom", css = css, column = 1)
+                                        colour_rank_theme = "Custom", colour_rank_css = css, column = 1)
 
 }

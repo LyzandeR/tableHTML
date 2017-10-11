@@ -419,6 +419,9 @@ tableHTML <- function(obj,
   attr(htmltable, 'nrows') <- nrow(obj)
   attr(htmltable, 'ncols') <- ncol(obj)
   attr(htmltable, 'col_classes') <- unname(sapply(obj, function(x) class(x)))
+  attr(htmltable, 'rownames') <- rownames
+  attr(htmltable, 'row_groups') <- ifelse(is.null(row_groups), FALSE, TRUE)
+  attr(htmltable, 'second_headers') <- ifelse(is.null(second_headers), FALSE, TRUE)
 
   #ADDING THEMES---------------------------------------------------------------------------------
   #Will use the add_css family

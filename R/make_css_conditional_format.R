@@ -21,17 +21,28 @@
 #' 
 #' tableHTML <- tableHTML(mtcars)
 #' 
-#' css <- make_css_colour_rank_theme(mtcars$mpg, c("orange", "yellow","springgreen","royalblue"))
+#' css <- make_css_colour_rank_theme(list(mpg = mtcars$mpg), c("orange", "yellow","springgreen","royalblue"))
 #' 
 #' tableHTML %>% add_css_conditional_column(conditional = "colour_rank",
-#'                                         colour_rank_theme = "Custom", css = css, column = 1)
+#'                                         colour_rank_theme = "Custom", colour_rank_css = css, column = 1)
 #' 
 #' @export
 
 make_css_colour_rank_theme <- function(column_data,
-                                       colour_rank_theme_colours,
+                                       colors,
                                        decreasing = FALSE, 
                                        same_scale = TRUE) {
+  
+  #checks
+  if (class(column_data) != 'list' | is.null(names(column_data))) {
+    stop('column_data must be a named list')
+  }
+  
+  check <- tryCatch(col2rgb(colors),
+    error = function(e) {
+      stop('colors argument not valid. see ?col2rgb for more details')
+    }
+  )
   
   col_names <- names(column_data)
 
@@ -43,7 +54,7 @@ make_css_colour_rank_theme <- function(column_data,
   css <- lapply(column_data, function(cd) {
     
     css_colours <- character(length(cd))
-    colour_palette <- colorRampPalette(colour_rank_theme_colours)
+    colour_palette <- colorRampPalette(colors)
     
     col_df <- data.frame(value = unique(cols_context(cd))[order(unique(cols_context(cd)), decreasing = decreasing)],
                          colour = colour_palette(length(unique(cols_context(cd)))),
