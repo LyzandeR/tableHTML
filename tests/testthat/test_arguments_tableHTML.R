@@ -91,3 +91,15 @@ test_that("attributes exist", {
  expect_identical(attr(htmltable, 'second_headers'), FALSE)
 
 })
+
+test_that("Escapes work fine", {
+
+ df <- data.frame(a = c('ldsfkj>hfdasdf'))
+ df2 <- data.frame(a = c('ldsfkj<hfd<asdf'))
+ expect_true(grepl('&#62', tableHTML(df)))
+ expect_true(grepl('&#60', tableHTML(df2)))
+ expect_true(grepl('<', tableHTML(df, escape = FALSE)))
+ expect_true(grepl('>', tableHTML(df, escape = FALSE)))
+
+})
+

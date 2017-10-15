@@ -23,8 +23,15 @@ CSS in order to allow for full flexibility although two themes are included.
 
 In order to see the most basic example with tableHTML you could type:
 
-```{r basic}
+```{r, echo=FALSE, message=FALSE}
+devtools::load_all()
+```
+
+```{r, eval=FALSE}
 library(tableHTML)
+```
+
+```{r basic}
 tableHTML(mtcars)
 ```
 
@@ -182,6 +189,21 @@ tableHTML(mtcars, collapse = 'separate_shiny', spacing = '2px')
 ```{r spacing 2}
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px')
 ```
+
+### Escaping
+
+By default `tableHTML` will escape `<` and `>` because they open or close the table's tags if 
+they are part of the text of the data.frame, which results into missing text. For example if we
+do not escape the below data.frame:
+
+```{r escaping} 
+df <- data.frame(a = c('ldsfkj<hfdasdf'))
+tableHTML(df, escape = FALSE)
+```
+
+In order to fix this, the argument `escape` is set to `TRUE` by default. `<` and `>` will be replaced
+with `&#62` and `&#60`. However, if you would like to include clickable links in your HTML table you 
+should **not** escape by setting `escape = FALSE`.
 
 ### Specifying a theme
 

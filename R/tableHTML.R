@@ -230,15 +230,6 @@ tableHTML <- function(obj,
   }
 
   #make sure headers do not contain empty string
-  obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
-   x <- gsub('>', '&#62;', x)
-   x <- gsub('<', '&#60;', x)
-   x
-  })
-  headers <- gsub('>', '&#62;', force(headers))
-  headers <- gsub('<', '&#60;', force(headers))
-
-  #make sure headers do not contain empty string
   headers[headers == ''] <- ' '
 
   #headers to be exported
