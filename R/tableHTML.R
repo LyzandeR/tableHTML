@@ -80,14 +80,14 @@
 #'   or two length values (provided as a string). If two length values are provided the first one
 #'   sets the horizontal spacing whereas the second sets the vertical spacing. See the examples.
 #'
-#' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
-#'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
-#'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.
-#'
 #' @param escape  Can be TRUE or FALSE. Defaults to TRUE. Escapes characters < and > because they
 #'   can close (or open) the table's HTML tags if they exist within the data.frame's text. This
 #'   means that all < and > characters within the tableHTML will be converted to &#60 and &#62
 #'   respectively.
+#'
+#' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
+#'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
+#'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.
 #'
 #' @param x A tableHTML object created from the \code{tableHTML} function.
 #'
