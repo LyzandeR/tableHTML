@@ -14,7 +14,7 @@ tableHTML(obj, rownames = TRUE, class = paste0("table_", sample(1000:9999,
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
 \arguments{
-\item{obj}{Needs to be a data.frame or a matrix or an arbitrary object that has the 
+\item{obj}{Needs to be a data.frame or a matrix or an arbitrary object that has the
 data.frame class and can be coersible to a data.frame (e.g data.table, tbl, etc.)}
 
 \item{rownames}{Can be TRUE or FALSE. Defaults to TRUE. Whether the obj's rownames
@@ -41,20 +41,20 @@ names (i.e. a character atomic vector). See the examples for more info. Defauls 
 \item{footer}{Character string. The table's footer. This gets added below the table and it
 should not be confused with tfooter.}
 
-\item{border}{An integer. Specifies the border of the table. Defaults to 1. 0 removes borders 
+\item{border}{An integer. Specifies the border of the table. Defaults to 1. 0 removes borders
 from the table. The higher the number the thicker the table's outside border.}
 
-\item{collapse}{Whether to collapse the table or not. By default the tables are collapsed. The 
+\item{collapse}{Whether to collapse the table or not. By default the tables are collapsed. The
 choices for this argument are 'collapse', 'separate' and 'separate_shiny'. Check the details
 about which one to use.}
 
-\item{spacing}{Character string. This is only used if collapse is either separate or 
-separate_shiny and sets the spacing between the table's cells. It defaults to 2px. Can be one 
+\item{spacing}{Character string. This is only used if collapse is either separate or
+separate_shiny and sets the spacing between the table's cells. It defaults to 2px. Can be one
 or two length values (provided as a string). If two length values are provided the first one
 sets the horizontal spacing whereas the second sets the vertical spacing. See the examples.}
 
-\item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices 
-are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme. 
+\item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices
+are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
 Please use the width argument for column widths. Defaults to 'default' i.e. no css included.}
 
 \item{escape}{Can be TRUE or FALSE. Defaults to TRUE. Escapes characters < and > because they
@@ -64,8 +64,8 @@ respectively.}
 
 \item{x}{A tableHTML object created from the \code{tableHTML} function.}
 
-\item{viewer}{TRUE or FALSE. Defaults to TRUE. Whether or not to render the HTML table. If 
-you are working on Rstudio (interactively) the table will be printed or Rstudio's viewer. 
+\item{viewer}{TRUE or FALSE. Defaults to TRUE. Whether or not to render the HTML table. If
+you are working on Rstudio (interactively) the table will be printed or Rstudio's viewer.
 If you are working on Rgui (interactively) the table will be printed on your default browser.
 If you set this to FALSE the HTML code will be printed on screen.}
 
@@ -77,44 +77,44 @@ A tableHTML object.
 \description{
 The purpose of \code{tableHTML} is to create easily css-ible HTML tables
 that are compatible with R shiny. The exported HTML table will contain separate ids
-or classes for headers, columns, second headers (if any) and the table itself 
-(in case you have multiple tables) in order to create a 
-complex css file very easily. ids and classes are explained in detail in 
+or classes for headers, columns, second headers (if any) and the table itself
+(in case you have multiple tables) in order to create a
+complex css file very easily. ids and classes are explained in detail in
 the details section.
 }
 \details{
 \code{tableHTML} will create an HTML table with defined ids and classes for rows and columns.
 In particular:
 \itemize{
-  \item \strong{Table:} Will get the class from the class argument in the function. 
-  \item \strong{Columns:} Will get an id which will be of the form tableHTML_column_x (where x 
-      is the column position). If rownames exist these will get the tableHTML_rownames id. If 
-      row groups exist these will get the tableHTML_row_groups id. Check the \code{add_css_column} 
+  \item \strong{Table:} Will get the class from the class argument in the function.
+  \item \strong{Columns:} Will get an id which will be of the form tableHTML_column_x (where x
+      is the column position). If rownames exist these will get the tableHTML_rownames id. If
+      row groups exist these will get the tableHTML_row_groups id. Check the \code{add_css_column}
       function for examples.
-  \item \strong{Headers:} Will get an id of the form tableHTML_header_x (where x is the header position). 
-      For example the first header will have the id tableHTML_header_1, the second header 
+  \item \strong{Headers:} Will get an id of the form tableHTML_header_x (where x is the header position).
+      For example the first header will have the id tableHTML_header_1, the second header
       will have tableHTLM_header_2 and so on. If rownames exist these will get the tableHTML_header_0 id.
-  \item \strong{Second_Header:} Will get an id of the form tableHTML_second_header_x (where x is the 
-      second header position). For example the first second_header will have the id tableHTML_second_header_1, 
+  \item \strong{Second_Header:} Will get an id of the form tableHTML_second_header_x (where x is the
+      second header position). For example the first second_header will have the id tableHTML_second_header_1,
       the second header will have tableHTML_second_header_2 and so on.
 }
 
 Notice that rows do not get a specific id or class.
 
 If you would like to use a non-collapsed table i.e. leave spacing between cells, then
-you would need to use the \code{collapse} argument. Setting it to separate would create a 
+you would need to use the \code{collapse} argument. Setting it to separate would create a
 non-collapsed table. However, this choice will not work in shiny. The reason is that shiny
-uses \code{table {border-collapse: collapse; border-spacing:0;}} in its css by default through 
-bootstrap 3. In order to overcome this problem in shiny, \code{collapse} needs to be set to 
-separate_shiny instead of separate. By setting collapse to separate_shiny tableHTML uses 
-\code{!important} in order to overwrite the standard behaviour of bootstrap 3. \code{!important} 
-needs to be used with caution since it overwrites css styles, so unless you are using shiny 
-(or any other place where the above css is automatically loaded) you should be using 
+uses \code{table {border-collapse: collapse; border-spacing:0;}} in its css by default through
+bootstrap 3. In order to overcome this problem in shiny, \code{collapse} needs to be set to
+separate_shiny instead of separate. By setting collapse to separate_shiny tableHTML uses
+\code{!important} in order to overwrite the standard behaviour of bootstrap 3. \code{!important}
+needs to be used with caution since it overwrites css styles, so unless you are using shiny
+(or any other place where the above css is automatically loaded) you should be using
 \code{collapse = 'separate'}.
 
 Printing the table will result in rendering it in R studio's viewer
-with the print.tableHTML method if using Rstudio otherwise it will use the default 
-browser. Use \code{print(tableHTML(obj), viewer = FALSE)} or \code{str(tableHTML(obj))} 
+with the print.tableHTML method if using Rstudio otherwise it will use the default
+browser. Use \code{print(tableHTML(obj), viewer = FALSE)} or \code{str(tableHTML(obj))}
 to view the actual html code.
 }
 \examples{
@@ -122,24 +122,24 @@ tableHTML(mtcars)
 tableHTML(mtcars, rownames = FALSE)
 tableHTML(mtcars, class = 'table1')
 tableHTML(mtcars, second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
-tableHTML(mtcars, 
-          widths = c(rep(50, 6), rep(100, 6)), 
+tableHTML(mtcars,
+          widths = c(rep(50, 6), rep(100, 6)),
           second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 tableHTML(mtcars, caption = 'This is a caption', footer = 'This is a footer')
-tableHTML(mtcars, 
-          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')), 
-          widths = c(200, rep(50, 5), rep(100, 6)), 
+tableHTML(mtcars,
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+          widths = c(200, rep(50, 5), rep(100, 6)),
           rownames = FALSE)
-tableHTML(mtcars, 
-          rownames = FALSE, 
+tableHTML(mtcars,
+          rownames = FALSE,
           widths = c(140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
           second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
-tableHTML(mtcars, 
-          rownames = FALSE, 
+tableHTML(mtcars,
+          rownames = FALSE,
           widths = c(140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(3, 4), c('col1', 'col2')), 
+          second_headers = list(c(3, 4), c('col1', 'col2')),
           theme = 'scientific')
 tableHTML(mtcars, theme = 'rshiny-blue', widths = c(140, rep(50, 11)))
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px')
