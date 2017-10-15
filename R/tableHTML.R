@@ -79,7 +79,6 @@
 #'   separate_shiny and sets the spacing between the table's cells. It defaults to 2px. Can be one
 #'   or two length values (provided as a string). If two length values are provided the first one
 #'   sets the horizontal spacing whereas the second sets the vertical spacing. See the examples.
-<<<<<<< HEAD
 #'
 #' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
 #'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
@@ -96,19 +95,6 @@
 #'
 #' @param viewer TRUE or FALSE. Defaults to TRUE. Whether or not to render the HTML table. If
 #'   you are working on Rstudio (interactively) the table will be printed or Rstudio's viewer.
-=======
-#'
-#' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
-#'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
-#'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.
-#'
-#' @param x A tableHTML object created from the \code{tableHTML} function.
-#'
-#' @param ... Optional arguments to print.
-#'
-#' @param viewer TRUE or FALSE. Defaults to TRUE. Whether or not to render the HTML table. If
-#'   you are working on Rstudio (interactively) the table will be printed or Rstudio's viewer.
->>>>>>> origin/master
 #'   If you are working on Rgui (interactively) the table will be printed on your default browser.
 #'   If you set this to FALSE the HTML code will be printed on screen.
 #'
@@ -155,7 +141,6 @@ tableHTML <- function(obj,
                       border = 1,
                       collapse = c('collapse', 'separate', 'separate_shiny'),
                       spacing = '2px',
-                      theme = c('default', 'scientific', 'rshiny-blue'),
                       escape = TRUE,
                       theme = c('default', 'scientific', 'rshiny-blue')) {
 

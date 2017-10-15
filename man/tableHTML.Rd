@@ -9,7 +9,7 @@ tableHTML(obj, rownames = TRUE, class = paste0("table_", sample(1000:9999,
   1)), widths = NULL, headers = NULL, second_headers = NULL,
   row_groups = NULL, caption = NULL, footer = NULL, border = 1,
   collapse = c("collapse", "separate", "separate_shiny"), spacing = "2px",
-  theme = c("default", "scientific", "rshiny-blue"), escape = TRUE)
+  escape = TRUE, theme = c("default", "scientific", "rshiny-blue"))
 
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
@@ -53,14 +53,14 @@ separate_shiny and sets the spacing between the table's cells. It defaults to 2p
 or two length values (provided as a string). If two length values are provided the first one
 sets the horizontal spacing whereas the second sets the vertical spacing. See the examples.}
 
+\item{escape}{Can be TRUE or FALSE. Defaults to TRUE. Escapes characters < and > because they
+can close (or open) the table's HTML tags if they exist within the data.frame's text. This
+means that all < and > characters within the tableHTML will be converted to &#60 and &#62
+respectively.}
+
 \item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices
 are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
 Please use the width argument for column widths. Defaults to 'default' i.e. no css included.}
-
-\item{escape}{Can be TRUE or FALSE. Defaults to TRUE. Escapes characters < and > because they
-can close (or open) the table's HTML tags if they exist within the data.frame's text. This 
-means that all < and > characters within the tableHTML will be converted to &#60 and &#62
-respectively.}
 
 \item{x}{A tableHTML object created from the \code{tableHTML} function.}
 
