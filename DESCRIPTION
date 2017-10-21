@@ -15,7 +15,8 @@ BugReports: https://github.com/LyzandeR/tableHTML/issues
 Depends: R (>= 3.2.0)
 Imports: htmltools,
          magrittr,
-         shiny
+         shiny,
+         RColorbrewer
 Description: A tool to create and style HTML tables with CSS. These can be exported and used in any application that accepts HTML
     (e.g. 'shiny', 'rmarkdown', 'PowerPoint'). It also provides functions to create CSS files (which also work with shiny). 
 License: MIT + file LICENSE
@@ -23,6 +24,5 @@ LazyData: TRUE
 RoxygenNote: 6.0.1
 Suggests: testthat,
           knitr,
-          rmarkdown,
-          RColorbrewer
+          rmarkdown
 VignetteBuilder: knitr
