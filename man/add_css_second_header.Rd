@@ -33,4 +33,3 @@ tableHTML(mtcars, second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) 
                         second_headers = c(1, 3))  
 
 }
-

@@ -45,4 +45,3 @@ server = function(input, output) {
 \seealso{
 \code{renderUI}
 }
-

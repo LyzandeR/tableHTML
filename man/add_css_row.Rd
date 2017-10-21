@@ -38,4 +38,3 @@ tableHTML(mtcars) \%>\%
               rows = 1:33)
         
 }
-

@@ -45,4 +45,3 @@ make_css(list('tr:hover', c('text-align', 'font-size'), c('center', '20px')),
          list('th', c('background-color', 'height'), c('lightgreen', '30px')))    
 
 }
-

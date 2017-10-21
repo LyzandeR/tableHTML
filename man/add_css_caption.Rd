@@ -32,4 +32,3 @@ tableHTML(mtcars, caption = 'This is a caption') \%>\%
   add_css_caption(css = list('background-color', 'green'))
 
 }
-

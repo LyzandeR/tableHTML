@@ -2,10 +2,14 @@ Package: tableHTML
 Type: Package
 Title: A Tool to Create HTML Tables
 Version: 1.0.1
-Authors@R: person("Theo", 
+Authors@R: c(person("Theo", 
                   "Boutaris", 
                   email = "teoboot2007@hotmail.com", 
-                  role = c("aut", "cre", "cph"))
+                  role = c("aut", "cre", "cph")),
+            person("Clemens",
+                  "Zauchner",
+                  email = "cst.zauchner@gmail.com",
+                  role = "aut"))
 URL: https://github.com/LyzandeR/tableHTML                  
 BugReports: https://github.com/LyzandeR/tableHTML/issues
 Depends: R (>= 3.2.0)
@@ -16,8 +20,9 @@ Description: A tool to create and style HTML tables with CSS. These can be expor
     (e.g. 'shiny', 'rmarkdown', 'PowerPoint'). It also provides functions to create CSS files (which also work with shiny). 
 License: MIT + file LICENSE
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests: testthat,
           knitr,
-          rmarkdown
+          rmarkdown,
+          RColorBrewer
 VignetteBuilder: knitr
