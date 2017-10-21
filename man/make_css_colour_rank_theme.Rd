@@ -19,9 +19,9 @@ should be mapped to a colour palette.}
     length equal to the number of arguments in \code{\dots}. For the
     other methods, it must be length one.}
 
-\item{same_scale}{This logical flag indicates whether all of the columns the css should be applied to 
-are on the same scale. If TRUE, the same value in all columns will have the same colour applied to it.
-If FALSE, the colours will be assigned between the columns min and max.}
+\item{same_scale}{Logical. This flag indicates whether the condition should be applied to columns individually or 
+in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE, 
+the condition will be evaluated per column.}
 }
 \value{
 A list of css properties
@@ -39,9 +39,11 @@ A list of css properties
 
 tableHTML <- tableHTML(mtcars)
 
-css <- make_css_colour_rank_theme(list(mpg = mtcars$mpg), c("orange", "yellow","springgreen","royalblue"))
+css <- make_css_colour_rank_theme(list(mpg = mtcars$mpg),
+                                 c("orange", "yellow","springgreen","royalblue"))
 
 tableHTML \%>\% add_css_conditional_column(conditional = "colour_rank",
-                                        colour_rank_theme = "Custom", colour_rank_css = css, column = 1)
+                                        colour_rank_theme = "Custom", 
+                                        colour_rank_css = css, column = 1)
 
 }

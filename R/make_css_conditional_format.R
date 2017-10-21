@@ -21,10 +21,12 @@
 #' 
 #' tableHTML <- tableHTML(mtcars)
 #' 
-#' css <- make_css_colour_rank_theme(list(mpg = mtcars$mpg), c("orange", "yellow","springgreen","royalblue"))
+#' css <- make_css_colour_rank_theme(list(mpg = mtcars$mpg),
+#'                                  c("orange", "yellow","springgreen","royalblue"))
 #' 
 #' tableHTML %>% add_css_conditional_column(conditional = "colour_rank",
-#'                                         colour_rank_theme = "Custom", colour_rank_css = css, column = 1)
+#'                                         colour_rank_theme = "Custom", 
+#'                                         colour_rank_css = css, column = 1)
 #' 
 #' @export
 
