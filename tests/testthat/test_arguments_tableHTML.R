@@ -92,6 +92,14 @@ test_that("attributes exist", {
 
 })
 
+test_that("attribute col_classes captures factors", {
+
+ a <- tableHTML(iris)
+ expect_identical(attr(a, 'col_classes')[5], 'factor')
+
+
+})
+
 test_that("Escapes work fine", {
 
  df <- data.frame(a = c('ldsfkj>hfdasdf'))

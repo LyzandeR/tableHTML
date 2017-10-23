@@ -154,6 +154,9 @@ tableHTML <- function(obj,
    stop('obj needs to be either a data.frame or a matrix')
   }
 
+  #need to capture the column classes at the very beginning ----Pausing checks for a line
+  col_classes <- unname(sapply(obj, function(x) class(x)))
+
   #checks for rownames
   if (!rownames %in% c(TRUE, FALSE)) {
    stop('rownames argument needs to be either TRUE or FALSE')
@@ -431,7 +434,7 @@ tableHTML <- function(obj,
   attr(htmltable, 'headers') <- headers_exported
   attr(htmltable, 'nrows') <- nrow(obj)
   attr(htmltable, 'ncols') <- ncol(obj)
-  attr(htmltable, 'col_classes') <- unname(sapply(obj, function(x) class(x)))
+  attr(htmltable, 'col_classes') <- col_classes
   attr(htmltable, 'rownames') <- rownames
   attr(htmltable, 'row_groups') <- ifelse(is.null(row_groups), FALSE, TRUE)
   attr(htmltable, 'second_headers') <- ifelse(is.null(second_headers), FALSE, TRUE)
