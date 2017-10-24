@@ -1,3 +1,6 @@
+#' @importFrom grDevices colorRampPalette col2rgb
+NULL
+
 #' Get css properties for custom colour rank theme
 #'
 #' \code{make_css_colour_rank_theme} will create a list of css properties needed for custom conditional formatting.
@@ -10,6 +13,8 @@
 #' @param column_data A named list of vectors of values that are in a tableHTML column which
 #'  should be mapped to a colour palette. 
 #'
+#' @param css_property Character. An optional character specifying the css attribute 
+#' that should be used. Default is \code{'backgroud-color'}
 #'   
 #' @inheritParams grDevices::colorRampPalette
 #' @inheritParams base::order
@@ -32,6 +37,7 @@
 
 make_css_colour_rank_theme <- function(column_data,
                                        colors,
+                                       css_property = "background-color",
                                        decreasing = FALSE, 
                                        same_scale = TRUE) {
   
@@ -58,7 +64,8 @@ make_css_colour_rank_theme <- function(column_data,
     css_colours <- character(length(cd))
     colour_palette <- colorRampPalette(colors)
     
-    col_df <- data.frame(value = unique(cols_context(cd))[order(unique(cols_context(cd)), decreasing = decreasing)],
+    col_df <- data.frame(value = unique(cols_context(cd))[order(unique(cols_context(cd)), 
+                                                                decreasing = decreasing)],
                          colour = colour_palette(length(unique(cols_context(cd)))),
                          stringsAsFactors = FALSE)
     
@@ -69,7 +76,7 @@ make_css_colour_rank_theme <- function(column_data,
         
       }, FUN.VALUE = character(1))
     
-    list(c("background-color"), list(c(css_colours)))
+    list(c(css_property), list(c(css_colours)))
     
     
   })

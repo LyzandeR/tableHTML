@@ -4,7 +4,8 @@
 \alias{make_css_colour_rank_theme}
 \title{Get css properties for custom colour rank theme}
 \usage{
-make_css_colour_rank_theme(column_data, colors, decreasing = FALSE,
+make_css_colour_rank_theme(column_data, colors,
+  css_property = "background-color", decreasing = FALSE,
   same_scale = TRUE)
 }
 \arguments{
@@ -13,6 +14,9 @@ should be mapped to a colour palette.}
 
 \item{colors}{colors to interpolate; must be a valid argument to
     \code{\link{col2rgb}()}.}
+
+\item{css_property}{Character. An optional character specifying the css attribute 
+that should be used. Default is \code{'backgroud-color'}}
 
 \item{decreasing}{logical.  Should the sort order be increasing or
     decreasing? For the \code{"radix"} method, this can be a vector of
