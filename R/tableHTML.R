@@ -434,11 +434,7 @@ tableHTML <- function(obj,
   attr(htmltable, 'headers') <- headers_exported
   attr(htmltable, 'nrows') <- nrow(obj)
   attr(htmltable, 'ncols') <- ncol(obj)
-<<<<<<< HEAD
-  attr(htmltable, 'col_classes') <- unname(sapply(obj, function(x) class(x)))
-=======
   attr(htmltable, 'col_classes') <- col_classes
->>>>>>> 8ffcc829c927634609112d6018dad94d3c2064ec
   attr(htmltable, 'rownames') <- rownames
   attr(htmltable, 'row_groups') <- ifelse(is.null(row_groups), FALSE, TRUE)
   attr(htmltable, 'second_headers') <- ifelse(is.null(second_headers), FALSE, TRUE)
