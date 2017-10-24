@@ -26,8 +26,7 @@ The most basic use case of the function is highlighting a specific value in a co
 In this case it will apply green background to all values that are equal to 21.4 in column 'mpg'.
 
 ```{r example_1}
-#library(tableHTML)
-devtools::load_all('/home/clemens/tableHTML/')
+library(tableHTML)
 tableHTML(mtcars,
           widths = rep(100, 12)) %>%
   add_css_conditional_column(conditional = '==', 
@@ -288,17 +287,18 @@ For factors, the default order of levels is alphabetic. If you want to change
 it to a specific order, you can add them with the argument `levels`.
 
 ```{r example_20}
-
 df <- data.frame(factor_alphabetic = c('d', 'a', 'e', 'a', 'd', 'd', 'a', 'c', 'd', 'a'),
-                 factor_ordered = c('D', 'A', 'E', 'A', 'D', 'D', 'A', 'C', 'D', 'A'))
+                 factor_ordered = c('D', 'A', 'E', 'A', 'D', 'D', 'A', 'C', 'D', 'A'),
+                 stringsAsFactors = TRUE)
 tableHTML(df, 
           rownames = FALSE) %>%
   add_css_conditional_column(colour_rank_theme = 'White-Green',
                              columns = 1) %>%
   add_css_conditional_column(colour_rank_theme = 'White-Green', column = 2,
                              levels = c('B', 'D', 'A', 'E', 'C'))
-
 ```
+
+\
 
 Colour ranks can be applied to multiple columns with one function call as well and 
 the context can be set using `same_scale`:
