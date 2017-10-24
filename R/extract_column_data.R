@@ -6,7 +6,7 @@ extract_column_data <- function(tableHTML, indices, levels) {
   if (suppressWarnings(any(is.na(as.numeric(indices))))) stop('indices have to be numeric')
   
   col_classes <- attr(tableHTML, 'col_classes')
-  #col_classes <- unname(sapply(mtcars, function(x) class(x)))
+
   data_cols <- list()
   
   for (i in indices) {

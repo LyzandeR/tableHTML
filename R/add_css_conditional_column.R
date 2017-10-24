@@ -147,7 +147,7 @@ add_css_conditional_column <- function(tableHTML,
                                        decreasing = FALSE, 
                                        same_scale = TRUE,
                                        levels = NULL) {
-  #browser()
+  
   #checks
   if (!inherits(tableHTML, 'tableHTML')) stop('tableHTML needs to be a tableHTML object')
 
@@ -231,10 +231,19 @@ add_css_conditional_column <- function(tableHTML,
     if (min(names(colour_rank_css) %in% c(attributes$headers, "rownames", "row_groups")) < 1 ) {
       stop('names of colour_rank_css do not correspond to tableHTML columns')
     }
-    if (!min(unlist(lapply(1:length(colour_rank_css), function(i) {
-      min(lengths(colour_rank_css[[i]][[2]])) == attributes$nrows
-    }))) == 1) {
-      stop('the number of colour_rank_css values provided differs from the number of rows')
+    if (attributes$row_groups) {
+      if (!isTRUE(any(unlist(lapply(1:length(colour_rank_css), function(i) {
+        min(lengths(colour_rank_css[[i]][[2]])) == 
+          lengths(gregexpr('<td id="tableHTML_row_groups', tableHTML))
+      }))))) {
+        stop('the number of colour_rank_css values provided differs from the number of row groups')
+      }
+    } else {
+      if (!isTRUE(any(unlist(lapply(1:length(colour_rank_css), function(i) {
+        min(lengths(colour_rank_css[[i]][[2]])) == attributes$nrows
+      }))))) {
+        stop('the number of colour_rank_css values provided differs from the number of rows')
+      }
     }
 
   } else {
@@ -318,6 +327,8 @@ add_css_conditional_column <- function(tableHTML,
     })
     names(style) <- all_names
   }
+  
+  
   
   for (i in indices) {
     

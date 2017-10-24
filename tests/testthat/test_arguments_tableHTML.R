@@ -9,6 +9,13 @@ test_that("Function fails if obj not a data.frame", {
  expect_error(tableHTML(as.matrix(mtcars)), NA)
 })
 
+test_that("check for rownames works", {
+ #rownames throws error if not logical
+ expect_error(tableHTML(mtcars, rownames = 'foo'), 'rownames argument')
+ #rownames works fine if TRUE or FALSE
+ expect_error(tableHTML(mtcars, rownames = FALSE), NA)
+})
+
 test_that("rows are ok", {
  #number of trs is ok
  expect_identical(length(gregexpr('<tr>', tableHTML(mtcars))[[1]]), nrow(mtcars) + 1L)
@@ -79,5 +86,28 @@ test_that("attributes exist", {
  expect_identical(attr(htmltable, 'nrows'), 32L)
  expect_identical(attr(htmltable, 'ncols'), 11L)
  expect_identical(attr(htmltable, 'col_classes'), rep('numeric', 11))
+ expect_identical(attr(htmltable, 'rownames'), TRUE)
+ expect_identical(attr(htmltable, 'row_groups'), FALSE)
+ expect_identical(attr(htmltable, 'second_headers'), FALSE)
 
 })
+
+test_that("attribute col_classes captures factors", {
+
+ a <- tableHTML(iris)
+ expect_identical(attr(a, 'col_classes')[5], 'factor')
+
+
+})
+
+test_that("Escapes work fine", {
+
+ df <- data.frame(a = c('ldsfkj>hfdasdf'))
+ df2 <- data.frame(a = c('ldsfkj<hfd<asdf'))
+ expect_true(grepl('&#62', tableHTML(df)))
+ expect_true(grepl('&#60', tableHTML(df2)))
+ expect_true(grepl('<', tableHTML(df, escape = FALSE)))
+ expect_true(grepl('>', tableHTML(df, escape = FALSE)))
+
+})
+

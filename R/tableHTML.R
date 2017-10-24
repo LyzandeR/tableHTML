@@ -80,6 +80,11 @@
 #'   or two length values (provided as a string). If two length values are provided the first one
 #'   sets the horizontal spacing whereas the second sets the vertical spacing. See the examples.
 #'
+#' @param escape  Can be TRUE or FALSE. Defaults to TRUE. Escapes characters < and > because they
+#'   can close (or open) the table's HTML tags if they exist within the data.frame's text. This
+#'   means that all < and > characters within the tableHTML will be converted to &#60 and &#62
+#'   respectively.
+#'
 #' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
 #'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
 #'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.
@@ -136,6 +141,7 @@ tableHTML <- function(obj,
                       border = 1,
                       collapse = c('collapse', 'separate', 'separate_shiny'),
                       spacing = '2px',
+                      escape = TRUE,
                       theme = c('default', 'scientific', 'rshiny-blue')) {
 
   #CHECKS----------------------------------------------------------------------------------------
@@ -146,6 +152,14 @@ tableHTML <- function(obj,
    obj <- as.data.frame(obj)
   } else {
    stop('obj needs to be either a data.frame or a matrix')
+  }
+
+  #need to capture the column classes at the very beginning ----Pausing checks for a line
+  col_classes <- unname(sapply(obj, function(x) class(x)))
+
+  #checks for rownames
+  if (!rownames %in% c(TRUE, FALSE)) {
+   stop('rownames argument needs to be either TRUE or FALSE')
   }
 
   #checks for second header
@@ -208,13 +222,15 @@ tableHTML <- function(obj,
   }
 
   #escape character > and < in the data and headers because it will close or open tags
-  obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
-   x <- gsub('>', '&#62;', x)
-   x <- gsub('<', '&#60;', x)
-   x
-  })
-  headers <- gsub('>', '&#62;', force(headers))
-  headers <- gsub('<', '&#60;', force(headers))
+  if (escape) {
+   obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
+    x <- gsub('>', '&#62;', x)
+    x <- gsub('<', '&#60;', x)
+    x
+   })
+   headers <- gsub('>', '&#62;', force(headers))
+   headers <- gsub('<', '&#60;', force(headers))
+  }
 
   #make sure headers do not contain empty string
   headers[headers == ''] <- ' '
@@ -418,7 +434,11 @@ tableHTML <- function(obj,
   attr(htmltable, 'headers') <- headers_exported
   attr(htmltable, 'nrows') <- nrow(obj)
   attr(htmltable, 'ncols') <- ncol(obj)
+<<<<<<< HEAD
   attr(htmltable, 'col_classes') <- unname(sapply(obj, function(x) class(x)))
+=======
+  attr(htmltable, 'col_classes') <- col_classes
+>>>>>>> 8ffcc829c927634609112d6018dad94d3c2064ec
   attr(htmltable, 'rownames') <- rownames
   attr(htmltable, 'row_groups') <- ifelse(is.null(row_groups), FALSE, TRUE)
   attr(htmltable, 'second_headers') <- ifelse(is.null(second_headers), FALSE, TRUE)

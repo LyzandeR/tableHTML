@@ -1,4 +1,5 @@
-
+#' @importFrom utils head tail
+NULL
 
 conditional_test_function <- function(column_data,
                                       conditional,
