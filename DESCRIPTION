@@ -9,7 +9,7 @@ Authors@R: c(person("Theo",
             person("Clemens",
                   "Zauchner",
                   email = "cst.zauchner@gmail.com",
-                  role = "aut"))
+                  role = c("aut", "rev")))
 URL: https://github.com/LyzandeR/tableHTML                  
 BugReports: https://github.com/LyzandeR/tableHTML/issues
 Depends: R (>= 3.2.0)
@@ -24,5 +24,5 @@ RoxygenNote: 6.0.1
 Suggests: testthat,
           knitr,
           rmarkdown,
-          RColorbrewer
+          RColorBrewer
 VignetteBuilder: knitr
