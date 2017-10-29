@@ -6,7 +6,7 @@
 
 ## Overview
 
-This is a package for creating easily CSS-ible HTML tables. The tables are compatible with any application that uses HTML / CSS. The package has successfully been tested with:
+The goal of `tableHTML` is to create easily CSS-ible HTML tables. It is compatible with any application that uses HTML / CSS and has successfully been tested with:
 
 * Shiny
 * Rmarkdown
