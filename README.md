@@ -6,7 +6,13 @@
 
 ## Overview
 
-This is a package for creating easily CSS-ible HTML tables, which are compatible with R shiny.
+This is a package for creating easily CSS-ible HTML tables. The tables are compatible with any application that uses HTML / CSS. The package has successfully been tested with:
+
+* Shiny
+* Rmarkdown
+* Microsoft Office
+
+The package follows the `tidyverse` philosophy and uses the pipe operator `%>%` to chain functions together. Apart from applying standard CSS to columns / rows, the package offers the ability to add CSS conditionally (e.g. like column colour ranks) and to create CSS files for shiny.
 
 ## Installation
 
