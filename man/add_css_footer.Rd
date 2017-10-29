@@ -32,4 +32,3 @@ tableHTML(mtcars, footer = 'This is a footer') \%>\%
   add_css_footer(css = list('background-color', 'green'))
 
 }
-
