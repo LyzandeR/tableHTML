@@ -51,3 +51,4 @@ tableHTML \%>\% add_css_conditional_column(conditional = "colour_rank",
                                         colour_rank_css = css, column = 1)
 
 }
+

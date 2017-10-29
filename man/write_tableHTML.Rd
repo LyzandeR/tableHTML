@@ -30,3 +30,4 @@ write_tableHTML(tableHTML(mtcars), file = 'myhtmlcode.html', complete_html = TRU
 
 
 }
+

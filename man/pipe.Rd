@@ -19,3 +19,4 @@ css functions. The pipe function originally came from the magrittr package.
     tableHTML() \%>\% 
     add_css_row(css = list(c('background-color', 'border'), c('lightgray', '3px solid green'))) 
 }
+

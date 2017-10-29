@@ -45,3 +45,4 @@ a \%>\%
 \seealso{
 \code{\link{gsub}} or \code{\link{sub}}
 }
+

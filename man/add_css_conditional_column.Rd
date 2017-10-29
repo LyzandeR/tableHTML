@@ -156,3 +156,4 @@ tableHTML(mtcars) \%>\%
                              same_scale = FALSE)
 
 }
+
