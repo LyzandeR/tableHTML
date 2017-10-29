@@ -229,7 +229,7 @@ tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px') %>%
 
 ```{r example_17}
 tableHTML(mtcars,
-          widths = c(40, rep(50, 11)),
+          widths = c(140, rep(50, 11)),
           theme = 'scientific') %>%
   add_css_row(css = list('background-color', '#E0E0E0'), rows = odd(3:34)) %>%
   add_css_conditional_column(conditional = 'between',
@@ -241,6 +241,7 @@ tableHTML(mtcars,
                  headers = 1:12)
 
 ```
+
 ### Iris dataset with second headers, rowgroups, and conditional css
 
 Note: the `<div>` container is introduced,
@@ -248,8 +249,6 @@ because the css property `'transform:rotate(...deg);'` would rotate the whole `<
 element would be rotated and background colour would be out of place
 
 ```{r example_16}
-
-
 tableHTML(iris[c(1:5, 51:55, 101:105), 1:4], 
           rownames = FALSE,
           headers = rep(c('Length', 'Width'), 2),

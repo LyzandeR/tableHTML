@@ -255,7 +255,7 @@ tableHTML(mtcars,
                              columns = "rownames")
 ```
 
-\
+### Sorting factors with levels
 
 For factors, the default order of levels is alphabetic. If you want to change
 it to a specific order, you can add them with the argument `levels`.
