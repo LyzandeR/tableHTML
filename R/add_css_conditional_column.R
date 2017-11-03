@@ -54,7 +54,6 @@
 #'         
 #' @examples
 #' 
-#' 
 #' qu_25_75 <- quantile(mtcars$disp, c(0.25, 0.75))
 #' 
 #' tableHTML(mtcars) %>%
@@ -112,11 +111,11 @@
 #' 
 #' tableHTML(mtcars) %>%
 #'   add_css_conditional_column(conditional = "colour_rank", 
-#'   colour_rank_theme =  "Custom", 
-#'                                colour_rank_css = css, 
-#'                                columns = 7, 
-#'                                decreasing = FALSE,
-#'                                same_scale = FALSE)
+#'                              colour_rank_theme =  "Custom", 
+#'                              colour_rank_css = css, 
+#'                              columns = 7, 
+#'                              decreasing = FALSE,
+#'                              same_scale = FALSE)
 #'   
 #' tableHTML(mtcars) %>%
 #'   add_css_conditional_column(conditional = "colour_rank",
