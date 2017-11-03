@@ -272,7 +272,7 @@ tableHTML(iris[c(1:5, 51:55, 101:105), 1:4],
                              columns = 1:2,
                              same_scale = FALSE) %>%
   add_css_conditional_column('colour_rank',
-                               colour_rank_theme = 'White-Blue',
+                             colour_rank_theme = 'White-Blue',
                              columns = 3:4,
                              same_scale = FALSE)
 ```
