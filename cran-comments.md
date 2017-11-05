@@ -1,8 +1,4 @@
-## Resubmission 
-
-Vignette links in readme now use the canonical form.
-
-## Submiting new version 1.0.1 for tableHTML 
+## Submiting new version 1.1.0 for tableHTML 
 
 ## Test environments
 * local windows, R 3.2.0, R 3.3.0, R devel (also winbuilder on CRAN)
