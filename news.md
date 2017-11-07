@@ -1,3 +1,13 @@
+# tableHTML 1.1.0
+
+* Conditional Formatting is now supported.
+* Color ranking is supported.
+* New vignette on how to use conditional formatting.
+* tableHTML gained an argument escape on escaping characters.
+* Changed the tags ids to make it easier to change with CSS and more difficult to randomly find in the data set.
+* Minor bug fixes.
+* Improved documentation and added more examples.
+
 # tableHTML 1.0.1
 
 * Fixed a bug where characters < or > in the data would open / close tags and would cause problem with the rendering of the table.
