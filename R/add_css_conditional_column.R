@@ -335,17 +335,20 @@ add_css_conditional_column <- function(tableHTML,
       
       tableHTML <- replace_style(tableHTML, split = 'id="tableHTML_rownames"', style[["rownames"]],
                                  condition[["rownames"]])
+      attributes(tableHTML) <- attributes
 
     } else if (isTRUE(all.equal(i, -1))) {
 
       tableHTML <- replace_style(tableHTML, split = 'id="tableHTML_row_groups"', style[["row_groups"]],
                                  condition[["row_groups"]])
+      attributes(tableHTML) <- attributes
       
     } else {
       
       tableHTML <- replace_style(tableHTML, split = paste0('id="tableHTML_column_', i, '"'),
                                  style[[attributes$headers[i]]],
                                  condition[[attributes$headers[i]]])
+      attributes(tableHTML) <- attributes
     }
   }
   
