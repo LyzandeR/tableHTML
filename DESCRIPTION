@@ -1,7 +1,7 @@
 Package: tableHTML
 Type: Package
 Title: A Tool to Create HTML Tables
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: c(
     person("Theo", "Boutaris", email = "teoboot2007@hotmail.com", role = c("aut", "cre", "cph")),
     person("Clemens", "Zauchner", email = "cst.zauchner@gmail.com", role = "aut"))
