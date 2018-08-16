@@ -309,6 +309,8 @@ add_css_conditional_column <- function(tableHTML,
                                            conditional = conditional,
                                            same_scale = same_scale,
                                            comparison_value = comparison_value)
+    names(condition) <- all_names
+    
   }
   
   if (!is.null(colour_rank_theme_colours)) {
