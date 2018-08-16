@@ -264,8 +264,7 @@ add_css_conditional_column <- function(tableHTML,
     indices <- sort(indices)
   }
   
-  all_names <- c(c('row_groups', 'rownames'),
-                 attributes$headers)[which(c(-1, 0, 1:attributes$ncols) %in% indices)]
+  all_names <- as.character(indices)
   
   #create style for conditionals
   style <- switch(conditional,
@@ -321,7 +320,11 @@ add_css_conditional_column <- function(tableHTML,
   }
  
   if (is.null(style)) {
-    style <- lapply(all_names, function(name) {
+    
+    col_names <- c(c('row_groups', 'rownames'),
+                 attributes$headers)[which(c(-1, 0, 1:attributes$ncols) %in% indices)]
+    
+    style <- lapply(col_names, function(name) {
       make_style_from_css("column")(colour_rank_css, name)
     })
     names(style) <- all_names
@@ -333,20 +336,23 @@ add_css_conditional_column <- function(tableHTML,
     
     if (isTRUE(all.equal(i, 0))) {
       
-      tableHTML <- replace_style(tableHTML, split = 'id="tableHTML_rownames"', style[["rownames"]],
-                                 condition[["rownames"]])
+      tableHTML <- replace_style(tableHTML, split = 'id="tableHTML_rownames"', 
+                                 style[[as.character(i)]],
+                                 condition[[as.character(i)]])
       attributes(tableHTML) <- attributes
 
     } else if (isTRUE(all.equal(i, -1))) {
 
-      tableHTML <- replace_style(tableHTML, split = 'id="tableHTML_row_groups"', style[["row_groups"]],
-                                 condition[["row_groups"]])
+      tableHTML <- replace_style(tableHTML, split = 'id="tableHTML_row_groups"', 
+                                 style[[as.character(i)]],
+                                 condition[[as.character(i)]])
       attributes(tableHTML) <- attributes
       
     } else {
       
-      tableHTML <- replace_style(tableHTML, split = paste0("id=\"tableHTML_column_", 
-                                                           i, "\""), style[[i]], condition[[i]])
+      tableHTML <- replace_style(tableHTML, split = paste0('id="tableHTML_column_', i, '"'),
+                                 style[[as.character(i)]],
+                                 condition[[as.character(i)]])
       attributes(tableHTML) <- attributes
     }
   }
