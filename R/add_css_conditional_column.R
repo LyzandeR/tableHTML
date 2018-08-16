@@ -345,9 +345,8 @@ add_css_conditional_column <- function(tableHTML,
       
     } else {
       
-      tableHTML <- replace_style(tableHTML, split = paste0('id="tableHTML_column_', i, '"'),
-                                 style[[attributes$headers[i]]],
-                                 condition[[attributes$headers[i]]])
+      tableHTML <- replace_style(tableHTML, split = paste0("id=\"tableHTML_column_", 
+                                                           i, "\""), style[[i]], condition[[i]])
       attributes(tableHTML) <- attributes
     }
   }
