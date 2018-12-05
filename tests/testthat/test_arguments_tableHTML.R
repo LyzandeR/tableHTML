@@ -111,3 +111,20 @@ test_that("Escapes work fine", {
 
 })
 
+test_that("Round works fine", {
+
+ df <- data.frame(a = c(5.04867))
+ expect_true(grepl('5.05', tableHTML(df, round = 2)))
+
+})
+
+test_that("replace_NA works fine", {
+
+ df <- data.frame(a = c(NA, 'abc', 'abd'))
+ expect_true(grepl('this', tableHTML(df, replace_NA = 'this')))
+
+ df <- data.frame(a = c(NA, 'abc', 'abd'), stringsAsFactors = FALSE)
+ expect_true(grepl('this', tableHTML(df, replace_NA = 'this')))
+
+})
+

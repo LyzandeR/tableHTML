@@ -85,6 +85,12 @@
 #'   means that all < and > characters within the tableHTML will be converted to &#60 and &#62
 #'   respectively.
 #'
+#' @param round An integer specifying the number of decimals of numbers of
+#' numeric columns only. Defaults to NULL which means no rounding.
+#'
+#' @param replace_NA A sting that specifies with what to replace NAs in character
+#' or factor columns only. Defaults to NULL which means NAs will be printed.
+#'
 #' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
 #'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
 #'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.
@@ -142,6 +148,8 @@ tableHTML <- function(obj,
                       collapse = c('collapse', 'separate', 'separate_shiny'),
                       spacing = '2px',
                       escape = TRUE,
+                      round = NULL,
+                      replace_NA = NULL,
                       theme = c('default', 'scientific', 'rshiny-blue')) {
 
   #CHECKS----------------------------------------------------------------------------------------
@@ -237,6 +245,22 @@ tableHTML <- function(obj,
 
   #headers to be exported
   headers_exported <- headers
+
+  #rounding numeric columns
+  if (!is.null(round)) {
+   obj[sapply(obj, is.numeric)] <- lapply(obj[sapply(obj, is.numeric)], function(x) {
+    x <- round(x, round)
+    x
+   })
+  }
+
+  #replacing NA values for character columns
+  if (!is.null(replace_NA)) {
+   obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
+    x[is.na(x)] <- replace_NA
+    x
+   })
+  }
 
   #HEADERS---------------------------------------------------------------------------------------
 
