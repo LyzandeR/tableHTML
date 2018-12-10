@@ -49,10 +49,16 @@ tableHTML_to_image <- function(tableHTML,
  image <- tempfile(fileext = paste0('.', type))
 
  #writing tableHTML HTML into the temp file
- write_tableHTML(tableHTML %>%
-                  add_css_table(css = list('background-color', 'white')),
-                 file = temp_file,
-                 complete_html = TRUE)
+ if (type == 'jpeg') {
+  write_tableHTML(tableHTML %>%
+                   add_css_table(css = list('background-color', 'white')),
+                  file = temp_file,
+                  complete_html = TRUE)
+ } else if (type == 'png') {
+  write_tableHTML(tableHTML,
+                  file = temp_file,
+                  complete_html = TRUE)
+ }
 
  #webshot the image into the temp file
  webshot::webshot(temp_file,
