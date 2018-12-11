@@ -22,8 +22,7 @@
 #'
 #' @param type Either png or jpeg. The type of the image.
 #'
-#' @param ... Parameters passed on to webshot. This includes width and
-#' height of the image. Check \code{\link[webshot]{webshot}}.
+#' @param ... Parameters passed on to webshot. Check \code{\link[webshot]{webshot}}.
 #'
 #' @return An image of the tableHTML.
 #'
