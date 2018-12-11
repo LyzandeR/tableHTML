@@ -85,6 +85,12 @@
 #'   means that all < and > characters within the tableHTML will be converted to &#60 and &#62
 #'   respectively.
 #'
+#' @param round An integer specifying the number of decimals of numbers of
+#' numeric columns only. Defaults to NULL which means no rounding.
+#'
+#' @param replace_NA A sting that specifies with what to replace NAs in character
+#' or factor columns only. Defaults to NULL which means NAs will be printed.
+#'
 #' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
 #'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
 #'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.
@@ -142,6 +148,8 @@ tableHTML <- function(obj,
                       collapse = c('collapse', 'separate', 'separate_shiny'),
                       spacing = '2px',
                       escape = TRUE,
+                      round = NULL,
+                      replace_NA = NULL,
                       theme = c('default', 'scientific', 'rshiny-blue')) {
 
   #CHECKS----------------------------------------------------------------------------------------
@@ -217,9 +225,14 @@ tableHTML <- function(obj,
    if (length(headers) != length(names(obj))) {
     stop('The length of the headers needs to be the same as number of columns of the data.frame')
    }
-  } else {
+  }
+
+  #------
+  #taking care of headers
+  if (is.null(headers)) {
    headers <- names(obj)
   }
+  #------
 
   #escape character > and < in the data and headers because it will close or open tags
   if (escape) {
@@ -235,21 +248,40 @@ tableHTML <- function(obj,
   #make sure headers do not contain empty string
   headers[headers == ''] <- ' '
 
+  #make sure headers do not contain duplicates
+  #we fix that by adding white spaces which are ignored
+  #in html
+  headers <- fix_header_dupes(headers)
+
   #headers to be exported
   headers_exported <- headers
 
-  #HEADERS---------------------------------------------------------------------------------------
+  #rounding numeric columns
+  if (!is.null(round)) {
+   if (!is.numeric(round)) stop('round needs to be an integer.')
+   obj[sapply(obj, is.numeric)] <- lapply(obj[sapply(obj, is.numeric)], function(x) {
+    x <- round(x, round)
+    x
+   })
+  }
 
-  #adding new headers in case the user has provided those
-  names(obj) <- headers
+  #replacing NA values for character columns
+  if (!is.null(replace_NA)) {
+   obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
+    x[is.na(x)] <- replace_NA
+    x
+   })
+  }
+
+  #HEADERS---------------------------------------------------------------------------------------
 
   #taking into account rownames
   if (rownames == TRUE) {
     headers <- paste('<tr>',
                      '  <th id="tableHTML_header_1"> </th>',
-                     paste(vapply(seq_along(names(obj)) + 1, function(x) {
+                     paste(vapply(seq_along(headers) + 1, function(x) {
                               paste0('  <th id="tableHTML_header_', x, '">',
-                                    names(obj)[x - 1],
+                                    headers[x - 1],
                                     '</th>')
                               },
                               FUN.VALUE = character(1)),
@@ -258,8 +290,10 @@ tableHTML <- function(obj,
                      sep = '\n')
   } else {
     headers <- paste('<tr>',
-                     paste(vapply(seq_along(names(obj)), function(x) {
-                              paste0('  <th id="tableHTML_header_', x, '">', names(obj)[x], '</th>')
+                     paste(vapply(seq_along(headers), function(x) {
+                              paste0('  <th id="tableHTML_header_', x, '">',
+                                     headers[x],
+                                     '</th>')
                               },
                               FUN.VALUE = character(1)),
                               collapse = '\n'),
@@ -314,8 +348,8 @@ tableHTML <- function(obj,
   }
 
   #TABLE'S BODY----------------------------------------------------------------------------------
-  #adding body
-  content <- lapply(seq_along(names(obj)), function(x) {
+  #adding body - using headers_exported here because headers is of length 1
+  content <- lapply(seq_along(headers_exported), function(x) {
     paste0('  <td id="tableHTML_column_', x, '">', obj[[x]], '</td>\n')
   })
 
@@ -467,7 +501,7 @@ tableHTML <- function(obj,
        add_css_row(css = list('border-top', '3px solid black'), rows = 1) %>%
        add_css_row(css = list('border-bottom', '2px solid black'), rows = 2) %>%
        add_css_row(css = list('border-bottom', '3px solid black'), rows = nrow(obj) + 2) %>%
-       add_css_column(css = list('text-align', 'center'), columns = names(obj)) %>%
+       add_css_column(css = list('text-align', 'center'), columns = headers) %>%
        add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '3px'))) %>%
        add_css_second_header(css = list('border-bottom', '3px solid black'),
                              second_headers = indices) %>%
@@ -480,7 +514,7 @@ tableHTML <- function(obj,
       add_css_row(css = list('border-top', '3px solid black'), rows = 1) %>%
       add_css_row(css = list('border-bottom', '2px solid black'), rows = 1) %>%
       add_css_row(css = list('border-bottom', '3px solid black'), rows = nrow(obj) + 1) %>%
-      add_css_column(css = list('text-align', 'center'), columns = names(obj)) %>%
+      add_css_column(css = list('text-align', 'center'), columns = headers) %>%
       add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px'))) %>%
       add_css_column(css = list('vertical-align', 'top'), columns = 'row_groups')
 
@@ -494,7 +528,7 @@ tableHTML <- function(obj,
      htmltable %>%
      add_css_row(css = list('background-color', '#428bca'), rows = 1:2) %>%
      add_css_row(css = list('background-color', '#f2f2f2'), rows = odd(3:(nrow(obj) + 2))) %>%
-     add_css_column(css = list('text-align', 'center'), columns = names(obj)) %>%
+     add_css_column(css = list('text-align', 'center'), columns = headers) %>%
      add_css_column(css = list(c('vertical-align', 'background-color'), c('top', 'white')),
                     columns = 'row_groups') %>%
      add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px'))) %>%
@@ -507,7 +541,7 @@ tableHTML <- function(obj,
      htmltable %>%
      add_css_row(css = list('background-color', '#428bca'), rows = 1) %>%
      add_css_row(css = list('background-color', '#f2f2f2'), rows = odd(2:(nrow(obj) + 1))) %>%
-     add_css_column(css = list('text-align', 'center'), columns = names(obj)) %>%
+     add_css_column(css = list('text-align', 'center'), columns = headers) %>%
      add_css_column(css = list(c('vertical-align', 'background-color'), c('top', 'white')),
                     columns = 'row_groups') %>%
      add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px')))

@@ -59,4 +59,3 @@ tableHTML(mtcars,
   add_css_column(list('background-color', 'red'), c(0, 1))
 
 }
-

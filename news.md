@@ -1,3 +1,11 @@
+# tableHTML 1.2.0
+
+* Added argument round in tableHTML, to round numeric columns.
+* Added argument replace_NA in tableHTML, to replace NA values with another for character and factor columns.
+* Added new function tableHTML_to_image to package which converts the table into an image. This can be used for PDF or MS Word documents through rmarkdown.
+* Minor bug fixes.
+* Added more examples.
+
 # tableHTML 1.1.0
 
 * Conditional Formatting is now supported.

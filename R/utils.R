@@ -2,17 +2,17 @@ is.fachar <- function(x) is.character(x) | is.factor(x)
 
 
 replace_style<- function(tableHTML, split, style, condition = NULL){
-  
+
   if (is.null(condition)) {
     condition <- rep(TRUE, attr(tableHTML, "nrows"))
   }
-  
-  tableHTML <- gsub(paste(split, "style="), 
+
+  tableHTML <- gsub(paste(split, "style="),
                     paste0(split), tableHTML)
-  
+
   splits <- strsplit(tableHTML, split)
-  
-  splits[[1]][2:length(splits[[1]])] <- 
+
+  splits[[1]][2:length(splits[[1]])] <-
     vapply(2:length(splits[[1]]), function(i) {
       x <- splits[[1]][i]
       #check if style should be applied
@@ -27,11 +27,11 @@ replace_style<- function(tableHTML, split, style, condition = NULL){
           paste0(split, ' style=', x)
         }
       }
-      
+
     }, FUN.VALUE = character(1))
-  
+
   gsub(';""', ';', paste(splits[[1]], collapse = ''))
-  
+
 }
 
 convert_type <- function(v, type, levels) {
@@ -46,8 +46,12 @@ convert_type <- function(v, type, levels) {
          character = as.character(v))
 }
 
-
-
+fix_header_dupes <- function(h) {
+ dup_positions <- which(duplicated(h))
+ empty_strings <- sapply(dup_positions, function(x) paste0(rep(' ', x), collapse = ''))
+ h[dup_positions] <- paste0(h[dup_positions], empty_strings)
+ h
+}
 
 
 
