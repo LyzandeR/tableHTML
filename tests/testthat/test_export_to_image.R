@@ -10,6 +10,16 @@ test_that("Function fails for wrong inputs", {
   'should be one of'
  )
 
+ #check argumrnt add is logical
+ expect_error(
+  mtcars %>%
+   tableHTML() %>%
+   tableHTML_to_image(add = 2),
+  "add must be TRUE or FALSE"
+ )
+
+
+
  #check jpeg prints a file
  expect_true({
   myfile <- tempfile(fileext = '.jpeg')
