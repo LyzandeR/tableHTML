@@ -65,6 +65,7 @@ test_that("Function fails for wrong inputs", {
  #check if device is shut down
  #before adding the image
  expect_false({
+  plot(1:5)
   par_1 <- par()
 
   mtcars %>%
