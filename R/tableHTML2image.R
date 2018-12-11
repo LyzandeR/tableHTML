@@ -34,6 +34,8 @@
 #'   tableHTML() %>%
 #'   tableHTML_to_image()
 #'
+#'#' @importFrom grDevices dev.off dev.list
+#'
 #' @export
 tableHTML_to_image <- function(tableHTML,
                                file = NULL,
@@ -91,8 +93,8 @@ tableHTML_to_image <- function(tableHTML,
 
 
  # shut down the current device
- if (!add & !is.null(dev.list())) {
-  dev.off()
+ if (!add & !is.null(grDevices::dev.list())) {
+  grDevices::dev.off()
  }
 
  #export the image
