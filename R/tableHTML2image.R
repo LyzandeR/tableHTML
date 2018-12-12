@@ -23,7 +23,7 @@
 #' @param type Either png or jpeg. The type of the image.
 #'
 #' @param add Logical. If TRUE, the plot will be added to the existing plot.
-#' If FALSE, the current divice will be shut down
+#' If FALSE, the current device will be shut down.
 #'
 #' @param ... Parameters passed on to webshot. Check \code{\link[webshot]{webshot}}.
 #'
@@ -90,7 +90,6 @@ tableHTML_to_image <- function(tableHTML,
  #delete temp files
  file.remove(temp_file)
  file.remove(image)
-
 
  # shut down the current device
  if (!add & !is.null(grDevices::dev.list())) {

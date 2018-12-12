@@ -16,7 +16,7 @@ displayed on screen.}
 \item{type}{Either png or jpeg. The type of the image.}
 
 \item{add}{Logical. If TRUE, the plot will be added to the existing plot.
-If FALSE, the current divice will be shut down}
+If FALSE, the current device will be shut down.}
 
 \item{...}{Parameters passed on to webshot. Check \code{\link[webshot]{webshot}}.}
 }
@@ -44,5 +44,7 @@ Works with microsoft word as well.
 mtcars \%>\%
   tableHTML() \%>\%
   tableHTML_to_image()
+
+#' @importFrom grDevices dev.off dev.list
 
 }
