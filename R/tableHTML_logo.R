@@ -22,11 +22,11 @@
 #'
 #' @export
 
-tableHTML_logo <- function(save = TRUE,
-                        format = 'html', file = 'tableHTML_export', ...){
+tableHTML_logo <- function(save = TRUE, format = 'html',
+                           file = 'tableHTML_export', ...){
   if(save){
     if(! format %in% c('html', 'png', 'pdf', 'jpeg')){
-      stop("'format' should be 'html', 'png', 'pdf', or 'jpeg'")
+      stop("format should be 'html', 'png', 'pdf', or 'jpeg'")
     }}
 
   # Create Data
@@ -56,7 +56,7 @@ tableHTML_logo <- function(save = TRUE,
   df <- rbind(matrix(rep('.', ncol(df)*3), nrow = 3), df, matrix(rep('.', ncol(df)*6), nrow = 6))
   df <- gsub('\\.', ' ', df)
 
-  #second header
+  # second header
   header_2 = unlist(strsplit('tableHTML', ''))
 
   # colors

@@ -1,8 +1,12 @@
-#' Generate a hexlogo package's logo
+#' Generate hexagon logo from a tableHTML object.
 #'
-#' \code{to_hex_logo} will generate a hexagon logo for the \code{tableHTML} package.
+#' The purpose of the function \code{to_hex_logo} is to turn the \code{tableHTML} logo
+#' to a hexagon logo.
 #'
-#' \code{to_hex_logo} will generate a hexagon logo for the \code{tableHTML} package.
+#' \code{to_hex_logo} will generate a hexagon logo for any tableHTML object as long as
+#' the class parameter in the function \code{tableHTML()} was set to '"hexagon inner"' (with both quotes)
+#' and the table passed through the \code{tableHTML()}, and the dimensions of the used table fits the height
+#' and width of the hexagon.
 #'
 #' @param logo An object of class tableHTML. Preferably the output of the function \code{tableHTML_logo()}.
 #'
@@ -25,13 +29,18 @@
 #' @export
 to_hex_logo <- function(logo, save = TRUE,
                         format = 'html', file = 'hexlogo_export', ...){
+  # checks
+  if (!inherits(logo, 'tableHTML'))
+   stop('logo needs to be a tableHTML object')
 
-  if (!inherits(logo, 'tableHTML')) stop('logo needs to be a tableHTML object')
+  if (! grepl('class="hexagon inner"', logo))
+   stop('logo does not have the compatible style \n set class = \'\"hexagon inner\"\' when running tableHTML() to create the logo')
 
   if(save){
     if(! format %in% c('html', 'png', 'pdf', 'jpeg')){
       stop("format should be 'html', 'png', 'pdf', or 'jpeg'")
     }}
+
   # colors
   border_color <- 'lightgray'
   inner_fill <- '#F2F2F2'
