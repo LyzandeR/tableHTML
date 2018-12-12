@@ -45,6 +45,6 @@ mtcars \%>\%
   tableHTML() \%>\%
   tableHTML_to_image()
 
-#' @importFrom grDevices dev.off dev.list
+#' @importFrom graphics par plot.new
 
 }

@@ -34,7 +34,7 @@
 #'   tableHTML() %>%
 #'   tableHTML_to_image()
 #'
-#'#' @importFrom grDevices dev.off dev.list
+#'#' @importFrom graphics par plot.new
 #'
 #' @export
 tableHTML_to_image <- function(tableHTML,
@@ -92,8 +92,9 @@ tableHTML_to_image <- function(tableHTML,
  file.remove(image)
 
  # shut down the current device
- if (!add & !is.null(grDevices::dev.list())) {
-  grDevices::dev.off()
+ if (!add) {
+  graphics::par(mar = c(0, 0, 0, 0))
+  graphics::plot.new()
  }
 
  #export the image
