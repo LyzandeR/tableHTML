@@ -27,6 +27,8 @@
 #'
 #' @param ... Parameters passed on to webshot. Check \code{\link[webshot]{webshot}}.
 #'
+#' @inheritParams webshot::webshot
+#'
 #' @return An image of the tableHTML.
 #'
 #' @examples
@@ -41,6 +43,7 @@ tableHTML_to_image <- function(tableHTML,
                                file = NULL,
                                type = c('png', 'jpeg'),
                                add = FALSE,
+                               selector = 'table',
                                ...) {
 
  #check type
@@ -73,7 +76,7 @@ tableHTML_to_image <- function(tableHTML,
  #webshot the image into the temp file
  webshot::webshot(temp_file,
                   file = image,
-                  selector = 'table',
+                  selector = selector,
                   ...)
 
  #read the image to display to markdown
