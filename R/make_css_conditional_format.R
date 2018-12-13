@@ -63,19 +63,30 @@ make_css_colour_rank_theme <- function(column_data,
 
     css_colours <- character(length(cd))
 
-    colors <- if (decreasing) rev(colors) else colors
+    if (is.numeric(cols_context(cd))) {
+     colors <- if (decreasing) rev(colors) else colors
 
-    colour_palette <- colorRampPalette(colors)
+     colour_palette <- colorRampPalette(colors)
 
-    colsteps <- max(cols_context(cd)) - min(cols_context(cd)) + 1
+     colsteps <- max(cols_context(cd)) - min(cols_context(cd)) + 1
 
-    value <- unique(cols_context(cd))[order(unique(cols_context(cd)),
-                                            decreasing = decreasing)]
+     value <- unique(cols_context(cd))[order(unique(cols_context(cd)),
+                                             decreasing = decreasing)]
 
-    colour <- colour_palette(colsteps)[findInterval(value,
-                                                    seq(min(value),
-                                                        max(value),
-                                                        length.out = colsteps))]
+     colour <- colour_palette(colsteps)[findInterval(value,
+                                                     seq(min(value),
+                                                         max(value),
+                                                         length.out = colsteps))]
+    } else {
+     value <- unique(cols_context(cd))[order(unique(cols_context(cd)),
+                                             decreasing = decreasing)]
+
+     colour_palette <- colorRampPalette(colors)
+
+     colour <- colour_palette(length(unique(cols_context(cd))))
+    }
+
+
 
     col_df <- data.frame(value = value,
                          colour = colour,
