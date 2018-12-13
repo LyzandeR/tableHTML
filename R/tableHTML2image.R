@@ -22,6 +22,9 @@
 #'
 #' @param type Either png or jpeg. The type of the image.
 #'
+#' @param add Logical. If TRUE, the plot will be added to the existing plot.
+#' If FALSE, the current device will be shut down.
+#'
 #' @param ... Parameters passed on to webshot. Check \code{\link[webshot]{webshot}}.
 #'
 #' @return An image of the tableHTML.
@@ -31,14 +34,22 @@
 #'   tableHTML() %>%
 #'   tableHTML_to_image()
 #'
+#' @importFrom graphics par plot.new
+#'
 #' @export
 tableHTML_to_image <- function(tableHTML,
                                file = NULL,
                                type = c('png', 'jpeg'),
+                               add = FALSE,
                                ...) {
 
  #check type
  type <- match.arg(type)
+
+ #check add argument
+ if (!is.logical(add)) {
+  stop("add must be TRUE or FALSE")
+ }
 
  #save tableHTML to html file
  temp_file <- tempfile(pattern = 'tableHTML',
@@ -76,9 +87,16 @@ tableHTML_to_image <- function(tableHTML,
  #read
  img <- readfunc(image)
 
-  #delete temp files
+ #delete temp files
  file.remove(temp_file)
  file.remove(image)
+
+ # shut down the current device
+ if (!add) {
+  graphics::par(mar = c(0, 0, 0, 0))
+  graphics::plot.new()
+  base::on.exit(graphics::par(mar = c(5.1, 4.1, 4.1, 2.1)))
+ }
 
  #export the image
  if (is.null(file)) {

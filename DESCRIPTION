@@ -22,7 +22,7 @@ Description: A tool to create and style HTML tables with CSS. These can
     (which also work with shiny).
 License: MIT + file LICENSE
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests:
     testthat,
     knitr,

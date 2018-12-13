@@ -4,7 +4,8 @@
 \alias{tableHTML_to_image}
 \title{Convert a tableHTML into an image}
 \usage{
-tableHTML_to_image(tableHTML, file = NULL, type = c("png", "jpeg"), ...)
+tableHTML_to_image(tableHTML, file = NULL, type = c("png", "jpeg"),
+  add = FALSE, ...)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object created by the tableHTML function.}
@@ -13,6 +14,9 @@ tableHTML_to_image(tableHTML, file = NULL, type = c("png", "jpeg"), ...)
 displayed on screen.}
 
 \item{type}{Either png or jpeg. The type of the image.}
+
+\item{add}{Logical. If TRUE, the plot will be added to the existing plot.
+If FALSE, the current device will be shut down.}
 
 \item{...}{Parameters passed on to webshot. Check \code{\link[webshot]{webshot}}.}
 }
