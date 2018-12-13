@@ -34,7 +34,8 @@
 #'   tableHTML() %>%
 #'   tableHTML_to_image()
 #'
-#'#' @importFrom graphics par plot.new
+#' @importFrom graphics par plot.new
+#' @importFrom base on.exit
 #'
 #' @export
 tableHTML_to_image <- function(tableHTML,
@@ -93,9 +94,9 @@ tableHTML_to_image <- function(tableHTML,
 
  # shut down the current device
  if (!add) {
-  par(mar = c(0, 0, 0, 0))
-  plot.new()
-  on.exit(par(mar = c(5.1, 4.1, 4.1, 2.1)))
+  graphics::par(mar = c(0, 0, 0, 0))
+  graphics::plot.new()
+  base::on.exit(graphics::par(mar = c(5.1, 4.1, 4.1, 2.1)))
  }
 
  #export the image

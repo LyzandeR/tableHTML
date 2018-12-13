@@ -45,6 +45,4 @@ mtcars \%>\%
   tableHTML() \%>\%
   tableHTML_to_image()
 
-#' @importFrom graphics par plot.new
-
 }
