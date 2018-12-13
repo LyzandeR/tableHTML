@@ -35,7 +35,6 @@
 #'   tableHTML_to_image()
 #'
 #' @importFrom graphics par plot.new
-#' @importFrom base on.exit
 #'
 #' @export
 tableHTML_to_image <- function(tableHTML,
