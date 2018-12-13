@@ -4,7 +4,8 @@
 \alias{tableHTML_to_image}
 \title{Convert a tableHTML into an image}
 \usage{
-tableHTML_to_image(tableHTML, file = NULL, type = c("png", "jpeg"), ...)
+tableHTML_to_image(tableHTML, file = NULL, type = c("png", "jpeg"),
+  add = FALSE, selector = "table", ...)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object created by the tableHTML function.}
@@ -13,6 +14,17 @@ tableHTML_to_image(tableHTML, file = NULL, type = c("png", "jpeg"), ...)
 displayed on screen.}
 
 \item{type}{Either png or jpeg. The type of the image.}
+
+\item{add}{Logical. If TRUE, the plot will be added to the existing plot.
+If FALSE, the current device will be shut down.}
+
+\item{selector}{One or more CSS selectors specifying a DOM element to set the
+clipping rectangle to. The screenshot will contain these DOM elements. For
+a given selector, if it has more than one match, only the first one will be
+used. This option is not compatible with \code{cliprect}. When taking
+screenshots of multiple URLs, this parameter can also be a list with same
+length as \code{url} with each element of the list containing a vector of
+CSS selectors to use for the corresponding URL.}
 
 \item{...}{Parameters passed on to webshot. Check \code{\link[webshot]{webshot}}.}
 }
