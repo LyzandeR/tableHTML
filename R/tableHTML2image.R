@@ -93,8 +93,9 @@ tableHTML_to_image <- function(tableHTML,
 
  # shut down the current device
  if (!add) {
-  graphics::par(mar = c(0, 0, 0, 0))
-  graphics::plot.new()
+  par(mar = c(0, 0, 0, 0))
+  plot.new()
+  on.exit(par(mar = c(5.1, 4.1, 4.1, 2.1)))
  }
 
  #export the image
