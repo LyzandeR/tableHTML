@@ -127,6 +127,28 @@ test_that("colour to value mapping is correct", {
   expected = c("#F9DF8E", "#F6D38A", "#F4C686", "#F1BA82", "#EFAE7F",
                "#F0A07B", "#F29277", "#F48473", "#F6766F", "#F8696B")
  )
+ expect_equal(
+  {
+   # factor columns
+   css <- make_css_colour_rank_theme(list(a =  factor(letters[1:4])),
+                                     c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
+                                     decreasing = FALSE)
+   css[["a"]][[2]][[1]]
+
+  },
+  expected = c("#86C183", "#CFDC8C", "#F3C285", "#F8696B")
+ )
+ expect_equal(
+  {
+   # factor columns
+   css <- make_css_colour_rank_theme(list(a =  letters[1:4]),
+                                     c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
+                                     decreasing = TRUE)
+   css[["a"]][[2]][[1]]
+
+  },
+  expected = c("#F8696B","#F3C285", "#CFDC8C", "#86C183")
+ )
  }
 )
 
