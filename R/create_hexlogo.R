@@ -2,6 +2,9 @@
 #'
 #' The purpose of the function \code{create_hexlogo} is to generate the hexagon logo 
 #' of the \code{tableHTML} package.
+#' 
+#' The function \code{create_hexlogo} will generate the hexagon logo 
+#' of the \code{tableHTML} package.
 #'
 #' @param save A boolean when set to TRUE the logo will be saved in the specified format.
 #'
@@ -16,11 +19,13 @@
 #' @param ... Further parameters to pass to webshot.
 #'
 #' @return The hexagon logo of the tableHTML package as a tableHTML object.
+#' 
 #' The output will be shown in the Viewer pane, and can be saved
 #' either as an image or as an HTML.
 #'
 #' @examples
-#'
+#' create_hexlogo(save = FALSE)
+#' 
 #' create_hexlogo(format = 'jpeg',
 #'             file = '~/exported_logo.jpeg')
 #' @export

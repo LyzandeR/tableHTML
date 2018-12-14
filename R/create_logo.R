@@ -22,8 +22,7 @@
 #' either as an image or as an HTML.
 #'
 #' @examples
-#'
-#' create_logo()
+#' create_logo(save = FALSE)
 #'
 #' create_logo(format = 'png', file = '~/tableHTML_export.png')
 #'
