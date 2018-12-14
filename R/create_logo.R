@@ -1,67 +1,89 @@
 #' Generate package's logo
 #'
-#' \code{tableHTML_logo} will create and generate the package's logo.
+#' \code{create_logo} will create and generate the package's logo.
 #'
-#' \code{tableHTML_logo} will create and generate the package's logo.
+#' \code{create_logo} will create and generate the package's logo.
 #'
-#' @param save A boolean when set to TRUE the logo will be saved in the specified format.
+#' @param save A boolean when set to TRUE the logo will be saved in
+#' the specified format.
 #'
-#' @param format A character string to specify the format of the output, it accepts \code{'html'}, \code{'png'}, \code{'pdf'}, or \code{'jpeg'}. Default is \code{'html'}.
+#' @param format A character string to specify the format of the output,
+#' it accepts \code{'html'}, \code{'png'}, or \code{'jpeg'}.
+#' Default is \code{'html'}.
 #'
 #' @param file A character string to specify the name and path to the new file.
+#' Should end with \code{'.html'}, \code{'.png'}, or \code{'.jpeg'},
+#' depending on the selected format.
 #'
 #' @param ... Further parameters to pass to webshot.
 #'
-#' @return The logo of the tableHTML package in the Viewer pane, and saves it either as an image or as an HTML.
+#' @return The logo of the tableHTML package as a tableHTML object.
+#' The output will be shown in the Viewer pane, and can be saved
+#' either as an image or as an HTML.
 #'
 #' @examples
 #'
-#' tableHTML_logo()
+#' create_logo()
 #'
-#' tableHTML_logo(format = 'png', file = '~/tableHTML_export')
+#' create_logo(format = 'png', file = '~/tableHTML_export.png')
 #'
 #' @export
 
-tableHTML_logo <- function(save = TRUE, format = 'html',
-                           file = 'tableHTML_export', ...){
+create_logo <- function(save = TRUE, format = 'html',
+                           file = 'tableHTML_logo.html', ...){
   if(save){
-    if(! format %in% c('html', 'png', 'pdf', 'jpeg')){
-      stop("format should be 'html', 'png', 'pdf', or 'jpeg'")
+    if(! format %in% c('html', 'png', 'jpeg')){
+      stop("format should be 'html', 'png', or 'jpeg'")
     }}
+ if(format != (strsplit(file, '\\.') %>% unlist() %>% tail(1))){
+  stop("file extension should be the same as the the format")
+ }
 
   # Create Data
-  df_t <- do.call(rbind, strsplit(c('...t...', '..ttt..', '...t...', '...t...', '...t...', '...t...', '...t...','...t...', '...tt..'), ''))
-  df_a <- do.call(rbind, strsplit(c('..aa...', '....a..', '..aaa..', '.a..a..', '.a..a..', '..aaa..'), ''))
-  df_b <- do.call(rbind, strsplit(c('..b....', '..b....', '..b....', '..b....', '..b....', '..bbb..', '..b..b.', '..b..b.', '..bbb..'), ''))
-  df_l <- do.call(rbind, strsplit(c('..l....', '..l....', '..l....', '..l....', '..l....', '..l....', '..l....','..l....', '..ll...'), ''))
-  df_e <- do.call(rbind, strsplit(c('..ee...', '.e..e..', '.eee...', '.e.....', '..ee...'), ''))
+  df_t <- do.call(rbind, strsplit(c('...t...', '..ttt..', '...t...', '...t...', 
+                                    '...t...', '...t...','...t...', '...tt..'), ''))
+  df_a <- do.call(rbind, strsplit(c('..aa...', '....a..', '..aaa..', '.a..a..', 
+                                    '..aaa..'), ''))
+  df_b <- do.call(rbind, strsplit(c('..b....', '..b....', '..b....', '..b....', 
+                                    '..bbb..', '..b..b.', '..b..b.', '..bbb..'), ''))
+  df_l <- do.call(rbind, strsplit(c('..l....', '..l....', '..l....', '..l....', 
+                                    '..l....', '..l....','..l....', '..ll...'), ''))
+  df_e <- do.call(rbind, strsplit(c('..ee...', '.e..e..', '.eee...', '.e.....', 
+                                    '..ee...'), ''))
 
-  df_H <- do.call(rbind, strsplit(c('.H...H.', '.H...H.', '.H...H.', '.H...H.', '.H...H.', '.HHHHH.','.H...H.', '.H...H.', '.H...H.', '.H...H.', '.H...H.'), ''))
-  df_T <- do.call(rbind, strsplit(c('.TTTTT.', '...T...', '...T...', '...T...', '...T...', '...T...', '...T...', '...T...','...T...', '...T...', '...T...'), ''))
-  df_M <- do.call(rbind, strsplit(c('.M...M.', '.M...M.', '.MM.MM.', '.M.M.M.', '.M.M.M.','.M...M.', '.M...M.', '.M...M.', '.M...M.', '.M...M.', '.M...M.'), ''))
-  df_L <- do.call(rbind, strsplit(c('.L.....', '.L.....', '.L.....', '.L.....', '.L.....', '.L.....','.L.....', '.L.....', '.L.....', '.L.....', '.LLLL..'), ''))
+  df_H <- do.call(rbind, strsplit(c('.H...H.', '.H...H.', '.H...H.', '.H...H.', 
+                                    '.HHHHH.','.H...H.', '.H...H.', '.H...H.', '.H...H.'), ''))
+  df_T <- do.call(rbind, strsplit(c('.TTTTT.', '...T...', '...T...', '...T...', 
+                                    '...T...', '...T...','...T...', '...T...', '...T...'), ''))
+  df_M <- do.call(rbind, strsplit(c('.M...M.', '.M...M.', '.MM.MM.', '.M.M.M.', 
+                                    '.M.M.M.','.M...M.', '.M...M.', '.M...M.', '.M...M.'), ''))
+  df_L <- do.call(rbind, strsplit(c('.L.....', '.L.....', '.L.....', '.L.....', 
+                                    '.L.....', '.L.....','.L.....', '.L.....', '.LLLL..'), ''))
 
-  tablehtml <- list(df_t, df_a, df_b, df_l, df_e, df_H, df_T, df_M, df_L)
-  rows <- max(unlist(lapply(tablehtml, nrow)))
+  tablehtml_raw <- list(df_t, df_a, df_b, df_l, df_e, df_H, df_T, df_M, df_L)
+  rows <- max(unlist(lapply(tablehtml_raw, nrow)))
 
   df <- do.call(cbind,
-                lapply(tablehtml,
+                lapply(tablehtml_raw,
                        function(x, n){
-                         if (nrow(x) < n)
-                           x <- rbind(matrix(rep(rep('.', ncol(x)), n - nrow(x)), nrow = n - nrow(x)), x)
+                         if (nrow(x) < n){
+                           x <- rbind(matrix(rep(rep('.', ncol(x)), n - nrow(x)), 
+                                             nrow = n - nrow(x)), x)}
                          x <- x[, which(colSums(x == '.') != rows)]
                          return(x)
                        }, rows))
 
-  df <- rbind(matrix(rep('.', ncol(df)*3), nrow = 3), df, matrix(rep('.', ncol(df)*6), nrow = 6))
+  df <- rbind(matrix(rep('.', ncol(df)*3), nrow = 3), 
+              df, 
+              matrix(rep('.', ncol(df)*6), nrow = 6))
   df <- gsub('\\.', ' ', df)
 
   # second header
   header_2 = unlist(strsplit('tableHTML', ''))
 
   # colors
-  colors = list('#ffe100', '#e8693b', '#681bb5', '#2b912d',
-                '#b2ff9b', '#4442ff', '#3ae8df', '#f7c0e6', '#f4429e')
+  colors = c('#ffe100', '#e8693b', '#681bb5', '#2b912d',
+             '#b2ff9b', '#4442ff', '#3ae8df', '#f7c0e6', '#f4429e')
 
   # create the logo
   logo <- tableHTML(df,
@@ -124,14 +146,24 @@ tableHTML_logo <- function(save = TRUE, format = 'html',
     add_css_row(rows = 1:(nrow(df)+2),
                 css = list(c('text-align', 'height'), c('center', '20px')))
 
+  # add attributes needed for testing
+  attr(logo, 'letters_cnt') <- c('t' = sum(df_t != '.'), 'a' = sum(df_a != '.'), 'b' = sum(df_b != '.'), 'l' = sum(df_l != '.'), 'e' = sum(df_e != '.'),
+                                 'H' = sum(df_H != '.'), 'T' = sum(df_T != '.'), 'M' = sum(df_M != '.'), 'L' = sum(df_L != '.'))
+  
+  attr(logo, 'colors') <- c(colors) %>% setNames(header_2)
+  
   # save the logo
   if (save){
     if (format != 'html'){
      tableHTML_to_image(logo,
-                       file = paste0(file, '.', format), ...)
+                       file = file,
+                       type = format,
+                       selector = NULL,
+                       ...)
     }else{
-      html_file <- paste0(file, '.html')
-      htmltools::save_html(html = logo, html_file)
+     write_tableHTML(logo,
+                      file = file,
+                      complete_html = TRUE)
     }
   }
   logo
