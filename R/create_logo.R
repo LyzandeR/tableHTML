@@ -26,7 +26,10 @@
 #'
 #' create_logo(format = 'png', file = '~/tableHTML_export.png')
 #'
+#' @importFrom stats setNames
+#'
 #' @export
+
 
 create_logo <- function(save = TRUE, format = 'html',
                            file = 'tableHTML_logo.html', ...){
@@ -39,24 +42,24 @@ create_logo <- function(save = TRUE, format = 'html',
  }
 
   # Create Data
-  df_t <- do.call(rbind, strsplit(c('...t...', '..ttt..', '...t...', '...t...', 
+  df_t <- do.call(rbind, strsplit(c('...t...', '..ttt..', '...t...', '...t...',
                                     '...t...', '...t...','...t...', '...tt..'), ''))
-  df_a <- do.call(rbind, strsplit(c('..aa...', '....a..', '..aaa..', '.a..a..', 
+  df_a <- do.call(rbind, strsplit(c('..aa...', '....a..', '..aaa..', '.a..a..',
                                     '..aaa..'), ''))
-  df_b <- do.call(rbind, strsplit(c('..b....', '..b....', '..b....', '..b....', 
+  df_b <- do.call(rbind, strsplit(c('..b....', '..b....', '..b....', '..b....',
                                     '..bbb..', '..b..b.', '..b..b.', '..bbb..'), ''))
-  df_l <- do.call(rbind, strsplit(c('..l....', '..l....', '..l....', '..l....', 
+  df_l <- do.call(rbind, strsplit(c('..l....', '..l....', '..l....', '..l....',
                                     '..l....', '..l....','..l....', '..ll...'), ''))
-  df_e <- do.call(rbind, strsplit(c('..ee...', '.e..e..', '.eee...', '.e.....', 
+  df_e <- do.call(rbind, strsplit(c('..ee...', '.e..e..', '.eee...', '.e.....',
                                     '..ee...'), ''))
 
-  df_H <- do.call(rbind, strsplit(c('.H...H.', '.H...H.', '.H...H.', '.H...H.', 
+  df_H <- do.call(rbind, strsplit(c('.H...H.', '.H...H.', '.H...H.', '.H...H.',
                                     '.HHHHH.','.H...H.', '.H...H.', '.H...H.', '.H...H.'), ''))
-  df_T <- do.call(rbind, strsplit(c('.TTTTT.', '...T...', '...T...', '...T...', 
+  df_T <- do.call(rbind, strsplit(c('.TTTTT.', '...T...', '...T...', '...T...',
                                     '...T...', '...T...','...T...', '...T...', '...T...'), ''))
-  df_M <- do.call(rbind, strsplit(c('.M...M.', '.M...M.', '.MM.MM.', '.M.M.M.', 
+  df_M <- do.call(rbind, strsplit(c('.M...M.', '.M...M.', '.MM.MM.', '.M.M.M.',
                                     '.M.M.M.','.M...M.', '.M...M.', '.M...M.', '.M...M.'), ''))
-  df_L <- do.call(rbind, strsplit(c('.L.....', '.L.....', '.L.....', '.L.....', 
+  df_L <- do.call(rbind, strsplit(c('.L.....', '.L.....', '.L.....', '.L.....',
                                     '.L.....', '.L.....','.L.....', '.L.....', '.LLLL..'), ''))
 
   tablehtml_raw <- list(df_t, df_a, df_b, df_l, df_e, df_H, df_T, df_M, df_L)
@@ -66,14 +69,14 @@ create_logo <- function(save = TRUE, format = 'html',
                 lapply(tablehtml_raw,
                        function(x, n){
                          if (nrow(x) < n){
-                           x <- rbind(matrix(rep(rep('.', ncol(x)), n - nrow(x)), 
+                           x <- rbind(matrix(rep(rep('.', ncol(x)), n - nrow(x)),
                                              nrow = n - nrow(x)), x)}
                          x <- x[, which(colSums(x == '.') != rows)]
                          return(x)
                        }, rows))
 
-  df <- rbind(matrix(rep('.', ncol(df)*3), nrow = 3), 
-              df, 
+  df <- rbind(matrix(rep('.', ncol(df)*3), nrow = 3),
+              df,
               matrix(rep('.', ncol(df)*6), nrow = 6))
   df <- gsub('\\.', ' ', df)
 
@@ -89,9 +92,9 @@ create_logo <- function(save = TRUE, format = 'html',
             headers = rep('..', ncol(df)),
             rownames = FALSE,
             widths = rep(20, ncol(df)),
-            theme = 'scientific',
             class = '\"hexagon inner\"',
             second_headers = list(c(3, 4, 4, 2, 4, 5, 5, 5, 4), header_2)) %>%
+    add_theme('scientific') %>%
     add_css_second_header(css = list('background-color', colors[1]), second_headers = 1) %>%
     add_css_second_header(css = list('background-color', colors[2]), second_headers = 2) %>%
     add_css_second_header(css = list('background-color', colors[3]), second_headers = 3) %>%
@@ -148,9 +151,9 @@ create_logo <- function(save = TRUE, format = 'html',
   # add attributes needed for testing
   attr(logo, 'letters_cnt') <- c('t' = sum(df_t != '.'), 'a' = sum(df_a != '.'), 'b' = sum(df_b != '.'), 'l' = sum(df_l != '.'), 'e' = sum(df_e != '.'),
                                  'H' = sum(df_H != '.'), 'T' = sum(df_T != '.'), 'M' = sum(df_M != '.'), 'L' = sum(df_L != '.'))
-  
+
   attr(logo, 'colors') <- c(colors) %>% setNames(header_2)
-  
+
   # save the logo
   if (save){
     if (format != 'html'){
