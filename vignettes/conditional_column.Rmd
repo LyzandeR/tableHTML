@@ -352,8 +352,8 @@ The functions `add_css_column()` and `add_css_conditinal_column()` can be combin
 ```{r example_18} 
 tableHTML(mtcars,
           widths = c(120, 200, rep(100, 11)),
-          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          theme = "rshiny-blue") %>%
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3'))) %>%
+ add_theme('rshiny-blue') %>%
  add_css_column(css = list('border', '1px solid'), columns = 1) %>%
  add_css_conditional_column(colour_rank_theme = "RAG", columns = 1) %>%
  add_css_conditional_column(conditional = "contains",

@@ -91,10 +91,6 @@
 #' @param replace_NA A sting that specifies with what to replace NAs in character
 #' or factor columns only. Defaults to NULL which means NAs will be printed.
 #'
-#' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
-#'   are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
-#'   Please use the width argument for column widths. Defaults to 'default' i.e. no css included.
-#'
 #' @param x A tableHTML object created from the \code{tableHTML} function.
 #'
 #' @param ... Optional arguments to print.
@@ -103,6 +99,8 @@
 #'   you are working on Rstudio (interactively) the table will be printed or Rstudio's viewer.
 #'   If you are working on Rgui (interactively) the table will be printed on your default browser.
 #'   If you set this to FALSE the HTML code will be printed on screen.
+#'
+#' @param theme Argument is Deprecated. Please use the add_theme function instead.
 #'
 #' @return A tableHTML object.
 #'
@@ -124,13 +122,6 @@
 #'           widths = c(140, rep(50, 11)),
 #'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
 #'           second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
-#' tableHTML(mtcars,
-#'           rownames = FALSE,
-#'           widths = c(140, rep(50, 11)),
-#'           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-#'           second_headers = list(c(3, 4), c('col1', 'col2')),
-#'           theme = 'scientific')
-#' tableHTML(mtcars, theme = 'rshiny-blue', widths = c(140, rep(50, 11)))
 #' tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px')
 #' tableHTML(mtcars, collapse = 'separate', spacing = '5px 2px')
 #'
@@ -150,7 +141,7 @@ tableHTML <- function(obj,
                       escape = TRUE,
                       round = NULL,
                       replace_NA = NULL,
-                      theme = c('default', 'scientific', 'rshiny-blue')) {
+                      theme = NULL) {
 
   #CHECKS----------------------------------------------------------------------------------------
   #adding checks for obj
@@ -160,6 +151,10 @@ tableHTML <- function(obj,
    obj <- as.data.frame(obj)
   } else {
    stop('obj needs to be either a data.frame or a matrix')
+  }
+
+  if (!is.null(theme)) {
+   stop('Argument is Deprecated. Please use the add_theme function instead.')
   }
 
   #need to capture the column classes at the very beginning ----Pausing checks for a line
@@ -203,9 +198,6 @@ tableHTML <- function(obj,
   #check for the border argument
   if (!is.numeric(border)) stop('border needs to be an integer')
   border <- as.integer(border)
-
-  #check for the theme options
-  theme <- match.arg(theme)
 
   #make sure collapse has the right argument
   collapse <- match.arg(collapse)
@@ -302,29 +294,6 @@ tableHTML <- function(obj,
   }
 
   #SECOND HEADERS--------------------------------------------------------------------------------
-  #transformation of second headers if theme is scientific
-  if (theme == 'scientific' & !is.null(second_headers)) {
-   indices <- which(!second_headers[[2]] %in% '')
-
-   if (!is.null(rownames) & !is.null(row_groups)) {
-    extra <- 2
-   } else if (is.null(rownames) & !is.null(row_groups)) {
-    extra <- 1
-   } else if (!is.null(rownames) & is.null(row_groups)) {
-    extra <- 1
-   } else {
-    extra <- 0
-   }
-
-   sum_of_column_span <- sum(second_headers[[1]])
-
-   if (ncol(obj) > sum(second_headers[[1]]) + extra) {
-    second_headers[[1]] <- c(second_headers[[1]],
-                            rep(1, ncol(obj) - sum_of_column_span + extra))
-    second_headers[[2]] <- c(second_headers[[2]],
-                            rep('', ncol(obj) - sum_of_column_span + extra))
-   }
-  }
 
   #adding second headers if available
   if (!is.null(second_headers)) {
@@ -391,11 +360,6 @@ tableHTML <- function(obj,
 
   #PUTTING IT ALL TOGETHER-----------------------------------------------------------------------
   #adding all the components in one html table
-
-  #taking into account the theme
-  if (theme %in% c('scientific', 'rshiny-blue')) {
-   border <- 0
-  }
 
   htmltable <-
     htmltools::HTML(paste0('\n<table style="border-collapse:collapse;" class=',
@@ -470,85 +434,13 @@ tableHTML <- function(obj,
   attr(htmltable, 'ncols') <- ncol(obj)
   attr(htmltable, 'col_classes') <- col_classes
   attr(htmltable, 'rownames') <- rownames
-  attr(htmltable, 'row_groups') <- ifelse(is.null(row_groups), FALSE, TRUE)
-  attr(htmltable, 'second_headers') <- ifelse(is.null(second_headers), FALSE, TRUE)
+  attr(htmltable, 'row_groups') <- !is.null(row_groups)
+  attr(htmltable, 'row_groups_data') <- row_groups
+  attr(htmltable, 'second_headers') <- !is.null(second_headers)
+  attr(htmltable, 'second_headers_data') <- second_headers
+  attr(htmltable, 'table_class') <- class
 
-  #ADDING THEMES---------------------------------------------------------------------------------
-  #Will use the add_css family
-
-  #theme scientific
-  if (theme == 'scientific') {
-
-   htmltable <-
-    sub(paste0('<td id="tableHTML_row_groups" rowspan="',
-               row_groups[[1]][length(row_groups[[1]])],
-               '">',
-               row_groups[[2]][length(row_groups[[2]])],
-               '</td>'),
-        paste0('<td id="tableHTML_row_groups"',
-               ' style="border-bottom:3px solid black;"',
-'              rowspan="',
-               row_groups[[1]][length(row_groups[[1]])],
-               '">',
-               row_groups[[2]][length(row_groups[[2]])],
-               '</td>'),
-        htmltable)
-
-   if (!is.null(second_headers)) {
-
-    htmltable <-
-      htmltable %>%
-       add_css_row(css = list('border-top', '3px solid black'), rows = 1) %>%
-       add_css_row(css = list('border-bottom', '2px solid black'), rows = 2) %>%
-       add_css_row(css = list('border-bottom', '3px solid black'), rows = nrow(obj) + 2) %>%
-       add_css_column(css = list('text-align', 'center'), columns = headers) %>%
-       add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '3px'))) %>%
-       add_css_second_header(css = list('border-bottom', '3px solid black'),
-                             second_headers = indices) %>%
-       add_css_second_header(css = list('border-top', '3px solid black'),
-                             second_headers =  1:length(second_headers[[2]])) %>%
-       add_css_column(css = list('vertical-align', 'top'), columns = 'row_groups')
-   } else {
-    htmltable <-
-      htmltable %>%
-      add_css_row(css = list('border-top', '3px solid black'), rows = 1) %>%
-      add_css_row(css = list('border-bottom', '2px solid black'), rows = 1) %>%
-      add_css_row(css = list('border-bottom', '3px solid black'), rows = nrow(obj) + 1) %>%
-      add_css_column(css = list('text-align', 'center'), columns = headers) %>%
-      add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px'))) %>%
-      add_css_column(css = list('vertical-align', 'top'), columns = 'row_groups')
-
-   }
-
-  } else if (theme == 'rshiny-blue') {
-
-   if (!is.null(second_headers)) {
-
-    htmltable <-
-     htmltable %>%
-     add_css_row(css = list('background-color', '#428bca'), rows = 1:2) %>%
-     add_css_row(css = list('background-color', '#f2f2f2'), rows = odd(3:(nrow(obj) + 2))) %>%
-     add_css_column(css = list('text-align', 'center'), columns = headers) %>%
-     add_css_column(css = list(c('vertical-align', 'background-color'), c('top', 'white')),
-                    columns = 'row_groups') %>%
-     add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px'))) %>%
-     add_css_second_header(css = list(c('font-size', 'height'), c('25px', '30px')),
-                           second_headers = 1:length(second_headers[[2]]))
-
-   } else {
-
-    htmltable <-
-     htmltable %>%
-     add_css_row(css = list('background-color', '#428bca'), rows = 1) %>%
-     add_css_row(css = list('background-color', '#f2f2f2'), rows = odd(2:(nrow(obj) + 1))) %>%
-     add_css_column(css = list('text-align', 'center'), columns = headers) %>%
-     add_css_column(css = list(c('vertical-align', 'background-color'), c('top', 'white')),
-                    columns = 'row_groups') %>%
-     add_css_footer(css = list(c('text-align', 'margin-top'), c('left', '2px')))
-
-   }
-
-  }
+  #Adding Collapse arg------------------------------------------------------------------------
 
   #Collapse table according to collapse argument
   if (collapse == 'separate') {
@@ -558,6 +450,7 @@ tableHTML <- function(obj,
                                     spacing,
                                     ';"'))
   }
+
   if (collapse == 'separate_shiny') {
    htmltable <- replace_html(
     htmltable,

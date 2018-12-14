@@ -70,24 +70,22 @@ tableHTML(mtcars,
 
 ```{r example 4}
 tableHTML(mtcars, 
-          border = 1,
           rownames = TRUE, 
           widths = c(110, 140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(2, 5, 6), c('col1', '', 'col3')),
-          theme = 'scientific')
+          second_headers = list(c(2, 5, 6), c('col1', '', 'col3'))) %>%
+ add_theme('scientific')
 ```
 
 ### rshiny-blue theme
 
 ```{r example 5}
 tableHTML(mtcars, 
-          border = 1,
           rownames = TRUE, 
           widths = c(110, 140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(2, 5, 6), c('', 'col2', 'col3')),
-          theme = 'rshiny-blue')
+          second_headers = list(c(2, 5, 6), c('', 'col2', 'col3'))) %>%
+ add_theme('rshiny-blue')
 ```
 
 ### Colouring a Row Group
@@ -230,8 +228,8 @@ tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px') %>%
 
 ```{r example_16}
 tableHTML(mtcars,
-          widths = c(140, rep(50, 11)),
-          theme = 'scientific') %>%
+          widths = c(140, rep(50, 11))) %>%
+  add_theme('scientific') %>%
   add_css_row(css = list('background-color', '#E0E0E0'), rows = odd(3:34)) %>%
   add_css_conditional_column(conditional = 'between',
                              between = c(3.5, 4.22), 
@@ -284,7 +282,8 @@ This works perfectly with rmarkdown when you want to add the table as an image i
 
 ```{r example_18}
 mtcars %>%
- tableHTML(widths = c(140, rep(50, 11)), theme = 'rshiny-blue') %>%
+ tableHTML(widths = c(140, rep(50, 11))) %>%
+ add_theme('rshiny-blue') %>%
  tableHTML_to_image(type = 'png')
 ```
 
@@ -295,7 +294,8 @@ I am using `fig.height=7` and `fig.width=7`.
 
 ```{r example_19, fig.height=7, fig.width=7}
 mtcars %>%
- tableHTML(widths = c(140, rep(50, 11)), theme = 'rshiny-blue') %>%
+ tableHTML(widths = c(140, rep(50, 11))) %>%
+ add_theme('rshiny-blue') %>%
  tableHTML_to_image(type = 'png')
 ```
 
