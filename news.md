@@ -3,6 +3,7 @@
 * Added argument round in tableHTML, to round numeric columns.
 * Added argument replace_NA in tableHTML, to replace NA values with another for character and factor columns.
 * Added new function tableHTML_to_image to package which converts the table into an image. This can be used for PDF or MS Word documents through rmarkdown.
+* Improved the colour scaling for colour ranks with uneven intervals. 
 * Minor bug fixes.
 * Added more examples.
 
