@@ -4,6 +4,8 @@
 #'
 #' \code{add_theme} will add a theme to tableHTML.
 #'
+#' @param tableHTML A tableHTML object.
+#'
 #' @param theme Pick one of the provided themes. These can still be modified by extra css. Choices
 #'   are: scientific, rstudio-blue. Column widths are not provided when you select a theme.
 #'   Please use the width argument for column widths.
