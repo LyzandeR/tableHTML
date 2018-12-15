@@ -203,23 +203,23 @@ should **not** escape by setting `escape = FALSE`.
 
 Although the package has been designed so that it gives the utmost freedom to the user to style the
 HTML table as they please, two themes have been included for those who need something quick and nice.
-The package offers two themes for now: scientific and rshiny-blue. Not specifying a theme defaults to
-`theme = 'default'` which means a table with no css (so that it can be css-ed later on). For obvious 
-reasons widths have not been included in themes so they would need to be added manually from the 
-function call.
+The package offers two themes for now: scientific and rshiny-blue. To use them, you need to use the
+`add_theme` function.
      
 **Notice**: When working with themes you can still add extra css (using the add\_css\_* family from
 below) but you will not be able to overwrite the styling that is there e.g. to change the width of
 the lines.
 
 ```{r theme-scientific}
-tableHTML(mtcars, widths = c(140, rep(50, 11)), theme = 'scientific')
+tableHTML(mtcars, widths = c(140, rep(50, 11))) %>%
+ add_theme('scientific')
 ```
 
 \     
 
 ```{r theme-rshiny-blue}
-tableHTML(mtcars, widths = c(140, rep(50, 11)), theme = 'rshiny-blue')
+tableHTML(mtcars, widths = c(140, rep(50, 11))) %>%
+ add_theme('rshiny-blue')
 ```
 
 ------

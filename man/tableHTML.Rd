@@ -10,7 +10,7 @@ tableHTML(obj, rownames = TRUE, class = paste0("table_",
   second_headers = NULL, row_groups = NULL, caption = NULL,
   footer = NULL, border = 1, collapse = c("collapse", "separate",
   "separate_shiny"), spacing = "2px", escape = TRUE, round = NULL,
-  replace_NA = NULL, theme = c("default", "scientific", "rshiny-blue"))
+  replace_NA = NULL, theme = NULL)
 
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
@@ -65,9 +65,7 @@ numeric columns only. Defaults to NULL which means no rounding.}
 \item{replace_NA}{A sting that specifies with what to replace NAs in character
 or factor columns only. Defaults to NULL which means NAs will be printed.}
 
-\item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices
-are: default, scientific, rstudio-blue. Column widths are not provided when you select a theme.
-Please use the width argument for column widths. Defaults to 'default' i.e. no css included.}
+\item{theme}{Argument is Deprecated. Please use the add_theme function instead.}
 
 \item{x}{A tableHTML object created from the \code{tableHTML} function.}
 
@@ -142,13 +140,6 @@ tableHTML(mtcars,
           widths = c(140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
           second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
-tableHTML(mtcars,
-          rownames = FALSE,
-          widths = c(140, rep(50, 11)),
-          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(3, 4), c('col1', 'col2')),
-          theme = 'scientific')
-tableHTML(mtcars, theme = 'rshiny-blue', widths = c(140, rep(50, 11)))
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px')
 tableHTML(mtcars, collapse = 'separate', spacing = '5px 2px')
 
