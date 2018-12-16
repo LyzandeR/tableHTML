@@ -11,6 +11,8 @@ test_that("Output is of the right class and style", {
   # find class hexagon inner
   expect_match(create_logo(save = FALSE),
                'class="hexagon inner"' )
+  expect_equal(attributes(create_logo(save = FALSE))$table_class,
+               '"hexagon inner"' )
   expect_is(create_logo(save = FALSE), 'tableHTML')
 })
 

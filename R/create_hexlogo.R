@@ -18,6 +18,8 @@
 #'
 #' @param ... Further parameters to pass to webshot.
 #'
+#' @inheritParams write_tableHTML
+#' 
 #' @return The hexagon logo of the tableHTML package as a tableHTML object.
 #' 
 #' The output will be shown in the Viewer pane, and can be saved
@@ -27,17 +29,18 @@
 #' create_hexlogo(save = FALSE)
 #' 
 #' create_hexlogo(format = 'jpeg',
-#'             file = '~/exported_logo.jpeg')
+#'             file = '~/exported_hexlogo.jpeg')
 #' @export
 create_hexlogo <- function(save = TRUE, format = 'html',
-                           file = 'tableHTML_hexlogo.html', ...){
+                           file = 'tableHTML_hexlogo.html',
+                           complete_html, ...){
   # checks
    if(save){
     if(! format %in% c('html', 'png', 'jpeg')){
       stop("format should be 'html', 'png', or 'jpeg'")
     }}
   
-  if(format != (strsplit(file, '\\.') %>% unlist() %>% tail(1))){
+  if(!endsWith(file, format)){
     stop("file extension should be the same as the the format")
   }
 
@@ -102,11 +105,12 @@ create_hexlogo <- function(save = TRUE, format = 'html',
                        file = file,
                        type = format,
                        selector = NULL,
+                       zoom = 5,
                        ...)
    }else{
     write_tableHTML(hexlogo,
                     file = file,
-                    complete_html = TRUE)
+                    complete_html = complete_html)
    }
   }
   hexlogo

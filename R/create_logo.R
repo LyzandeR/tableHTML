@@ -17,6 +17,8 @@
 #'
 #' @param ... Further parameters to pass to webshot.
 #'
+#' @inheritParams write_tableHTML
+#' 
 #' @return The logo of the tableHTML package as a tableHTML object.
 #' The output will be shown in the Viewer pane, and can be saved
 #' either as an image or as an HTML.
@@ -24,7 +26,7 @@
 #' @examples
 #' create_logo(save = FALSE)
 #'
-#' create_logo(format = 'png', file = '~/tableHTML_export.png')
+#' create_logo(format = 'png', file = '~/exported_logo.png')
 #'
 #' @importFrom stats setNames
 #'
@@ -32,12 +34,14 @@
 
 
 create_logo <- function(save = TRUE, format = 'html',
-                           file = 'tableHTML_logo.html', ...){
+                        file = 'tableHTML_logo.html',
+                        complete_html,
+                        ...){
   if(save){
     if(! format %in% c('html', 'png', 'jpeg')){
       stop("format should be 'html', 'png', or 'jpeg'")
     }}
- if(format != (strsplit(file, '\\.') %>% unlist() %>% tail(1))){
+  if(!endsWith(file, format)){
   stop("file extension should be the same as the the format")
  }
 
@@ -160,12 +164,12 @@ create_logo <- function(save = TRUE, format = 'html',
      tableHTML_to_image(logo,
                        file = file,
                        type = format,
-                       selector = NULL,
+                       zoom = 5,
                        ...)
     }else{
      write_tableHTML(logo,
                       file = file,
-                      complete_html = TRUE)
+                      complete_html = complete_html)
     }
   }
   logo

@@ -5,7 +5,7 @@
 \title{Generate hexagon logo from a tableHTML object.}
 \usage{
 create_hexlogo(save = TRUE, format = "html",
-  file = "tableHTML_hexlogo.html", ...)
+  file = "tableHTML_hexlogo.html", complete_html = TRUE, ...)
 }
 \arguments{
 \item{save}{A boolean when set to TRUE the logo will be saved in the specified format.}
@@ -17,6 +17,9 @@ Default is \code{'html'}.}
 \item{file}{A character string to specify the name and path to the new file.
 Should end with \code{'.html'}, \code{'.png'}, or \code{'.jpeg'}, 
 depending on the selected format.}
+
+\item{complete_html}{Either TRUE or FALSE. Defaults to FALSE. If TRUE then the <html> and <body>
+tags are also added in the file.}
 
 \item{...}{Further parameters to pass to webshot.}
 }

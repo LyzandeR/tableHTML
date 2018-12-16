@@ -5,7 +5,7 @@ test_that("Function fails for wrong inputs", {
   expect_error(create_hexlogo(format = 'doc'),
                "format should be")
   #invalid file extension
-  expect_error(create_hexlogo(format = 'png', file = 'logo_pic.jpeg'),
+  expect_error(create_hexlogo(format = 'png', file = 'hexlogo_pic.jpeg'),
                "file extension should be")
 })
 
