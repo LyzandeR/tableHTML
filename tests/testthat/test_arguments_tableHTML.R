@@ -87,6 +87,8 @@ test_that("attributes exist", {
  expect_identical(attr(htmltable, 'ncols'), 11L)
  expect_identical(attr(htmltable, 'col_classes'), rep('numeric', 11))
  expect_identical(attr(htmltable, 'rownames'), TRUE)
+ expect_identical(is.null(attr(htmltable, 'row_groups_data')), TRUE)
+ expect_identical(is.null(attr(htmltable, 'second_headers_data')), TRUE)
  expect_identical(attr(htmltable, 'row_groups'), FALSE)
  expect_identical(attr(htmltable, 'second_headers'), FALSE)
 
@@ -125,6 +127,14 @@ test_that("replace_NA works fine", {
 
  df <- data.frame(a = c(NA, 'abc', 'abd'), stringsAsFactors = FALSE)
  expect_true(grepl('this', tableHTML(df, replace_NA = 'this')))
+
+})
+
+test_that("theme is deprecated", {
+
+ expect_error(mtcars %>%
+               tableHTML(theme = 'scientific'),
+              'Deprecated')
 
 })
 
