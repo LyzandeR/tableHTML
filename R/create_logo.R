@@ -35,7 +35,7 @@
 
 create_logo <- function(save = TRUE, format = 'html',
                         file = 'tableHTML_logo.html',
-                        complete_html,
+                        complete_html = FALSE,
                         ...){
   if(save){
     if(! format %in% c('html', 'png', 'jpeg')){
@@ -150,7 +150,7 @@ create_logo <- function(save = TRUE, format = 'html',
                                columns = 1:ncol(df),
                                same_scale = TRUE) %>%
     add_css_row(rows = 1:(nrow(df)+2),
-                css = list(c('text-align', 'height'), c('center', '20px')))
+                css = list(c('text-align', 'height'), c('center', '25px')))
 
   # add attributes needed for testing
   attr(logo, 'letters_cnt') <- c('t' = sum(df_t != '.'), 'a' = sum(df_a != '.'), 'b' = sum(df_b != '.'), 'l' = sum(df_l != '.'), 'e' = sum(df_e != '.'),

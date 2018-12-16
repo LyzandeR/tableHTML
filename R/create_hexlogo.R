@@ -33,7 +33,7 @@
 #' @export
 create_hexlogo <- function(save = TRUE, format = 'html',
                            file = 'tableHTML_hexlogo.html',
-                           complete_html, ...){
+                           complete_html = FALSE, ...){
   # checks
    if(save){
     if(! format %in% c('html', 'png', 'jpeg')){
