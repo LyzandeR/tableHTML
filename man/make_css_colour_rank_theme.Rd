@@ -15,7 +15,7 @@ should be mapped to a colour palette.}
 \item{colors}{colors to interpolate; must be a valid argument to
     \code{\link{col2rgb}()}.}
 
-\item{css_property}{Character. An optional character specifying the css attribute 
+\item{css_property}{Character. An optional character specifying the css attribute
 that should be used. Default is \code{'backgroud-color'}}
 
 \item{decreasing}{logical.  Should the sort order be increasing or
@@ -23,8 +23,8 @@ that should be used. Default is \code{'backgroud-color'}}
     length equal to the number of arguments in \code{\dots}. For the
     other methods, it must be length one.}
 
-\item{same_scale}{Logical. This flag indicates whether the condition should be applied to columns individually or 
-in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE, 
+\item{same_scale}{Logical. This flag indicates whether the condition should be applied to columns individually or
+in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 the condition will be evaluated per column.}
 }
 \value{
@@ -47,7 +47,7 @@ css <- make_css_colour_rank_theme(list(mpg = mtcars$mpg),
                                  c("orange", "yellow","springgreen","royalblue"))
 
 tableHTML \%>\% add_css_conditional_column(conditional = "colour_rank",
-                                        colour_rank_theme = "Custom", 
+                                        colour_rank_theme = "Custom",
                                         colour_rank_css = css, column = 1)
 
 }

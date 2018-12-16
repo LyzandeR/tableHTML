@@ -5,7 +5,8 @@ test_that("Function fails for wrong inputs", {
  #check argument type is picked correctly
  expect_error(
   mtcars %>%
-   tableHTML(theme = 'scientific') %>%
+   tableHTML() %>%
+   add_theme('scientific') %>%
    tableHTML_to_image(type = 'abc'),
   'should be one of'
  )
@@ -44,7 +45,8 @@ test_that("Function fails for wrong inputs", {
  expect_true({
   myfile <- tempfile(fileext = '.png')
   mtcars %>%
-   tableHTML(theme = 'rshiny-blue') %>%
+   tableHTML() %>%
+   add_theme('rshiny-blue') %>%
    tableHTML_to_image(type = 'png', file = myfile)
   out <- file.size(myfile) > 1
   file.remove(myfile)
@@ -57,7 +59,7 @@ test_that("Function fails for wrong inputs", {
 
   mtcars %>%
    tableHTML() %>%
-   tableHTML_to_image(add=TRUE)
+   tableHTML_to_image(add = TRUE)
   par_2 <- par()
   identical(par_1, par_2)
  })
@@ -70,7 +72,7 @@ test_that("Function fails for wrong inputs", {
 
   mtcars %>%
    tableHTML() %>%
-   tableHTML_to_image(add=FALSE)
+   tableHTML_to_image(add = FALSE)
   par_2 <- par()
   identical(par_1, par_2)
  })
