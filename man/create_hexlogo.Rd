@@ -5,7 +5,7 @@
 \title{Generate hexagon logo from a tableHTML object.}
 \usage{
 create_hexlogo(save = TRUE, format = "html",
-  file = "tableHTML_hexlogo.html", complete_html = TRUE, ...)
+  file = "tableHTML_hexlogo.html", complete_html, ...)
 }
 \arguments{
 \item{save}{A boolean when set to TRUE the logo will be saved in the specified format.}
@@ -41,5 +41,5 @@ of the \code{tableHTML} package.
 create_hexlogo(save = FALSE)
 
 create_hexlogo(format = 'jpeg',
-            file = '~/exported_logo.jpeg')
+            file = '~/exported_hexlogo.jpeg')
 }

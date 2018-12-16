@@ -5,7 +5,7 @@
 \title{Generate package's logo}
 \usage{
 create_logo(save = TRUE, format = "html",
-  file = "tableHTML_logo.html", complete_html = TRUE, ...)
+  file = "tableHTML_logo.html", complete_html, ...)
 }
 \arguments{
 \item{save}{A boolean when set to TRUE the logo will be saved in
@@ -38,6 +38,6 @@ either as an image or as an HTML.
 \examples{
 create_logo(save = FALSE)
 
-create_logo(format = 'png', file = '~/tableHTML_export.png')
+create_logo(format = 'png', file = '~/exported_logo.png')
 
 }
