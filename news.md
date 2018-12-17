@@ -1,9 +1,11 @@
-# tableHTML 1.2.0
+# tableHTML 2.0.0
 
+* Breaking Change: Themes are now applied to tableHTML objects using the add_theme() function.
 * Added argument round in tableHTML, to round numeric columns.
 * Added argument replace_NA in tableHTML, to replace NA values with another for character and factor columns.
 * Added new function tableHTML_to_image to package which converts the table into an image. This can be used for PDF or MS Word documents through rmarkdown.
 * Improved the colour scaling for colour ranks with uneven intervals. 
+* Added new logo and hex logo for the package
 * Minor bug fixes.
 * Added more examples.
 

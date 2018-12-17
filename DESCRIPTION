@@ -1,10 +1,11 @@
 Package: tableHTML
 Type: Package
 Title: A Tool to Create HTML Tables
-Version: 1.2.0
+Version: 2.0.0
 Authors@R: c(
     person("Theo", "Boutaris", email = "teoboot2007@hotmail.com", role = c("aut", "cre", "cph")),
-    person("Clemens", "Zauchner", email = "cst.zauchner@gmail.com", role = "aut"))
+    person("Clemens", "Zauchner", email = "cst.zauchner@gmail.com", role = "aut"),
+    person("Dana", "Jomar", email = "dana.jomar@outlook.com", role = "aut"))
 URL: https://github.com/LyzandeR/tableHTML
 BugReports: https://github.com/LyzandeR/tableHTML/issues
 Depends:
