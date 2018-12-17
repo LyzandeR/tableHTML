@@ -1,4 +1,4 @@
-# tableHTML
+# tableHTML <img src="man/figures/tableHTML_logo.png" width="200px" height="auto" align="right" />
 
 [![CRAN version](http://www.r-pkg.org/badges/version/tableHTML)](https://cran.r-project.org/package=tableHTML)
 [![Travis-CI Build Status](https://travis-ci.org/LyzandeR/tableHTML.svg?branch=master)](https://travis-ci.org/LyzandeR/tableHTML)
