@@ -40,11 +40,12 @@ create_logo <- function(save = TRUE, format = 'html',
   if(save){
     if(! format %in% c('html', 'png', 'jpeg')){
       stop("format should be 'html', 'png', or 'jpeg'")
-    }}
-  if(!endsWith(file, format)){
-  stop("file extension should be the same as the the format")
- }
-
+    }
+    if(!endsWith(file, format)){
+      stop("file extension should be the same as the the format")
+    }
+  }
+  
   # Create Data
   df_t <- do.call(rbind, strsplit(c('...t...', '..ttt..', '...t...', '...t...',
                                     '...t...', '...t...','...t...', '...tt..'), ''))
@@ -56,7 +57,7 @@ create_logo <- function(save = TRUE, format = 'html',
                                     '..l....', '..l....','..l....', '..ll...'), ''))
   df_e <- do.call(rbind, strsplit(c('..ee...', '.e..e..', '.eee...', '.e.....',
                                     '..ee...'), ''))
-
+  
   df_H <- do.call(rbind, strsplit(c('.H...H.', '.H...H.', '.H...H.', '.H...H.',
                                     '.HHHHH.','.H...H.', '.H...H.', '.H...H.', '.H...H.'), ''))
   df_T <- do.call(rbind, strsplit(c('.TTTTT.', '...T...', '...T...', '...T...',
@@ -65,10 +66,10 @@ create_logo <- function(save = TRUE, format = 'html',
                                     '.M.M.M.','.M...M.', '.M...M.', '.M...M.', '.M...M.'), ''))
   df_L <- do.call(rbind, strsplit(c('.L.....', '.L.....', '.L.....', '.L.....',
                                     '.L.....', '.L.....','.L.....', '.L.....', '.LLLL..'), ''))
-
+  
   tablehtml_raw <- list(df_t, df_a, df_b, df_l, df_e, df_H, df_T, df_M, df_L)
   rows <- max(unlist(lapply(tablehtml_raw, nrow)))
-
+  
   df <- do.call(cbind,
                 lapply(tablehtml_raw,
                        function(x, n){
@@ -78,26 +79,26 @@ create_logo <- function(save = TRUE, format = 'html',
                          x <- x[, which(colSums(x == '.') != rows)]
                          return(x)
                        }, rows))
-
+  
   df <- rbind(matrix(rep('.', ncol(df)*3), nrow = 3),
               df,
               matrix(rep('.', ncol(df)*6), nrow = 6))
   df <- gsub('\\.', ' ', df)
-
+  
   # second header
   header_2 = unlist(strsplit('tableHTML', ''))
-
+  
   # colors
   colors = c('#ffe100', '#e8693b', '#681bb5', '#2b912d',
              '#b2ff9b', '#4442ff', '#3ae8df', '#f7c0e6', '#f4429e')
-
+  
   # create the logo
   logo <- tableHTML(df,
-            headers = rep('..', ncol(df)),
-            rownames = FALSE,
-            widths = rep(20, ncol(df)),
-            class = '\"hexagon inner\"',
-            second_headers = list(c(3, 4, 4, 2, 4, 5, 5, 5, 4), header_2)) %>%
+                    headers = rep('..', ncol(df)),
+                    rownames = FALSE,
+                    widths = rep(20, ncol(df)),
+                    class = '\"hexagon inner\"',
+                    second_headers = list(c(3, 4, 4, 2, 4, 5, 5, 5, 4), header_2)) %>%
     add_theme('scientific') %>%
     add_css_second_header(css = list('background-color', colors[1]), second_headers = 1) %>%
     add_css_second_header(css = list('background-color', colors[2]), second_headers = 2) %>%
@@ -151,23 +152,23 @@ create_logo <- function(save = TRUE, format = 'html',
                                same_scale = TRUE) %>%
     add_css_row(rows = 1:(nrow(df)+2),
                 css = list(c('text-align', 'height'), c('center', '25px')))
-
+  
   # add attributes needed for testing
   attr(logo, 'letters_cnt') <- c('t' = sum(df_t != '.'), 'a' = sum(df_a != '.'), 'b' = sum(df_b != '.'), 'l' = sum(df_l != '.'), 'e' = sum(df_e != '.'),
                                  'H' = sum(df_H != '.'), 'T' = sum(df_T != '.'), 'M' = sum(df_M != '.'), 'L' = sum(df_L != '.'))
-
+  
   attr(logo, 'colors') <- c(colors) %>% setNames(header_2)
-
+  
   # save the logo
   if (save){
     if (format != 'html'){
-     tableHTML_to_image(logo,
-                       file = file,
-                       type = format,
-                       zoom = 5,
-                       ...)
+      tableHTML_to_image(logo,
+                         file = file,
+                         type = format,
+                         zoom = 5,
+                         ...)
     }else{
-     write_tableHTML(logo,
+      write_tableHTML(logo,
                       file = file,
                       complete_html = complete_html)
     }
