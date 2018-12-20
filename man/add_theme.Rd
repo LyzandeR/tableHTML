@@ -4,13 +4,14 @@
 \alias{add_theme}
 \title{Add a theme to the tableHTML}
 \usage{
-add_theme(tableHTML, theme = c("scientific", "rshiny-blue"))
+add_theme(tableHTML, theme = c("scientific", "rshiny-blue",
+  "totals-green", "totals-blue"))
 }
 \arguments{
 \item{tableHTML}{A tableHTML object.}
 
 \item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices
-are: scientific, rstudio-blue. Column widths are not provided when you select a theme.
+are: scientific, rstudio-blue, totals-green, totals-blue. Column widths are not provided when you select a theme.
 Please use the width argument for column widths.}
 }
 \value{
@@ -32,5 +33,15 @@ tableHTML(mtcars,
 
 tableHTML(mtcars, widths = c(140, rep(50, 11))) \%>\%
   add_theme ('rshiny-blue')
+
+x1 <- sample(1:100, 12)
+x2 <- sample(1:100, 12)
+x3 <- sample(1:100, 12)
+df <- data.frame(Month = month.abb, x1, x2, x3, 
+                 stringsAsFactors = FALSE)
+df[nrow(df)+1,]<- c('Total', sum(x1), sum(x2), sum(x3))
+df \%>\% 
+  tableHTML(widths = rep(50, 4), rownames = FALSE) \%>\% 
+  add_theme('totals-green')
 
 }
