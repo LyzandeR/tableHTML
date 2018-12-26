@@ -1,7 +1,7 @@
-context("create_logo Testing")
+context("create_logo testing")
 
 test_that("Function fails for wrong inputs", {
-  
+
   #invalid format
   expect_error(create_logo(format = 'doc'),
                "format should be")
@@ -17,7 +17,7 @@ test_that("Output is of the right class and style", {
 })
 
 test_that("The number of colored cells is the same as the number of letters in ",{
-  # for each letter the color should exist in 5 locations (4 borders and background)  
+  # for each letter the color should exist in 5 locations (4 borders and background)
   # plus the background of the second header
   logo <- create_logo(save = FALSE)
   cls <- attributes(logo)$colors
@@ -52,7 +52,7 @@ test_that("The number of headers is correct and they're identical", {
   logo <- create_logo(save = FALSE)
   expect_equal({
     trimws(attributes(logo)$headers)
-  }, 
+  },
   rep('..', attributes(logo)$ncol)
   )
 })
