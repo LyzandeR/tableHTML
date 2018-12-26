@@ -4,13 +4,14 @@
 \alias{add_theme_totals}
 \title{Add a theme to a tableHTML with a total row.}
 \usage{
-add_theme_totals(tableHTML, color, total_rows = NULL)
+add_theme_totals(tableHTML, color = "purple4", total_rows = NULL)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object.}
 
-\item{color}{A character string to specify the desired color. It can be 
-either a color name, or a hexadecimal string of the form "#rrggbb".}
+\item{color}{A character vector to specify the desired color. It can contain 
+at most two colors. Accepts color names (as listed by \code{\link[=grDevices]{colors()}}), 
+as well as hexadecimal representation of the form "#rrggbb".}
 
 \item{total_rows}{A numeric atomic vector with the indices 
 of the total/subtotal rows. If total_rows is \code{NULL}, the last row 
@@ -29,26 +30,50 @@ Column widths are not provided with the theme.
 Please use the width argument for column widths.
 }
 \examples{
+# one total row
 x1 <- sample(1:100, 12)
 x2 <- sample(1:100, 12)
 x3 <- sample(1:100, 12)
+
 df <- data.frame(Month = month.abb, x1, x2, x3,
                  stringsAsFactors = FALSE)
+
 df[nrow(df)+1,]<- c('Total', sum(x1), sum(x2), sum(x3))
 
 df \%>\%
   tableHTML(widths = rep(50, 4), rownames = FALSE) \%>\%
   add_theme_totals(color = 'darkred')
+  
+df \%>\%
+  tableHTML(widths = rep(50, 4), rownames = FALSE) \%>\%
+  add_theme_totals(color = c('steelblue', 'green'))
 
-df_q <-rbind(df[1:3, ], c('Sum1', sum(x1[1:3]), sum(x2[1:3]), sum(x3[1:3])),
-      df[4:6, ], c('Sum2', sum(x1[4:6]), sum(x2[4:6]), sum(x3[4:6])), 
-      df[7:9, ], c('Sum3', sum(x1[7:9]), sum(x2[7:9]), sum(x3[7:9])),
-      df[10:12, ], c('Sum4', sum(x1[10:12]), sum(x2[10:12]), sum(x3[10:12]))) 
+
+# multiple subtotal rows
+df_q <- rbind(
+  df[1:3, ], 
+  c('Sum1', sum(x1[1:3]), sum(x2[1:3]), sum(x3[1:3])),
+  df[4:6, ], 
+  c('Sum2', sum(x1[4:6]), sum(x2[4:6]), sum(x3[4:6])),
+  df[7:9, ], 
+  c('Sum3', sum(x1[7:9]), sum(x2[7:9]), sum(x3[7:9])),
+  df[10:12, ], 
+  c('Sum4', sum(x1[10:12]), sum(x2[10:12]), sum(x3[10:12])))
 
 df_q \%>\% 
-  tableHTML(widths = rep(50, 5), rownames = FALSE, 
+  tableHTML(widths = rep(50, 5), 
+            rownames = FALSE, 
             row_groups = list(c(4, 4, 4, 4), 
                               c('Q1', 'Q2', 'Q3', 'Q4'))) \%>\%
-  add_theme_totals(color = '#009999', c(4, 8, 12, 16))
+  add_theme_totals(color = '#009999', 
+                   total_rows = c(4, 8, 12, 16))
+
+df_q \%>\% 
+  tableHTML(widths = rep(50, 5), 
+            rownames = FALSE, 
+            row_groups = list(c(4, 4, 4, 4), 
+                              c('Q1', 'Q2', 'Q3', 'Q4'))) \%>\%
+  add_theme_totals(color = c('pink3', 'yellow2'), 
+                   total_rows = c(4, 8, 12, 16))
 
 }

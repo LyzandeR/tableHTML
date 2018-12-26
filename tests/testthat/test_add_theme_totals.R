@@ -1,0 +1,119 @@
+context("totals theme testing")
+
+test_that("Function fails for wrong inputs", {
+  
+  # default and add_theme work fine
+  expect_error(mtcars %>%
+                 tableHTML() %>%
+                 add_theme('totals-blue'),
+               NA)
+  expect_error(mtcars %>%
+                 tableHTML() %>%
+                 add_theme('totals-green'),
+               NA)
+  expect_error(mtcars %>%
+                 tableHTML() %>%
+                 add_theme_totals(),
+               NA)
+  # wrong input
+  expect_error(mtcars %>% add_theme_totals(), 
+               'tableHTML needs to be')
+  expect_error(tableHTML(mtcars) %>% 
+                 add_theme_totals(total_rows = c('1', '2', '3')), 
+               'total_rows should be either')
+  expect_error(tableHTML(mtcars) %>% 
+                 add_theme_totals(color = c('red', 'green', 'blue')), 
+               'color should be a vector')
+})
+
+test_that("color distribution is fine", {
+  # Default. one color, one total row, and with rownames.
+  expect_equal({
+    tab <- tableHTML(mtcars) %>% 
+      add_theme_totals()
+    rgb_col <- col2rgb(attributes(tab)$theme$colors)
+    
+    color_full <-  paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',1\\)')
+    header_background <- paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',0.7\\)')
+    background_color_1 <- paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',0.3\\)')
+    background_color_2 <- paste0('rgba\\(', paste0(rgb_col[, 2], collapse = ','), ',0.1\\)')
+    
+    c(# total rows background 
+      sum(grepl(paste0('background:', color_full), strsplit(tab, '<tr') %>% unlist)),
+      # header background (number of rows for the row names, plus one header)
+      sum(grepl(paste0('background:', header_background), strsplit(tab, '<tr') %>% unlist)),
+      # sum of rows with color1 and rows with color2 (number of rows)
+      sum(grepl(paste0('background:', background_color_1), strsplit(tab, '<tr') %>% unlist)) +
+      sum(grepl(paste0('background:', background_color_2), strsplit(tab, '<tr') %>% unlist)),
+      # inner borders (number of rows)
+      sum(grepl(paste0('border-top:3px solid ', color_full), strsplit(tab, '<tr') %>% unlist)),
+      # outer borders (one time)
+      sum(grepl(paste0('border:3px solid ', color_full), strsplit(tab, '<tr') %>% unlist)))
+  }, 
+  c(1, 
+    attributes(tab)$nrows + 1, 
+    attributes(tab)$nrows,
+    attributes(tab)$nrows, 
+    1)
+  )
+  # One color, one total row, and without rownames.
+  expect_equal({
+    tab <- tableHTML(mtcars, rownames = FALSE) %>% 
+      add_theme_totals()
+    rgb_col <- col2rgb(attributes(tab)$theme$colors)
+    
+    color_full <-  paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',1\\)')
+    header_background <- paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',0.7\\)')
+    background_color_1 <- paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',0.3\\)')
+    background_color_2 <- paste0('rgba\\(', paste0(rgb_col[, 2], collapse = ','), ',0.1\\)')
+    
+    c(# total rows background 
+      sum(grepl(paste0('background:', color_full), strsplit(tab, '<tr') %>% unlist)),
+      # header background
+      sum(grepl(paste0('background:', header_background), strsplit(tab, '<tr') %>% unlist)),
+      # sum of rows with color1 and rows with color2
+      sum(grepl(paste0('background:', background_color_1), strsplit(tab, '<tr') %>% unlist)) +
+      sum(grepl(paste0('background:', background_color_2), strsplit(tab, '<tr') %>% unlist)),
+      # inner borders
+      sum(grepl(paste0('border-top:3px solid ', color_full), strsplit(tab, '<tr') %>% unlist)),
+      # outer borders
+      sum(grepl(paste0('border:3px solid ', color_full), strsplit(tab, '<tr') %>% unlist)))
+  }, 
+  c(1, 
+    1, 
+    attributes(tab)$nrows,
+    attributes(tab)$nrows, 
+    1)
+  )
+  
+  # One color, multiple total rows, and without rownames.
+  expect_equal({
+    tab <- tableHTML(mtcars, rownames = FALSE) %>% 
+      add_theme_totals(total_rows = c(4, 10, 30))
+    rgb_col <- col2rgb(attributes(tab)$theme$colors)
+    
+    color_full <-  paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',1\\)')
+    header_background <- paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',0.7\\)')
+    background_color_1 <- paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',0.3\\)')
+    background_color_2 <- paste0('rgba\\(', paste0(rgb_col[, 2], collapse = ','), ',0.1\\)')
+    
+    c(#total rows background 
+      sum(grepl(paste0('background:', color_full), strsplit(tab, '<tr') %>% unlist)),
+      #header background
+      sum(grepl(paste0('background:', header_background), strsplit(tab, '<tr') %>% unlist)),
+      #sum of rows with color1 and rows with color2
+      sum(grepl(paste0('background:', background_color_1), strsplit(tab, '<tr') %>% unlist)) +
+      sum(grepl(paste0('background:', background_color_2), strsplit(tab, '<tr') %>% unlist)),
+      # inner borders
+      sum(grepl(paste0('border-top:3px solid ', color_full), strsplit(tab, '<tr') %>% unlist)),
+      # outer borders
+      sum(grepl(paste0('border:3px solid ', color_full), strsplit(tab, '<tr') %>% unlist)))
+  }, 
+  c(length(attributes(tab)$theme$total_rows), 
+    1, 
+    attributes(tab)$nrows - (length(attributes(tab)$theme$total_rows) - 1),
+    attributes(tab)$nrows - (length(attributes(tab)$theme$total_rows) - 1), 
+    1)
+  )
+})
+
