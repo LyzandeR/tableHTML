@@ -4,7 +4,8 @@
 \alias{add_theme_totals}
 \title{Add a theme to a tableHTML with a total row.}
 \usage{
-add_theme_totals(tableHTML, color = "purple4", total_rows = NULL)
+add_theme_totals(tableHTML, color = "purple4", total_rows = NULL,
+  id_col = FALSE)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object.}
@@ -16,6 +17,9 @@ as well as hexadecimal representation of the form "#rrggbb".}
 \item{total_rows}{A numeric atomic vector with the indices 
 of the total/subtotal rows. If total_rows is \code{NULL}, the last row 
 will be highlighted.}
+
+\item{id_col}{A boolean, if set to \code{TRUE} the first column will be highlighted as an ID column.
+Default is \code{FALSE}.}
 }
 \value{
 A tableHTML object.
@@ -68,12 +72,13 @@ df_q \%>\%
   add_theme_totals(color = '#009999', 
                    total_rows = c(4, 8, 12, 16))
 
+# Two colors and an id_col
 df_q \%>\% 
   tableHTML(widths = rep(50, 5), 
             rownames = FALSE, 
             row_groups = list(c(4, 4, 4, 4), 
                               c('Q1', 'Q2', 'Q3', 'Q4'))) \%>\%
   add_theme_totals(color = c('pink3', 'yellow2'), 
-                   total_rows = c(4, 8, 12, 16))
+                   total_rows = c(4, 8, 12, 16), id_col = TRUE)
 
 }

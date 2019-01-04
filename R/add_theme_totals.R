@@ -17,6 +17,9 @@
 #' of the total/subtotal rows. If total_rows is \code{NULL}, the last row 
 #' will be highlighted.
 #'
+#' @param  id_col A boolean, if set to \code{TRUE} the first column will be highlighted as an ID column.
+#' Default is \code{FALSE}.
+#' 
 #' @return A tableHTML object.
 #'
 #' @examples
@@ -58,10 +61,18 @@
 #'   add_theme_totals(color = '#009999', 
 #'                    total_rows = c(4, 8, 12, 16))
 #'
+#' # Two colors and an id_col
+#' df_q %>% 
+#'   tableHTML(widths = rep(50, 5), 
+#'             rownames = FALSE, 
+#'             row_groups = list(c(4, 4, 4, 4), 
+#'                               c('Q1', 'Q2', 'Q3', 'Q4'))) %>%
+#'   add_theme_totals(color = c('pink3', 'yellow2'), 
+#'                    total_rows = c(4, 8, 12, 16), id_col = TRUE)
 #'
 #' @export
 add_theme_totals <- function(tableHTML, color='purple4', 
-                             total_rows=NULL) 
+                             total_rows=NULL, id_col=FALSE) 
 {
   # checks
   if (!inherits(tableHTML, 'tableHTML')) 
@@ -71,9 +82,11 @@ add_theme_totals <- function(tableHTML, color='purple4',
     if (class(total_rows) != 'numeric')
       stop('total_rows should be either NULL or a numeric vector')
   
-  if (length(color) > 2){
+  if (length(color) > 2)
     stop('color should be a vector of at most two colors')
-  }
+  
+  if (!is.logical(id_col) || is.na(id_col))
+    stop('id_col should be TRUE or FALSE')
   
   n_rows <- attr(tableHTML, "nrows")
   n_cols <- attr(tableHTML, "ncols")
@@ -89,7 +102,8 @@ add_theme_totals <- function(tableHTML, color='purple4',
   }
   # add attributes for testing
   attr(tableHTML, 'theme') <- list('total_rows' = total_rows, 
-                                   'colors' =  color) 
+                                   'colors' =  color, 
+                                   'id_col' = id_col) 
   
   rgb_col <- col2rgb(color)
   color <-  paste0('rgba(', paste0(rgb_col[, 1], collapse = ','), ',1)')
@@ -152,7 +166,11 @@ add_theme_totals <- function(tableHTML, color='purple4',
                                 c(header_background, 'white', paste0('2px solid ', color))),
                      columns = -1)
   }
-  
+  if(id_col){
+    tableHTML <- tableHTML %>% add_css_column(css = list(c('background', 'color', 'border-right'), 
+                                                         c(header_background, 'white', paste0('2px solid ', color))),
+                                              columns = 1)
+  }
   tableHTML 
 }
 

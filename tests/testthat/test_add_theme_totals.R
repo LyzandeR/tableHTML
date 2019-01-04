@@ -24,6 +24,9 @@ test_that("Function fails for wrong inputs", {
   expect_error(tableHTML(mtcars) %>% 
                  add_theme_totals(color = c('red', 'green', 'blue')), 
                'color should be a vector')
+  expect_error(tableHTML(mtcars) %>% 
+                 add_theme_totals(id_col = NA), 
+               'id_col should be')
 })
 
 test_that("color distribution is fine", {
@@ -86,10 +89,10 @@ test_that("color distribution is fine", {
     1)
   )
   
-  # One color, multiple total rows, and without rownames.
+  # One color, multiple total rows, without rownames, but with an id column.
   expect_equal({
     tab <- tableHTML(mtcars, rownames = FALSE) %>% 
-      add_theme_totals(total_rows = c(4, 10, 30))
+      add_theme_totals(total_rows = c(4, 10, 30), id_col = TRUE)
     rgb_col <- col2rgb(attributes(tab)$theme$colors)
     
     color_full <-  paste0('rgba\\(', paste0(rgb_col[, 1], collapse = ','), ',1\\)')
@@ -110,7 +113,7 @@ test_that("color distribution is fine", {
       sum(grepl(paste0('border:3px solid ', color_full), strsplit(tab, '<tr') %>% unlist)))
   }, 
   c(length(attributes(tab)$theme$total_rows), 
-    1, 
+    attributes(tab)$nrows + 1, 
     attributes(tab)$nrows - (length(attributes(tab)$theme$total_rows) - 1),
     attributes(tab)$nrows - (length(attributes(tab)$theme$total_rows) - 1), 
     1)
