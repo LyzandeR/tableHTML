@@ -5,20 +5,25 @@
 \title{Add a theme to a tableHTML with a total row.}
 \usage{
 add_theme_totals(tableHTML, color = "purple4", total_rows = NULL,
-  id_col = FALSE)
+  id_colum = FALSE)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object.}
 
 \item{color}{A character vector to specify the desired color. It can contain 
-at most two colors. Accepts color names (as listed by \code{\link[=grDevices]{colors()}}), 
-as well as hexadecimal representation of the form "#rrggbb".}
+at most two colors. 
+Accepts color names (as listed by \code{\link[=grDevices]{colors()}}), 
+as well as hexadecimal representation of the form "#rrggbb". 
+
+If two colors are chosen, the first color will be the dominant one, and row coloring 
+will alternate between the first and second color.}
 
 \item{total_rows}{A numeric atomic vector with the indices 
 of the total/subtotal rows. If total_rows is \code{NULL}, the last row 
 will be highlighted.}
 
-\item{id_col}{A boolean, if set to \code{TRUE} the first column will be highlighted as an ID column.
+\item{id_colum}{A boolean, if set to \code{TRUE} the first column will 
+be highlighted as an ID column.
 Default is \code{FALSE}.}
 }
 \value{
@@ -42,7 +47,7 @@ x3 <- sample(1:100, 12)
 df <- data.frame(Month = month.abb, x1, x2, x3,
                  stringsAsFactors = FALSE)
 
-df[nrow(df)+1,]<- c('Total', sum(x1), sum(x2), sum(x3))
+df[nrow(df) + 1,] <- c('Total', sum(x1), sum(x2), sum(x3))
 
 df \%>\%
   tableHTML(widths = rep(50, 4), rownames = FALSE) \%>\%
@@ -72,13 +77,13 @@ df_q \%>\%
   add_theme_totals(color = '#009999', 
                    total_rows = c(4, 8, 12, 16))
 
-# Two colors and an id_col
+# Two colors and an id_colum
 df_q \%>\% 
   tableHTML(widths = rep(50, 5), 
             rownames = FALSE, 
             row_groups = list(c(4, 4, 4, 4), 
                               c('Q1', 'Q2', 'Q3', 'Q4'))) \%>\%
   add_theme_totals(color = c('pink3', 'yellow2'), 
-                   total_rows = c(4, 8, 12, 16), id_col = TRUE)
+                   total_rows = c(4, 8, 12, 16), id_colum = TRUE)
 
 }
