@@ -48,7 +48,7 @@
 #' rbind(df_1, df_2) %>%
 #'   tableHTML(widths = rep(50, 4), rownames = FALSE) %>%
 #'   add_theme('totals', total_rows = c(13, 26),
-#'             colour = c('steelblue', 'green3'), id_column = TRUE)
+#'             color = c('steelblue', 'green3'), id_column = TRUE)
 #' @export
 add_theme <- function (tableHTML,
                        theme = c("scientific", "rshiny-blue", "totals"), ...)
