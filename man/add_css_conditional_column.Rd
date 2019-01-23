@@ -5,11 +5,11 @@
 \title{Add conditional css to tableHTML's columns}
 \usage{
 add_css_conditional_column(tableHTML, columns,
-  conditional = c("colour_rank", "==", "!=", "min", "max", "top_n",
+  conditional = c("color_rank", "==", "!=", "min", "max", "top_n",
   "bottom_n", ">", ">=", "<", "<=", "between", "contains"), n = NULL,
   value = NULL, between = NULL, css = NULL,
-  colour_rank_theme = c("Custom", "RAG", "Spectral", "Rainbow",
-  "White-Green", "White-Red", "White-Blue"), colour_rank_css = NULL,
+  color_rank_theme = c("Custom", "RAG", "Spectral", "Rainbow",
+  "White-Green", "White-Red", "White-Blue"), color_rank_css = NULL,
   decreasing = FALSE, same_scale = TRUE, levels = NULL)
 }
 \arguments{
@@ -25,8 +25,8 @@ and the position is -1.}
 and inequality resp. '<', '<=', '>', and '>=' evaluate the respective operators with the values of
 columns on the left. 'between' is SQL like, i.e. inclusive. 'top_n' highlights the n highest values columns, 'bottom_n'
 hightlights the lowest n values. 'max' and 'min' are equivalent of top_1 and bottom_1. 'contains' uses \code{grepl()} to see
-if values of a column contain a pattern specified in \code{value}. 'colour-rank' applies
-one of the \code{colour_rank_theme}s.}
+if values of a column contain a pattern specified in \code{value}. 'color-rank' applies
+one of the \code{color_rank_theme}s.}
 
 \item{n}{the number of rows to highlight in 'top_n' and 'bottom_n'. If no value for n is provided, 1 is assumed
 with a warning.}
@@ -42,15 +42,15 @@ should be an atomic vector with the style definitions (e.g. background-color). T
 element will be an atomic vector with the same length as the first element, which will 
 contain the style definitions' values (e.g. red). Check the examples for more information.}
 
-\item{colour_rank_theme}{You can either pick one of the provided themes (RAG, White-Red, White-Green,
+\item{color_rank_theme}{You can either pick one of the provided themes (RAG, White-Red, White-Green,
 White-Blue, Spectral, or Rainbow) or create your own by choosing 'Custom' and providing a custom css list
-in \code{colour_rank_css}.}
+in \code{color_rank_css}.}
 
-\item{colour_rank_css}{An optional named list with css to be applied if a custom styling should be used.
+\item{color_rank_css}{An optional named list with css to be applied if a custom styling should be used.
 The names correspond to a header of the tableHTML, 'rownames', or 'row_groups'.
 The elements of this css named list are themselves lists of an atomic vector with style definitions (e.g. background-color).
 and a list of atomic vecors that contains the style definitions' values with the same
-length as the number of rows for each style definition. You can use \code{make_css_colour_rank_theme} to obtain this list.}
+length as the number of rows for each style definition. You can use \code{make_css_color_rank_theme} to obtain this list.}
 
 \item{decreasing}{logical.  Should the sort order be increasing or
     decreasing? For the \code{"radix"} method, this can be a vector of
@@ -61,7 +61,7 @@ length as the number of rows for each style definition. You can use \code{make_c
 in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 the condition will be evaluated per column.}
 
-\item{levels}{A character vector with the factor levels of the columns. Will be used to order factors for colour ranks.
+\item{levels}{A character vector with the factor levels of the columns. Will be used to order factors for color ranks.
 If NULL, factor levels are in alphabetic order.}
 }
 \value{
@@ -117,43 +117,43 @@ tableHTML(mtcars) \%>\%
                              css = list(c('background-color', "color"),
                                         c("steelblue", "lightgray")),
                              columns = c("rownames")) \%>\%
-  add_css_conditional_column(conditional = "colour_rank",
-                             colour_rank_theme = "White-Blue",
+  add_css_conditional_column(conditional = "color_rank",
+                             color_rank_theme = "White-Blue",
                              columns = 11)
 
 tableHTML(mtcars) \%>\%
  add_theme('scientific') \%>\%
- add_css_conditional_column(conditional = "colour_rank",
-                            colour_rank_theme =  "RAG",
+ add_css_conditional_column(conditional = "color_rank",
+                            color_rank_theme =  "RAG",
                             columns = 1) \%>\%
- add_css_conditional_column(conditional = "colour_rank",
-                            colour_rank_theme = "Rainbow",
+ add_css_conditional_column(conditional = "color_rank",
+                            color_rank_theme = "Rainbow",
                             columns = 5,
                             decreasing = TRUE)
 
-css <- make_css_colour_rank_theme(list(qsec = mtcars$qsec),
+css <- make_css_color_rank_theme(list(qsec = mtcars$qsec),
                                   colors = c('#E41A1C', '#377EB8', '#4DAF4A',
                                              '#984EA3', '#FF7F00', '#FFFF33',
                                              '#A65628', '#F781BF', '#999999'))
 
 tableHTML(mtcars) \%>\%
-  add_css_conditional_column(conditional = "colour_rank",
-                             colour_rank_theme =  "Custom",
-                             colour_rank_css = css,
+  add_css_conditional_column(conditional = "color_rank",
+                             color_rank_theme =  "Custom",
+                             color_rank_css = css,
                              columns = 7,
                              decreasing = FALSE,
                              same_scale = FALSE)
 
 tableHTML(mtcars) \%>\%
-  add_css_conditional_column(conditional = "colour_rank",
-                             colour_rank_theme = "RAG",
+  add_css_conditional_column(conditional = "color_rank",
+                             color_rank_theme = "RAG",
                              columns = c(1, 5)) \%>\%
-  add_css_conditional_column(conditional = "colour_rank",
-                             colour_rank_theme = "White-Blue",
+  add_css_conditional_column(conditional = "color_rank",
+                             color_rank_theme = "White-Blue",
                              columns = c(8, 11),
                              same_scale = TRUE) \%>\%
-  add_css_conditional_column(conditional = "colour_rank",
-                             colour_rank_theme = "White-Red",
+  add_css_conditional_column(conditional = "color_rank",
+                             color_rank_theme = "White-Red",
                              columns = c(9, 10),
                              same_scale = FALSE)
 

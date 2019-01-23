@@ -338,23 +338,23 @@ test_that("between works", {
 
 })
 
-test_that("colour rank works", {
-  #check colours are correct
+test_that("color rank works", {
+  #check colors are correct
   expect_equal(
     {
       tableHTML <- tableHTML(mtcars) %>%
-        add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "RAG",
+        add_css_conditional_column(conditional = "color_rank", color_rank_theme = "RAG",
                                    columns = c("carb"))
 
       starts <- gregexpr("<td", tableHTML)[[1]]
 
       ends <- gregexpr("</td>", tableHTML)[[1]]
-      colours <-
+      colors <-
         vapply(seq_along(starts), function(i) {
           td <- substr(tableHTML, starts[i], ends[i] + 4)
           ifelse(grepl('style="', td), substr(td, gregexpr("#", td)[[1]], gregexpr("#", td)[[1]] + 6), NA_character_)
         }, FUN.VALUE = character(1))
-      colours <- colours[!is.na(colours)]
+      colors <- colors[!is.na(colors)]
     },
     expected = c('#E8E58F', '#E8E58F', '#86C183', '#86C183', '#A3CB87', '#86C183', '#E8E58F', '#A3CB87',
                  '#A3CB87', '#E8E58F', '#E8E58F', '#C2D78B', '#C2D78B', '#C2D78B', '#E8E58F', '#E8E58F',
@@ -362,16 +362,16 @@ test_that("colour rank works", {
                  '#A3CB87', '#86C183', '#A3CB87', '#A3CB87', '#E8E58F', '#F0B681', '#F8696B', '#A3CB87')
   )
 
-  # check colours on same scale
+  # check colors on same scale
   expect_equal(
     {
       tableHTML <- tableHTML(data.frame(a = 1:10, b = rep(1:5, 2)), rownames = FALSE) %>%
-        add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "RAG",
+        add_css_conditional_column(conditional = "color_rank", color_rank_theme = "RAG",
                                    columns = c("a", "b"), same_scale = TRUE)
       starts <- gregexpr("<td", tableHTML)[[1]]
 
       ends <- gregexpr("</td>", tableHTML)[[1]]
-      colours <-
+      colors <-
         vapply(seq_along(starts), function(i) {
           td <- substr(tableHTML, starts[i], ends[i] + 4)
           ifelse(grepl('style="', td), substr(td, gregexpr("#", td)[[1]], gregexpr("#", td)[[1]] + 6), NA_character_)
@@ -388,12 +388,12 @@ test_that("colour rank works", {
   expect_equal(
     {
       tableHTML <- tableHTML(data.frame(a = 1:10, b = rep(1:5, 2)), rownames = FALSE) %>%
-        add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "RAG",
+        add_css_conditional_column(conditional = "color_rank", color_rank_theme = "RAG",
                                    columns = c("a", "b"), same_scale = FALSE)
       starts <- gregexpr("<td", tableHTML)[[1]]
 
       ends <- gregexpr("</td>", tableHTML)[[1]]
-      colours <-
+      colors <-
         vapply(seq_along(starts), function(i) {
           td <- substr(tableHTML, starts[i], ends[i] + 4)
           ifelse(grepl('style="', td), substr(td, gregexpr("#", td)[[1]], gregexpr("#", td)[[1]] + 6), NA_character_)

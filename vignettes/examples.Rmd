@@ -88,7 +88,7 @@ tableHTML(mtcars,
  add_theme('rshiny-blue')
 ```
 
-### Colouring a Row Group
+### Coloring a Row Group
 
 ```{r example 6}
 tableHTML(mtcars, 
@@ -245,7 +245,7 @@ tableHTML(mtcars,
 
 Note: the `<div>` container is introduced,
 because the css property `'transform:rotate(...deg);'` would rotate the whole `<td>` 
-element would be rotated and background colour would be out of place
+element would be rotated and background color would be out of place
 
 ```{r example_17}
 tableHTML(iris[c(1:5, 51:55, 101:105), 1:4], 
@@ -266,12 +266,12 @@ tableHTML(iris[c(1:5, 51:55, 101:105), 1:4],
   add_css_header(css = list(c('color', 'background-color'),
                             c('white', 'gray')),
                  headers = 1:5) %>%
-  add_css_conditional_column('colour_rank',
-                             colour_rank_theme = 'White-Green',
+  add_css_conditional_column('color_rank',
+                             color_rank_theme = 'White-Green',
                              columns = 1:2,
                              same_scale = FALSE) %>%
-  add_css_conditional_column('colour_rank',
-                             colour_rank_theme = 'White-Blue',
+  add_css_conditional_column('color_rank',
+                             color_rank_theme = 'White-Blue',
                              columns = 3:4,
                              same_scale = FALSE)
 ```
