@@ -14,8 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 When presenting data in a table, you might want to put emphasis on certain areas of your table. `add_css_column()` 
-allows you to apply the same CSS to all rows in a column. E.g. you can change the background colour of a column. 
-What you cannot do though, is change the colour of the column if a condition is met. This is why 
+allows you to apply the same CSS to all rows in a column. E.g. you can change the background color of a column. 
+What you cannot do though, is change the color of the column if a condition is met. This is why 
 `add_css_conditional_column()` was implemented. You can choose from a range of conditionals, equalities and 
 inequalities ("==", "!=", ">", ">=", "<", "<="), "min", "max", "top_n", "bottom_n", 
   "between", "contains")
@@ -266,43 +266,43 @@ df <- data.frame(factor_alphabetic = c('d', 'a', 'e', 'a', 'd', 'd', 'a', 'c', '
                  stringsAsFactors = TRUE)
 tableHTML(df, 
           rownames = FALSE) %>%
-  add_css_conditional_column(colour_rank_theme = 'White-Green',
+  add_css_conditional_column(color_rank_theme = 'White-Green',
                              columns = 1) %>%
-  add_css_conditional_column(colour_rank_theme = 'White-Green', 
+  add_css_conditional_column(color_rank_theme = 'White-Green', 
                              columns = 2,
                              levels = c('B', 'D', 'A', 'E', 'C'))
 ```
 
-### Colour rank 
+### Color rank 
 
-A common conditional formatting usecase is to apply a colour rank to columns. There are a few of them pre-defined:
+A common conditional formatting usecase is to apply a color rank to columns. There are a few of them pre-defined:
 
 ```{r example_14}
 tableHTML(mtcars,
           widths = c(140, rep(45, 11))) %>%
-  add_css_conditional_column(colour_rank_theme = "RAG", columns = 1) %>%
-  add_css_conditional_column(colour_rank_theme = "Spectral", columns = 2) %>%
-  add_css_conditional_column(colour_rank_theme = "Rainbow", columns = 3) %>%
-  add_css_conditional_column(colour_rank_theme = "White-Green", columns = 4) %>%
-  add_css_conditional_column(colour_rank_theme = "White-Blue", columns = 5) %>%
-  add_css_conditional_column(colour_rank_theme = "White-Red", columns = 6) 
+  add_css_conditional_column(color_rank_theme = "RAG", columns = 1) %>%
+  add_css_conditional_column(color_rank_theme = "Spectral", columns = 2) %>%
+  add_css_conditional_column(color_rank_theme = "Rainbow", columns = 3) %>%
+  add_css_conditional_column(color_rank_theme = "White-Green", columns = 4) %>%
+  add_css_conditional_column(color_rank_theme = "White-Blue", columns = 5) %>%
+  add_css_conditional_column(color_rank_theme = "White-Red", columns = 6) 
 ```
 
 \
 
-You can reverese the colour by using `decreasing = TRUE`
+You can reverese the color by using `decreasing = TRUE`
 
 ```{r example_15}
 tableHTML(mtcars,
           widths = rep(100, 12)) %>%
-  add_css_conditional_column(colour_rank_theme = "RAG", 
+  add_css_conditional_column(color_rank_theme = "RAG", 
                              columns = 1, 
                              decreasing = TRUE) 
 ```
 
 \
 
-Colour ranks can be applied to multiple columns with one function call as well and 
+Color ranks can be applied to multiple columns with one function call as well and 
 the context can be set using `same_scale`:
 
 ```{r example_16}
@@ -312,11 +312,11 @@ tableHTML(data.frame(a = 1:20, b = rep(1:5, 4), c = 1:20, d = rep(1:5, 4)),
                                 c("same_scale = TRUE",
                                   "same_scale = FALSE")),
           rownames = FALSE) %>%
-  add_css_conditional_column(colour_rank_theme = "RAG",
+  add_css_conditional_column(color_rank_theme = "RAG",
                              columns = c(1, 2), 
                              decreasing = FALSE, 
                              same_scale = TRUE) %>%
-  add_css_conditional_column(colour_rank_theme = "RAG", 
+  add_css_conditional_column(color_rank_theme = "RAG", 
                              columns = c(3, 4), 
                              decreasing = FALSE, 
                              same_scale = FALSE)
@@ -329,18 +329,18 @@ name of the column the css should be applied to. The elements of that named list
 css style attributes and a list of style attribute values. For each style attribute you need to
 have a list of attribute values and you need to have an attribute value for every row in the column. 
 
-You can use `make_css_colour_rank_theme()` with specific colours that you wish to apply. You can provide
-your own colours here or use palettes from e.g. RColorBrewer, as long as they are a valid argument to `col2rgb()`.
+You can use `make_css_color_rank_theme()` with specific colors that you wish to apply. You can provide
+your own colors here or use palettes from e.g. RColorBrewer, as long as they are a valid argument to `col2rgb()`.
 
 ```{r example_17}
-colour_rank_css <- 
-  make_css_colour_rank_theme(list(qsec = mtcars$qsec),
+color_rank_css <- 
+  make_css_color_rank_theme(list(qsec = mtcars$qsec),
                              colors = RColorBrewer::brewer.pal(9, "Set1"))
 
 tableHTML(mtcars,
           widths = c(140, rep(45, 11))) %>%
-  add_css_conditional_column(colour_rank_theme =  "Custom", 
-                             colour_rank_css = colour_rank_css, 
+  add_css_conditional_column(color_rank_theme =  "Custom", 
+                             color_rank_css = color_rank_css, 
                              columns = 7)
 ```
 
@@ -355,7 +355,7 @@ tableHTML(mtcars,
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3'))) %>%
  add_theme('rshiny-blue') %>%
  add_css_column(css = list('border', '1px solid'), columns = 1) %>%
- add_css_conditional_column(colour_rank_theme = "RAG", columns = 1) %>%
+ add_css_conditional_column(color_rank_theme = "RAG", columns = 1) %>%
  add_css_conditional_column(conditional = "contains",
                             value = "1", 
                             css = list(c('color', 'font-size', 'border'), 
@@ -378,7 +378,7 @@ tableHTML(mtcars,
 In the example below you can see how to combine a few other functions from the `add_css_` family. First, 
 a tableHTML is created with rownames, an outside boarder, specified column widths, row groups, and 
 second headers. 
-CSS is then applied to the second header, the header, every second row, a colour rank is added to the 
+CSS is then applied to the second header, the header, every second row, a color rank is added to the 
 row groups, and in addition conditional formatting if the row groups contain specific numbers. 
 
 ```{r example_19}
@@ -396,8 +396,8 @@ tableHTML(mtcars,
                  headers = 3:13) %>%
   add_css_row(css = list('background-color', '#f2f2f2'), 
               rows = even(3:34)) %>%
-  add_css_conditional_column(colour_rank_css = 
-                               make_css_colour_rank_theme(list(row_groups = 1:3),
+  add_css_conditional_column(color_rank_css = 
+                               make_css_color_rank_theme(list(row_groups = 1:3),
                                                           colors = c('#00b200',
                                                                      '#007f00',
                                                                      '#004c00'),
@@ -415,7 +415,7 @@ tableHTML(mtcars,
                              value = "3", 
                              css = list('background-color', '#A9A9A9'),
                              columns = "row_groups") %>%
-  add_css_conditional_column(colour_rank_theme = 'RAG', 
+  add_css_conditional_column(color_rank_theme = 'RAG', 
                              columns = 4)
 ```
 
