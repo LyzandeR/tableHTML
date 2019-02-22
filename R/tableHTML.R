@@ -100,6 +100,10 @@
 #'   If you are working on Rgui (interactively) the table will be printed on your default browser.
 #'   If you set this to FALSE the HTML code will be printed on screen.
 #'
+#' @param add_data TRUE or FALSE. Defaults to TRUE. If set to true, the data.frame or matrix passed in
+#'  \code{obj} will be added to the attributes. If set to FALSE, the object will be smaller, but
+#'  \code{add_css_conditional_column} would not be applicable.
+#'
 #' @param theme Argument is Deprecated. Please use the add_theme function instead.
 #'
 #' @return A tableHTML object.
@@ -141,6 +145,7 @@ tableHTML <- function(obj,
                       escape = TRUE,
                       round = NULL,
                       replace_NA = NULL,
+                      add_data = TRUE,
                       theme = NULL) {
 
   #CHECKS----------------------------------------------------------------------------------------
@@ -201,6 +206,12 @@ tableHTML <- function(obj,
 
   #make sure collapse has the right argument
   collapse <- match.arg(collapse)
+
+  #check the add_data argument
+  ##TEST
+  if (!is.logical(add_data) | !length(add_data) == 1) {
+   stop("add_data must be either TRUE or FALSE")
+  }
 
   #make sure the first character of spacing is a number
   if (collapse %in% c('separate', 'separate_shiny')) {
@@ -439,6 +450,7 @@ tableHTML <- function(obj,
   attr(htmltable, 'second_headers') <- !is.null(second_headers)
   attr(htmltable, 'second_headers_data') <- second_headers
   attr(htmltable, 'table_class') <- class
+  if (add_data) attr(htmltable, 'data') <- obj
 
   #Adding Collapse arg------------------------------------------------------------------------
 
