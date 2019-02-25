@@ -10,7 +10,7 @@ tableHTML(obj, rownames = TRUE, class = paste0("table_",
   second_headers = NULL, row_groups = NULL, caption = NULL,
   footer = NULL, border = 1, collapse = c("collapse", "separate",
   "separate_shiny"), spacing = "2px", escape = TRUE, round = NULL,
-  replace_NA = NULL, theme = NULL)
+  replace_NA = NULL, add_data = TRUE, theme = NULL)
 
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }
@@ -64,6 +64,10 @@ numeric columns only. Defaults to NULL which means no rounding.}
 
 \item{replace_NA}{A sting that specifies with what to replace NAs in character
 or factor columns only. Defaults to NULL which means NAs will be printed.}
+
+\item{add_data}{TRUE or FALSE. Defaults to TRUE. If set to true, the data.frame or matrix passed in
+\code{obj} will be added to the attributes. If set to FALSE, the object will be smaller, but
+\code{add_css_conditional_column} would not be applicable.}
 
 \item{theme}{Argument is Deprecated. Please use the add_theme function instead.}
 
