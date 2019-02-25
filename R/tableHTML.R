@@ -240,9 +240,18 @@ tableHTML <- function(obj,
   #escape character > and < in the data and headers because it will close or open tags
   if (escape) {
    obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
-    x <- gsub('>', '&#62;', x)
-    x <- gsub('<', '&#60;', x)
-    x
+    if (is.factor(x)) {
+     temp_levels <- levels(x)
+     x <- gsub('>', '&#62;', x)
+     x <- gsub('<', '&#60;', x)
+     temp_levels <- gsub('>', '&#62;', temp_levels)
+     temp_levels <- gsub('<', '&#60;', temp_levels)
+     factor(x, levels = temp_levels)
+    } else {
+     x <- gsub('>', '&#62;', x)
+     x <- gsub('<', '&#60;', x)
+     x
+    }
    })
    headers <- gsub('>', '&#62;', force(headers))
    headers <- gsub('<', '&#60;', force(headers))
@@ -268,9 +277,16 @@ tableHTML <- function(obj,
    })
   }
 
-  #replacing NA values for character columns
+  #replacing NA values for character and factor columns
   if (!is.null(replace_NA)) {
    obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
+    if(is.factor(x)) {
+     levels(x) <- c(levels(x), replace_NA)
+     temp_levels <- levels(x)
+     x[is.na(x)] <- replace_NA
+     temp_levels[is.na(temp_levels)] <- replace_NA
+     factor(x, levels = temp_levels)
+    }
     x[is.na(x)] <- replace_NA
     x
    })
