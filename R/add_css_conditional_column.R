@@ -44,7 +44,7 @@
 #' in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 #' the condition will be evaluated per column.
 #'
-#' @param levels. Deprecated. Please change the factor levels in the input data of \code{tableHTML}.
+#' @param levels Deprecated. Please change the factor levels in the input data of \code{tableHTML}.
 #'
 #' @inheritParams add_css_column
 #' @inheritParams base::order

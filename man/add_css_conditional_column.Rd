@@ -61,7 +61,7 @@ length as the number of rows for each style definition. You can use \code{make_c
 in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 the condition will be evaluated per column.}
 
-\item{levels.}{Deprecated. Please change the factor levels in the input data of \code{tableHTML}.}
+\item{levels}{Deprecated. Please change the factor levels in the input data of \code{tableHTML}.}
 }
 \value{
 A tableHTML object.
