@@ -6,6 +6,11 @@ test_that("Function fails for wrong inputs", {
   expect_error(add_css_conditional_column(mtcars, 1),
                'tableHTML needs to be')
 
+ #deprecated levels
+ expect_error(tableHTML(mtcars) %>%
+               add_css_conditional_column(columns = 1, levels = "13"),
+              "levels is deprecated")
+
   # no columns specified
   expect_error(tableHTML(mtcars) %>% add_css_conditional_column(conditional = "==", value = 1,
                                                                 css = list('background-color', 'lightgray')),

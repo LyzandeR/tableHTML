@@ -255,22 +255,26 @@ tableHTML(mtcars,
                              columns = "rownames")
 ```
 
-### Sorting factors with levels
+### Update to sorting factors with levels
 
-For factors, the default order of levels is alphabetic. If you want to change
-it to a specific order, you can add them with the argument `levels`.
+In the old version 1.1.0 of tableHTML, the default order of factor levels was alphabetic,
+because the data was parsed from the HTML. Since version 2.0.0, 
+the data comes from the tableHTML objects attributes, so the factors and levels are preserved.
+The `levels` argument is therfore deprecated.
 
 ```{r example_20}
 df <- data.frame(factor_alphabetic = c('d', 'a', 'e', 'a', 'd', 'd', 'a', 'c', 'd', 'a'),
                  factor_ordered = c('D', 'A', 'E', 'A', 'D', 'D', 'A', 'C', 'D', 'A'),
                  stringsAsFactors = TRUE)
+
+df$factor_ordered <- factor(df, levels = c('B', 'D', 'A', 'E', 'C'))
+
 tableHTML(df, 
           rownames = FALSE) %>%
   add_css_conditional_column(color_rank_theme = 'White-Green',
                              columns = 1) %>%
   add_css_conditional_column(color_rank_theme = 'White-Green', 
-                             columns = 2,
-                             levels = c('B', 'D', 'A', 'E', 'C'))
+                             columns = 2)
 ```
 
 ### Color rank 

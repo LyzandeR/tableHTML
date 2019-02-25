@@ -44,6 +44,8 @@
 #' in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 #' the condition will be evaluated per column.
 #'
+#' @param levels. Deprecated. Please change the factor levels in the input data of \code{tableHTML}.
+#'
 #' @inheritParams add_css_column
 #' @inheritParams base::order
 #'
@@ -143,7 +145,8 @@ add_css_conditional_column <- function(tableHTML,
                                                              "White-Green", "White-Red", "White-Blue"),
                                        color_rank_css = NULL,
                                        decreasing = FALSE,
-                                       same_scale = TRUE) {
+                                       same_scale = TRUE,
+                                       levels = NULL) {
 
   #persist attributes
   attributes <- attributes(tableHTML)
@@ -155,6 +158,9 @@ add_css_conditional_column <- function(tableHTML,
   if (is.null(attributes$data)) {
    stop("tableHTML object does not have data in attributes. \nSee documentation in tableHTML()")
   }
+
+  # deprecated levels
+  if (! is.null(levels)) stop("levels is deprecated. Please change the input data directly")
 
   if (!suppressWarnings(sum(is.na(as.numeric(columns)))) %in% c(0, length(columns))) {
     stop("columns must either be numeric or text, but not both")
