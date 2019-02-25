@@ -85,8 +85,66 @@ test_that("Function fails for wrong inputs", {
                                               css = list('background-color', 'lightgray')),
                  'n not provided')
 
+  # n greater than number of rows
+  expect_error(tableHTML(mtcars) %>%
+                  add_css_conditional_column(conditional = "top_n",
+                                             columns = c(1),
+                                             css = list('background-color', 'lightgray'),
+                                             n = 33),
+                 "n cannot exceed")
 
+  # n equal to number of rows
+  expect_warning(tableHTML(mtcars) %>%
+                  add_css_conditional_column(conditional = "top_n",
+                                             columns = c(1),
+                                             css = list('background-color', 'lightgray'),
+                                             n = 32),
+                 "all rows selected")
 
+  # comparison value not provided
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "==",
+                                           columns = c(1),
+                                           css = list('background-color', 'lightgray')),
+               "comparison value needed")
+
+  # begin values not numeric
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "between",
+                                           columns = c(1),
+                                           css = list('background-color', 'lightgray'),
+                                           between = c("a", 1)),
+               "begin and end values of begin")
+
+  # custom colour rank theme selected with default colour rank theme
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "color_rank",
+                                           columns = c(1),
+                                           color_rank_theme = "Custom"),
+               "color_rank_css needs to be provided")
+
+  # wrong format of custom css
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "color_rank",
+                                           columns = c(1),
+                                           color_rank_theme = "Custom",
+                                           color_rank_css = list(mpg = list(list(rep("red", 32))))),
+               "color_rank_css must be a list of 2")
+
+  # unnamed list
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "color_rank",
+                                           columns = c(1),
+                                           color_rank_theme = "Custom",
+                                           color_rank_css = list(list("background-color", list(rep("red", 32))))),
+               "color_rank_css must be a named list")
+
+})
+
+test_that("data is added", {
+ expect_error(tableHTML(mtcars, add_data = FALSE) %>%
+               add_css_conditional_column(),
+              "tableHTML object does not have data in attributes.")
 })
 
 test_that("equations and inequations work", {
