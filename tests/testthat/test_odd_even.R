@@ -23,3 +23,13 @@ test_that("even outputs correct", {
  expect_equal(even(1:10), c(2, 4, 6, 8, 10))
 
 })
+
+test_that("checks work", {
+
+ expect_error(even(TRUE),
+              "vec needs to be numeric")
+
+ expect_error(odd("a"),
+              "vec needs to be numeric")
+
+})

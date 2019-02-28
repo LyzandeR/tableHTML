@@ -61,8 +61,7 @@ length as the number of rows for each style definition. You can use \code{make_c
 in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 the condition will be evaluated per column.}
 
-\item{levels}{A character vector with the factor levels of the columns. Will be used to order factors for color ranks.
-If NULL, factor levels are in alphabetic order.}
+\item{levels}{Deprecated. Please change the factor levels in the input data of \code{tableHTML}.}
 }
 \value{
 A tableHTML object.

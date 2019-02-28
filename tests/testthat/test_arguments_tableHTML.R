@@ -138,3 +138,23 @@ test_that("theme is deprecated", {
 
 })
 
+test_that("add_data works", {
+ expect_error(mtcars %>%
+               tableHTML(add_data = c(TRUE, FALSE)),
+              "add_data")
+ expect_error(mtcars %>%
+               tableHTML(add_data = "TRUE"),
+              "add_data")
+
+ with_data <- mtcars %>%
+  tableHTML(add_data = TRUE)
+
+ expect_identical(mtcars, attributes(with_data)[["data"]])
+
+ without_data <- mtcars %>%
+  tableHTML(add_data = FALSE)
+
+ expect_null(attributes(without_data)[["data"]])
+
+})
+

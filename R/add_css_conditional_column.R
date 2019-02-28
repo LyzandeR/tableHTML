@@ -44,8 +44,7 @@
 #' in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 #' the condition will be evaluated per column.
 #'
-#' @param levels A character vector with the factor levels of the columns. Will be used to order factors for color ranks.
-#' If NULL, factor levels are in alphabetic order.
+#' @param levels Deprecated. Please change the factor levels in the input data of \code{tableHTML}.
 #'
 #' @inheritParams add_css_column
 #' @inheritParams base::order
@@ -149,15 +148,23 @@ add_css_conditional_column <- function(tableHTML,
                                        same_scale = TRUE,
                                        levels = NULL) {
 
+  #persist attributes
+  attributes <- attributes(tableHTML)
+
   #checks
   if (!inherits(tableHTML, 'tableHTML')) stop('tableHTML needs to be a tableHTML object')
+
+  # check if data in attributes
+  if (is.null(attributes$data)) {
+   stop("tableHTML object does not have data in attributes. \nSee documentation in tableHTML()")
+  }
+
+  # deprecated levels
+  if (! is.null(levels)) stop("levels is deprecated. Please change the input data directly")
 
   if (!suppressWarnings(sum(is.na(as.numeric(columns)))) %in% c(0, length(columns))) {
     stop("columns must either be numeric or text, but not both")
   }
-
-  #persist attributes
-  attributes <- attributes(tableHTML)
 
   if (c("row_groups") %in% columns) {
     if (!attributes$row_groups) {
@@ -221,11 +228,14 @@ add_css_conditional_column <- function(tableHTML,
     if (is.null(color_rank_css)) {
       stop("color_rank_css needs to be provided for custom conditional formatting")
     }
-    if (! unique(unlist(lapply(1:length(color_rank_css), function(i) {
-      lengths(color_rank_css[[i]])
-    }))) == 1) {
-      stop('color_rank_css must be a list of corresponding css properties and css property values')
+    if (lengths(color_rank_css) != 2) {
+     stop("color_rank_css must be a list of 2 atomic vectors")
     }
+    # if (! unique(unlist(lapply(1:length(color_rank_css), function(i) {
+    #   lengths(color_rank_css[[i]])
+    # }))) == 1) {
+    #   stop('color_rank_css must be a list of corresponding css properties and css property values')
+    # }
     if (is.null(names(color_rank_css))) {
       stop('color_rank_css must be a named list')
     }
@@ -306,7 +316,7 @@ add_css_conditional_column <- function(tableHTML,
                                "between" = between,
                                value)
 
-    column_data <- extract_column_data(tableHTML, indices, levels)
+    column_data <- extract_column_data(tableHTML, indices)
 
     condition <- conditional_test_function(column_data = column_data,
                                            conditional = conditional,
@@ -315,7 +325,7 @@ add_css_conditional_column <- function(tableHTML,
   }
 
   if (!is.null(color_rank_theme_colors)) {
-    column_data <- extract_column_data(tableHTML, indices, levels)
+    column_data <- extract_column_data(tableHTML, indices)
     color_rank_css <- make_css_color_rank_theme(column_data,
                                        color_rank_theme_colors,
                                        decreasing = decreasing,
