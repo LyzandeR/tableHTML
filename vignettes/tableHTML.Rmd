@@ -19,7 +19,7 @@ with any application that accepts HTML (e.g. shiny, rmarkdown, Outlook, PowerPoi
 The main function `tableHTML` will convert a data.frame or matrix or any other object that can be
 converted into a data.frame into an HTML table. Using the function on R Studio will print the table
 on the viewer otherwise it will use the default browser. The default tables are built without any 
-CSS in order to allow for full flexibility although two themes are included.
+CSS in order to allow for full flexibility in design.
 
 In order to see the most basic example with tableHTML you could type:
 
@@ -198,29 +198,6 @@ tableHTML(df, escape = TRUE, rownames = FALSE)
 In order to fix this, the argument `escape` is set to `TRUE` by default. `<` and `>` will be replaced
 with `&#62` and `&#60`. However, if you would like to include clickable links in your HTML table you 
 should **not** escape by setting `escape = FALSE`.
-
-### Specifying a theme
-
-Although the package has been designed so that it gives the utmost freedom to the user to style the
-HTML table as they please, two themes have been included for those who need something quick and nice.
-The package offers two themes for now: scientific and rshiny-blue. To use them, you need to use the
-`add_theme` function.
-     
-**Notice**: When working with themes you can still add extra css (using the add\_css\_* family from
-below) but you will not be able to overwrite the styling that is there e.g. to change the width of
-the lines.
-
-```{r theme-scientific}
-tableHTML(mtcars, widths = c(140, rep(50, 11))) %>%
- add_theme('scientific')
-```
-
-\     
-
-```{r theme-rshiny-blue}
-tableHTML(mtcars, widths = c(140, rep(50, 11))) %>%
- add_theme('rshiny-blue')
-```
 
 ------
 
@@ -553,6 +530,19 @@ mtcars %>%
 **Note**: A good way to work with this function is to print the table 
 (`print(tableHTML(mtcars), viewer = FALSE)`), see how the part you want to
 change is written and change that with the appropriate HTML text.
+
+### Taking a picture of the tableHTML
+
+If you would like to export a tableHTML as a picture, you can use the function `tableHTML_to_image`.
+This makes tableHTML compatible with MS Word and PDF (when rendering rmarkdown as pdf or word for example). It can be also be used with plain markdown and rmarkdown but
+we recommend keeping the tables as HTML when working with markdown.
+
+```{r picture}
+mtcars %>%
+  tableHTML() %>%
+  tableHTML_to_image()
+```
+
 
 ### Hover and other CSS selectors
 
