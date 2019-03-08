@@ -100,6 +100,10 @@
 #'   If you are working on Rgui (interactively) the table will be printed on your default browser.
 #'   If you set this to FALSE the HTML code will be printed on screen.
 #'
+#' @param add_data TRUE or FALSE. Defaults to TRUE. If set to true, the data.frame or matrix passed in
+#'  \code{obj} will be added to the attributes. If set to FALSE, the object will be smaller, but
+#'  \code{add_css_conditional_column} would not be applicable.
+#'
 #' @param theme Argument is Deprecated. Please use the add_theme function instead.
 #'
 #' @return A tableHTML object.
@@ -141,6 +145,7 @@ tableHTML <- function(obj,
                       escape = TRUE,
                       round = NULL,
                       replace_NA = NULL,
+                      add_data = TRUE,
                       theme = NULL) {
 
   #CHECKS----------------------------------------------------------------------------------------
@@ -202,6 +207,12 @@ tableHTML <- function(obj,
   #make sure collapse has the right argument
   collapse <- match.arg(collapse)
 
+  #check the add_data argument
+  ##TEST
+  if (!is.logical(add_data) | !length(add_data) == 1) {
+   stop("add_data must be either TRUE or FALSE")
+  }
+
   #make sure the first character of spacing is a number
   if (collapse %in% c('separate', 'separate_shiny')) {
    distances <- gsub('\\s+', ' ', spacing)
@@ -229,9 +240,18 @@ tableHTML <- function(obj,
   #escape character > and < in the data and headers because it will close or open tags
   if (escape) {
    obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
-    x <- gsub('>', '&#62;', x)
-    x <- gsub('<', '&#60;', x)
-    x
+    if (is.factor(x)) {
+     temp_levels <- levels(x)
+     x <- gsub('>', '&#62;', x)
+     x <- gsub('<', '&#60;', x)
+     temp_levels <- gsub('>', '&#62;', temp_levels)
+     temp_levels <- gsub('<', '&#60;', temp_levels)
+     factor(x, levels = temp_levels)
+    } else {
+     x <- gsub('>', '&#62;', x)
+     x <- gsub('<', '&#60;', x)
+     x
+    }
    })
    headers <- gsub('>', '&#62;', force(headers))
    headers <- gsub('<', '&#60;', force(headers))
@@ -257,9 +277,16 @@ tableHTML <- function(obj,
    })
   }
 
-  #replacing NA values for character columns
+  #replacing NA values for character and factor columns
   if (!is.null(replace_NA)) {
    obj[sapply(obj, is.fachar)] <- lapply(obj[sapply(obj, is.fachar)], function(x) {
+    if(is.factor(x)) {
+     levels(x) <- c(levels(x), replace_NA)
+     temp_levels <- levels(x)
+     x[is.na(x)] <- replace_NA
+     temp_levels[is.na(temp_levels)] <- replace_NA
+     factor(x, levels = temp_levels)
+    }
     x[is.na(x)] <- replace_NA
     x
    })
@@ -439,6 +466,7 @@ tableHTML <- function(obj,
   attr(htmltable, 'second_headers') <- !is.null(second_headers)
   attr(htmltable, 'second_headers_data') <- second_headers
   attr(htmltable, 'table_class') <- class
+  if (add_data) attr(htmltable, 'data') <- obj
 
   #Adding Collapse arg------------------------------------------------------------------------
 

@@ -34,18 +34,6 @@ replace_style<- function(tableHTML, split, style, condition = NULL){
 
 }
 
-convert_type <- function(v, type, levels) {
-  switch(type,
-         numeric = as.numeric(v),
-         integer = as.integer(v),
-         factor = if (is.null(levels)) {
-           as.factor(v)
-         } else {
-           factor(v, levels = levels)
-         },
-         character = as.character(v))
-}
-
 fix_header_dupes <- function(h) {
  dup_positions <- which(duplicated(h))
  empty_strings <- sapply(dup_positions, function(x) paste0(rep(' ', x), collapse = ''))

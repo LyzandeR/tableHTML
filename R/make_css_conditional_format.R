@@ -1,17 +1,17 @@
 #' @importFrom grDevices colorRampPalette col2rgb
 NULL
 
-#' Get css properties for custom colour rank theme
+#' Get css properties for custom color rank theme
 #'
-#' \code{make_css_colour_rank_theme} will create a list of css properties needed for custom conditional formatting.
+#' \code{make_css_color_rank_theme} will create a list of css properties needed for custom conditional formatting.
 #'
-#' \code{make_css_colour_rank_theme} will add conditional css to a tableHTML's columns. \code{add_conditional_css_column} will only
+#' \code{make_css_color_rank_theme} will add conditional css to a tableHTML's columns. \code{add_conditional_css_column} will only
 #'   add css to the columns without the headers or second headers (i.e. it only affects the td tag
 #'   internally and not the th tag). If you want to add css to the headers or second headers please
 #'   use \code{add_css_header} or \code{add_css_second_header}.
 #'
 #' @param column_data A named list of vectors of values that are in a tableHTML column which
-#'  should be mapped to a colour palette.
+#'  should be mapped to a color palette.
 #'
 #' @param css_property Character. An optional character specifying the css attribute
 #' that should be used. Default is \code{'backgroud-color'}
@@ -26,20 +26,20 @@ NULL
 #'
 #' tableHTML <- tableHTML(mtcars)
 #'
-#' css <- make_css_colour_rank_theme(list(mpg = mtcars$mpg),
+#' css <- make_css_color_rank_theme(list(mpg = mtcars$mpg),
 #'                                  c("orange", "yellow","springgreen","royalblue"))
 #'
-#' tableHTML %>% add_css_conditional_column(conditional = "colour_rank",
-#'                                         colour_rank_theme = "Custom",
-#'                                         colour_rank_css = css, column = 1)
+#' tableHTML %>% add_css_conditional_column(conditional = "color_rank",
+#'                                         color_rank_theme = "Custom",
+#'                                         color_rank_css = css, column = 1)
 #'
 #' @export
 
-make_css_colour_rank_theme <- function(column_data,
-                                       colors,
-                                       css_property = "background-color",
-                                       decreasing = FALSE,
-                                       same_scale = TRUE) {
+make_css_color_rank_theme <- function(column_data,
+                                      colors,
+                                      css_property = "background-color",
+                                      decreasing = FALSE,
+                                      same_scale = TRUE) {
 
   #checks
   if (class(column_data) != 'list' | is.null(names(column_data))) {
@@ -61,19 +61,19 @@ make_css_colour_rank_theme <- function(column_data,
 
   css <- lapply(column_data, function(cd) {
 
-    css_colours <- character(length(cd))
+    css_colors <- character(length(cd))
 
     if (is.numeric(cols_context(cd))) {
      colors <- if (decreasing) rev(colors) else colors
 
-     colour_palette <- colorRampPalette(colors)
+     color_palette <- colorRampPalette(colors)
 
      colsteps <- max(cols_context(cd)) - min(cols_context(cd)) + 1
 
      value <- unique(cols_context(cd))[order(unique(cols_context(cd)),
                                              decreasing = decreasing)]
 
-     colour <- colour_palette(colsteps)[findInterval(value,
+     color <- color_palette(colsteps)[findInterval(value,
                                                      seq(min(value),
                                                          max(value),
                                                          length.out = colsteps))]
@@ -81,25 +81,25 @@ make_css_colour_rank_theme <- function(column_data,
      value <- unique(cols_context(cd))[order(unique(cols_context(cd)),
                                              decreasing = decreasing)]
 
-     colour_palette <- colorRampPalette(colors)
+     color_palette <- colorRampPalette(colors)
 
-     colour <- colour_palette(length(unique(cols_context(cd))))
+     color <- color_palette(length(unique(cols_context(cd))))
     }
 
 
 
     col_df <- data.frame(value = value,
-                         colour = colour,
+                         color = color,
                          stringsAsFactors = FALSE)
 
-    css_colours[1:length(cd)] <-
+    css_colors[1:length(cd)] <-
       vapply(1:length(cd), function(i) {
 
-        col_df$colour[which(col_df$value %in%  cd[i])]
+        col_df$color[which(col_df$value %in%  cd[i])]
 
       }, FUN.VALUE = character(1))
 
-    list(c(css_property), list(c(css_colours)))
+    list(c(css_property), list(c(css_colors)))
 
 
   })

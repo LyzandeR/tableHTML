@@ -5,9 +5,9 @@ conditional_test_function <- function(column_data,
                                       conditional,
                                       same_scale = TRUE,
                                       ...) {
-  
+
   arguments <- list(...)
-  
+
   col_names <- names(column_data)
   cols_context <- switch(ifelse(same_scale, "TRUE", "FALSE"),
                          "TRUE" = function(x) { return(unname(unlist(column_data))) },
@@ -15,7 +15,7 @@ conditional_test_function <- function(column_data,
   )
 
   lapply(column_data, function(cd) {
-    
+
     switch(conditional,
            "==" = cd == arguments$comparison_value,
            "!=" = cd != arguments$comparison_value,
@@ -26,11 +26,10 @@ conditional_test_function <- function(column_data,
            ">=" = cd >= arguments$comparison_value,
            "<" = cd < arguments$comparison_value,
            "<=" = cd <= arguments$comparison_value,
-           ">" = cd > arguments$comparison_value,
            contains = grepl(arguments$comparison_value, cd),
            min = cd == min(cols_context(cd)),
            max = cd == max(cols_context(cd))
            )
   })
-  
+
 }

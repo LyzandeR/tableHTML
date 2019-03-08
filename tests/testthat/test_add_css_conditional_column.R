@@ -6,6 +6,11 @@ test_that("Function fails for wrong inputs", {
   expect_error(add_css_conditional_column(mtcars, 1),
                'tableHTML needs to be')
 
+ #deprecated levels
+ expect_error(tableHTML(mtcars) %>%
+               add_css_conditional_column(columns = 1, levels = "13"),
+              "levels is deprecated")
+
   # no columns specified
   expect_error(tableHTML(mtcars) %>% add_css_conditional_column(conditional = "==", value = 1,
                                                                 css = list('background-color', 'lightgray')),
@@ -85,8 +90,66 @@ test_that("Function fails for wrong inputs", {
                                               css = list('background-color', 'lightgray')),
                  'n not provided')
 
+  # n greater than number of rows
+  expect_error(tableHTML(mtcars) %>%
+                  add_css_conditional_column(conditional = "top_n",
+                                             columns = c(1),
+                                             css = list('background-color', 'lightgray'),
+                                             n = 33),
+                 "n cannot exceed")
 
+  # n equal to number of rows
+  expect_warning(tableHTML(mtcars) %>%
+                  add_css_conditional_column(conditional = "top_n",
+                                             columns = c(1),
+                                             css = list('background-color', 'lightgray'),
+                                             n = 32),
+                 "all rows selected")
 
+  # comparison value not provided
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "==",
+                                           columns = c(1),
+                                           css = list('background-color', 'lightgray')),
+               "comparison value needed")
+
+  # begin values not numeric
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "between",
+                                           columns = c(1),
+                                           css = list('background-color', 'lightgray'),
+                                           between = c("a", 1)),
+               "begin and end values of begin")
+
+  # custom colour rank theme selected with default colour rank theme
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "color_rank",
+                                           columns = c(1),
+                                           color_rank_theme = "Custom"),
+               "color_rank_css needs to be provided")
+
+  # wrong format of custom css
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "color_rank",
+                                           columns = c(1),
+                                           color_rank_theme = "Custom",
+                                           color_rank_css = list(mpg = list(list(rep("red", 32))))),
+               "color_rank_css must be a list of 2")
+
+  # unnamed list
+  expect_error(tableHTML(mtcars) %>%
+                add_css_conditional_column(conditional = "color_rank",
+                                           columns = c(1),
+                                           color_rank_theme = "Custom",
+                                           color_rank_css = list(list("background-color", list(rep("red", 32))))),
+               "color_rank_css must be a named list")
+
+})
+
+test_that("data is added", {
+ expect_error(tableHTML(mtcars, add_data = FALSE) %>%
+               add_css_conditional_column(),
+              "tableHTML object does not have data in attributes.")
 })
 
 test_that("equations and inequations work", {
@@ -338,23 +401,23 @@ test_that("between works", {
 
 })
 
-test_that("colour rank works", {
-  #check colours are correct
+test_that("color rank works", {
+  #check colors are correct
   expect_equal(
     {
       tableHTML <- tableHTML(mtcars) %>%
-        add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "RAG",
+        add_css_conditional_column(conditional = "color_rank", color_rank_theme = "RAG",
                                    columns = c("carb"))
 
       starts <- gregexpr("<td", tableHTML)[[1]]
 
       ends <- gregexpr("</td>", tableHTML)[[1]]
-      colours <-
+      colors <-
         vapply(seq_along(starts), function(i) {
           td <- substr(tableHTML, starts[i], ends[i] + 4)
           ifelse(grepl('style="', td), substr(td, gregexpr("#", td)[[1]], gregexpr("#", td)[[1]] + 6), NA_character_)
         }, FUN.VALUE = character(1))
-      colours <- colours[!is.na(colours)]
+      colors <- colors[!is.na(colors)]
     },
     expected = c('#E8E58F', '#E8E58F', '#86C183', '#86C183', '#A3CB87', '#86C183', '#E8E58F', '#A3CB87',
                  '#A3CB87', '#E8E58F', '#E8E58F', '#C2D78B', '#C2D78B', '#C2D78B', '#E8E58F', '#E8E58F',
@@ -362,16 +425,16 @@ test_that("colour rank works", {
                  '#A3CB87', '#86C183', '#A3CB87', '#A3CB87', '#E8E58F', '#F0B681', '#F8696B', '#A3CB87')
   )
 
-  # check colours on same scale
+  # check colors on same scale
   expect_equal(
     {
       tableHTML <- tableHTML(data.frame(a = 1:10, b = rep(1:5, 2)), rownames = FALSE) %>%
-        add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "RAG",
+        add_css_conditional_column(conditional = "color_rank", color_rank_theme = "RAG",
                                    columns = c("a", "b"), same_scale = TRUE)
       starts <- gregexpr("<td", tableHTML)[[1]]
 
       ends <- gregexpr("</td>", tableHTML)[[1]]
-      colours <-
+      colors <-
         vapply(seq_along(starts), function(i) {
           td <- substr(tableHTML, starts[i], ends[i] + 4)
           ifelse(grepl('style="', td), substr(td, gregexpr("#", td)[[1]], gregexpr("#", td)[[1]] + 6), NA_character_)
@@ -388,12 +451,12 @@ test_that("colour rank works", {
   expect_equal(
     {
       tableHTML <- tableHTML(data.frame(a = 1:10, b = rep(1:5, 2)), rownames = FALSE) %>%
-        add_css_conditional_column(conditional = "colour_rank", colour_rank_theme = "RAG",
+        add_css_conditional_column(conditional = "color_rank", color_rank_theme = "RAG",
                                    columns = c("a", "b"), same_scale = FALSE)
       starts <- gregexpr("<td", tableHTML)[[1]]
 
       ends <- gregexpr("</td>", tableHTML)[[1]]
-      colours <-
+      colors <-
         vapply(seq_along(starts), function(i) {
           td <- substr(tableHTML, starts[i], ends[i] + 4)
           ifelse(grepl('style="', td), substr(td, gregexpr("#", td)[[1]], gregexpr("#", td)[[1]] + 6), NA_character_)
