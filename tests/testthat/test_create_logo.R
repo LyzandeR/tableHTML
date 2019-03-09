@@ -5,6 +5,10 @@ test_that("Function fails for wrong inputs", {
   #invalid format
   expect_error(create_logo(format = 'doc'),
                "format should be")
+
+ #invalid file extension
+ expect_error(create_logo(format = 'png', file = 'logo_pic.jpeg'),
+              "file extension should be")
 })
 
 test_that("Output is of the right class and style", {
@@ -55,5 +59,22 @@ test_that("The number of headers is correct and they're identical", {
   },
   rep('..', attributes(logo)$ncol)
   )
+})
+
+test_that('logo is saved when save=TRUE', {
+ # when format=html
+ expect_true({
+  create_logo(file='logo.html')
+  out <- file.size('logo.html') > 1
+  file.remove('logo.html')
+  out
+ })
+ # when format!=html
+ expect_true({
+  create_logo(format = 'png', file='logo.png')
+  out <- file.size('logo.png') > 1
+  file.remove('logo.png')
+  out
+ })
 })
 
