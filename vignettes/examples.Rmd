@@ -103,7 +103,15 @@ tableHTML(rownames = TRUE,
 
 ### customized totals theme
 
-```{r example 7}
+```{r example 7.1}
+mtcars %>% 
+ tableHTML(rownames = TRUE,
+          widths = c(140, rep(50, 11))) %>%
+ add_theme_totals(color='steelblue', total_rows=NULL)
+```
+
+
+```{r example 7.2}
 ts_to_df <- data.frame(year = trunc(time(AirPassengers)), 
                  Month = month.abb[cycle(AirPassengers)],
                  AirPassengers, 
