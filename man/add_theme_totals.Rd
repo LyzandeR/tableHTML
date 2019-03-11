@@ -4,8 +4,7 @@
 \alias{add_theme_totals}
 \title{Add a theme to a tableHTML with a total row.}
 \usage{
-add_theme_totals(tableHTML, color, total_rows = NULL,
-  id_column = FALSE)
+add_theme_totals(tableHTML, color, total_rows, id_column = FALSE)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object.}
@@ -19,8 +18,8 @@ If two colors are chosen, the first color will be the dominant one, and row colo
 will alternate between the first and second color.}
 
 \item{total_rows}{A numeric atomic vector with the indices
-of the total/subtotal rows. If total_rows is \code{NULL}, the last row
-will be highlighted.}
+of the total/subtotal rows. If total_rows is \code{NULL} no row will be highlighted.
+By default the last row will be highlighted.}
 
 \item{id_column}{A boolean, if set to \code{TRUE} the first column will
 be highlighted as an ID column.
@@ -39,6 +38,11 @@ Column widths are not provided with the theme.
 Please use the width argument for column widths.
 }
 \examples{
+# no total rows
+mtcars \%>\%
+ tableHTML(widths = c(140, rep(50, 11))) \%>\%
+ add_theme_totals(total_rows = NULL)
+
 # one total row
 x1 <- sample(1:100, 12)
 x2 <- sample(1:100, 12)
