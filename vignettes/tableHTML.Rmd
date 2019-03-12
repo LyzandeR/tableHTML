@@ -513,7 +513,7 @@ mtcars %>%
 
 This is a function that can help you with very specific tasks that cannot be accompliced with the 
 above functions (e.g. adding a css style to a specific cell) or with fixing a potential bug 
-that I don't know about (in which case please report it on the 
+that we don't know about (in which case please report it on the 
 [issues](https://github.com/LyzandeR/tableHTML/issues)) page. The function has been developed so 
 that it works with the chaining paradigm. The function uses `sub` or `gsub` internally in order to
 replace an HTML string pattern with another.
@@ -533,9 +533,12 @@ change is written and change that with the appropriate HTML text.
 
 ### Taking a picture of the tableHTML
 
-If you would like to export a tableHTML as a picture, you can use the function `tableHTML_to_image`.
-This makes tableHTML compatible with MS Word and PDF (when rendering rmarkdown as pdf or word for example). It can be also be used with plain markdown and rmarkdown but
-we recommend keeping the tables as HTML when working with markdown.
+If you would like to export a tableHTML as a picture, you can use the function `tableHTML_to_image()`.
+This makes tableHTML compatible with MS Word and PDF (when rendering rmarkdown as pdf or word for example).
+It can be also be used with plain markdown and rmarkdown but we recommend keeping the tables as HTML when working with an html document. 
+
+**Note:** In order for the image to be taken properly you need to have `phanton_JS` installed which you can install by running 
+once the following on your console: `webshot::install_phantomjs()`. `tableHTML` uses `webshot` under the hood to take the picture.
 
 ```{r picture}
 mtcars %>%
@@ -543,6 +546,13 @@ mtcars %>%
   tableHTML_to_image()
 ```
 
+### Themes
+
+The package was built to give the absolute freedom to users to design their own HTML tables the way the want.
+However, we have included three categories of themes (scientific, rshiny-blue and totals) to give the users a 
+way to build nice looking tables very fast. 
+
+You can find out more about the themes and the functions to use in our themes vignette.
 
 ### Hover and other CSS selectors
 
@@ -551,10 +561,10 @@ do this in shiny below.
 
 ## tableHTML and shiny
 
-Now that we know about how to use the function's arguments let's see how we can use tableHTML with 
-shiny. The implementation is really simple since internally tableHTML uses `htmltools::HTML` to 
-convert the table into an HTML object. Simply using `render_tableHTML` and `tableHTML_output` 
-will be enough. 
+Now that we know about how to use the function's arguments let's see how we can use tableHTML with
+shiny. The implementation is really simple since internally tableHTML uses `htmltools::HTML` to
+convert the table into an HTML object. Simply using `render_tableHTML` and `tableHTML_output`
+will be enough.
 
 Let's see an example
 
@@ -567,9 +577,9 @@ shinyApp(
     br(),
     column(width = 1),
     tableHTML_output("mytable"))
- ), 
+ ),
  server = function(input, output) {
-  output$mytable <- render_tableHTML( 
+  output$mytable <- render_tableHTML(
    tableHTML(mtcars)
  )}
 )
@@ -585,24 +595,24 @@ shinyApp(
     br(),
     column(width = 1),
     tableHTML_output("mytable"))
- ), 
+ ),
  server = function(input, output) {
-  output$mytable <- render_tableHTML( 
+  output$mytable <- render_tableHTML(
    mtcars %>%
      tableHTML(widths = c(140, rep(45, 11)),
-               second_headers = list(c(3, 4, 5), c('team1', 'team2', 'team3'))) %>% 
-     add_css_second_header(css = list(c('height', 'background-color', 'font-size', 'text-align'), 
+               second_headers = list(c(3, 4, 5), c('team1', 'team2', 'team3'))) %>%
+     add_css_second_header(css = list(c('height', 'background-color', 'font-size', 'text-align'),
                                       c('40px', ' #e6e6e6', '30px', 'center')),
                            second_headers = 1:3) %>%
-     add_css_header(css = list(c('height', 'background-color', 'text-align'), 
+     add_css_header(css = list(c('height', 'background-color', 'text-align'),
                                c('30px', ' #e6e6e6', 'center')),
                     headers = 1:12) %>%
      add_css_row(css = list('background-color', '#f2f2f2'),
                  rows = even(1:34)) %>%
      add_css_row(css = list('background-color', '#e6f0ff'),
                  rows = odd(1:34)) %>%
-     add_css_column(css = list('text-align', 'center'), 
-                    columns = names(mtcars)) 
+     add_css_column(css = list('text-align', 'center'),
+                    columns = names(mtcars))
  )}
 )
 ```
@@ -612,26 +622,26 @@ shinyApp(
 
 As we said previously CSS selectors cannot be used within HTML so if you use shiny you would need
 to include a separate CSS file. Before we start with shiny and CSS let's see the rules applied by
-tableHTML. tableHTML creates ids for columns, headers and second headers and gives the table a 
+tableHTML. tableHTML creates ids for columns, headers and second headers and gives the table a
 specific class name as it was mentioned previously.
 
 The rules are like this:
 
-  * Table: Will get the class from the class argument in the function. 
-  * Columns: Will get an id which will be of the form tableHTML_column_x (where x 
-      is the column position). If rownames exist these will get the tableHTML_rownames id. If 
-      row groups exist these will get the tableHTML_row_groups id. Check the `add_css_column` 
+  * Table: Will get the class from the class argument in the function.
+  * Columns: Will get an id which will be of the form tableHTML_column_x (where x
+      is the column position). If rownames exist these will get the tableHTML_rownames id. If
+      row groups exist these will get the tableHTML_row_groups id. Check the `add_css_column`
       function for examples.
-  * Headers: Will get an id of the form tableHTML_header_x (where x is the header position). 
-      For example the first header will have the id tableHTML_header_1, the second header 
+  * Headers: Will get an id of the form tableHTML_header_x (where x is the header position).
+      For example the first header will have the id tableHTML_header_1, the second header
       will have tableHTLM_header_2 and so on. If rownames exist these will get the tableHTML_header_0 id.
-  * Second_Header: Will get an id of the form tableHTML_second_header_x (where x is the 
-      second header position). For example the first second_header will have the id tableHTML_second_header_1, 
+  * Second_Header: Will get an id of the form tableHTML_second_header_x (where x is the
+      second header position). For example the first second_header will have the id tableHTML_second_header_1,
       the second header will have tableHTML_second_header_2 and so on.
 
-Let's see this in practice. We create a CSS file e.g. mycss.css where we will write our css code. 
+Let's see this in practice. We create a CSS file e.g. mycss.css where we will write our css code.
 Then we load this in R shiny in the following way: In the directory where we saved the ui.R file and
-the server.R file we also create a www/ folder where we save our .css file. 
+the server.R file we also create a www/ folder where we save our .css file.
 In our case that is named mycss.css. We include this file in R using `includeCSS`:
 
 ```{r shiny css, eval = FALSE}
@@ -651,7 +661,7 @@ shinyUI(
 #server.R
 shinyServer(
 function(input, output) {
-   output$mytable <- render_tableHTML( 
+   output$mytable <- render_tableHTML(
     tableHTML(mtcars, second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
    )}
 )
@@ -659,26 +669,32 @@ function(input, output) {
 
 Note: You can find out more about CSS and shiny [here](http://shiny.rstudio.com/articles/css.html).
 
-You can also check the [make_css](https://cran.r-project.org/package=tableHTML/vignettes/make_css.html) 
+You can also check the [make_css](https://cran.r-project.org/package=tableHTML/vignettes/make_css.html)
 function of the package which helps you create a css file and use that within shiny.
 
-In order to add a vertical column line we can use the column ids created by tableHTML. To add a 
+In order to add a vertical column line we can use the column ids created by tableHTML. To add a
 vertical red line at mpg column, our css file would look like this:
 
-```{CSS}
+```{css ex_1, eval = FALSE}
 #tableHTML_column_1 {
 	border-left: 5px solid red;
 }
-``` 
+```
 
 Our HTML table will look like this:
 
-![ ](shiny_vertical_line.PNG)
+```{r css_ex1, echo=FALSE}
+mtcars %>%
+  tableHTML(second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
+  add_css_column(list('border-left', '5px solid red'), columns = 1)
+```
 
-In order to change the background color of one of the headers (e.g. the second) our 
+\
+
+In order to change the background color of one of the headers (e.g. the second) our
 CSS would look like this:
 
-```{CSS 2}
+```{css ex_2, eval = FALSE}
 #tableHTML_column_1 {
 	border-left: 5px solid red;
 }
@@ -686,31 +702,48 @@ CSS would look like this:
 #tableHTML_header_2 {
 	background-color: green;
 }
-``` 
-
-![   ](shiny_header_color.PNG)
+```
 
 
-And in order to align the first of the second_headers in the center our css would look like:
+```{r css_ex2, echo=FALSE}
+mtcars %>%
+  tableHTML(second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
+  add_css_column(list('border-left', '5px solid red'), columns = 1) %>%
+  add_css_header(list('background-color', 'green'), 2)
+```
 
-```{CSS 3}
+\
+
+And in order to align the first of the second_headers in the right our css would look like:
+
+```{css ex_3, eval = FALSE}
 #tableHTML_column_1 {
 	border-left: 5px solid red;
 }
 
-#tableHTML_header_2 {
-	background-color: green;
+#tableHTML_header_2 { 
+  background-color: green; 
 }
 
-#tableHTML_second_header_1 {
-	text-align: center;
-}
-``` 
+#tableHTML_second_header_1 { 
+ 	text-align: right;
+ } 
+```
 
-![  ](shiny_overheader_center.PNG)
+```{r css_ex3, echo=FALSE}
+mtcars %>%
+  tableHTML(second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
+  add_css_column(list('border-left', '5px solid red'), columns = 1) %>%
+  add_css_header(list('background-color', 'green'), 2) %>%
+  add_css_second_header(list('text-align', 'right'), 1)
+```
 
-You 've made it to the end of this tutorial on tableHTML! Follow the latest development on the 
-development page on [github](https://github.com/LyzandeR/tableHTML)
+\
+
+You 've made it to the end of this tutorial on tableHTML! Follow the latest development on the development page on https://github.com/LyzandeR/tableHTML
+
+
+
 
 
 
