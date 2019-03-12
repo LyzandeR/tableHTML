@@ -102,6 +102,7 @@ tableHTML(rownames = TRUE,
 ```
 
 ### customized totals theme
+#### no total rows
 
 ```{r example 7.1}
 mtcars %>% 
@@ -110,6 +111,7 @@ mtcars %>%
  add_theme_totals(color='steelblue', total_rows=NULL)
 ```
 
+#### multiple total rows
 
 ```{r example 7.2}
 ts_to_df <- data.frame(year = trunc(time(AirPassengers)), 
@@ -119,17 +121,16 @@ ts_to_df <- data.frame(year = trunc(time(AirPassengers)),
   subset(year<1951)
   
 rbind(ts_to_df[1:12, 2:3],
-c('AVG', round(mean(ts_to_df[1:12, ]$AirPassengers), 2)),
-ts_to_df[13:24, 2:3],
-c('AVG', round(mean(ts_to_df[13:24, ]$AirPassengers), 2))) %>% 
-  tableHTML(rownames = FALSE, 
+      c('AVG', round(mean(ts_to_df[1:12, ]$AirPassengers), 2)),
+      ts_to_df[13:24, 2:3],
+      c('AVG', round(mean(ts_to_df[13:24, ]$AirPassengers), 2))) %>% 
+ tableHTML(rownames = FALSE, 
             widths = rep(75, 3),
             row_groups = list(c(13, 13), 
                               unique(ts_to_df$year))) %>% 
   add_theme_totals(id_column = TRUE, 
                    total_rows = c(13, 26), 
                    color = c('#009999', 'yellow2'))
-  
 ```
 
 ### Coloring a Row Group
