@@ -4,19 +4,19 @@
 \alias{add_theme}
 \title{Add a theme to the tableHTML}
 \usage{
-add_theme(tableHTML, theme = c("scientific", "rshiny-blue", "totals"),
+add_theme(tableHTML, theme = c("scientific", "rshiny-blue", "colorize"),
   ...)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object.}
 
 \item{theme}{Pick one of the provided themes. These can still be modified by extra css. Choices
-are: scientific, rshiny-blue, totals. Column widths are not provided when you select a theme.
+are: scientific, rshiny-blue, colorize. Column widths are not provided when you select a theme.
 Please use the width argument for column widths.}
 
 \item{...}{Additional parameters to pass to the theme.
-Currently \code{"totals"} is the only theme that takes additional parameters.
-For more details on those parameters see \code{\link{add_theme_totals}}.}
+Currently \code{"colorize"} is the only theme that takes additional parameters.
+For more details on those parameters see \code{\link{add_theme_colorize}}.}
 }
 \value{
 A tableHTML object.
@@ -38,11 +38,10 @@ tableHTML(mtcars,
 tableHTML(mtcars, widths = c(140, rep(50, 11))) \%>\%
   add_theme ('rshiny-blue')
 
-df <- mtcars[, 1:6]
-df['Mean', ] <- (df \%>\% apply(2, mean))
-df \%>\%
-  tableHTML(widths = c(150, rep(70, ncol(df))), rownames = TRUE) \%>\%
-  add_theme('totals')
+mtcars \%>\%
+  tableHTML(widths = c(150, rep(50, 11)),
+            rownames = TRUE) \%>\%
+  add_theme('colorize')
 
 generate_df <- function(){
   df <- data.frame(Month = month.abb,
@@ -58,6 +57,6 @@ df_2 <- generate_df()
 
 rbind(df_1, df_2) \%>\%
   tableHTML(widths = rep(50, 4), rownames = FALSE) \%>\%
-  add_theme('totals', total_rows = c(13, 26),
+  add_theme('colorize', total_rows = c(13, 26),
             color = c('steelblue', 'green3'), id_column = TRUE)
 }

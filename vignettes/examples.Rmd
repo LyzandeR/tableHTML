@@ -88,30 +88,26 @@ tableHTML(mtcars,
  add_theme('rshiny-blue')
 ```
 
-### totals theme
+### colorize theme
 
 ```{r example 6}
 mtcars %>% 
- `[<-`('Average', 
-       1:ncol(mtcars),  
-       value=round(colMeans(mtcars), 2)) %>% 
- `[`(c(1, 3:7)) %>% 
-tableHTML(rownames = TRUE,
-          widths = c(140, rep(50, 6))) %>%
- add_theme('totals')
+ tableHTML(rownames = TRUE,
+           widths = c(140, rep(50, 11))) %>%
+ add_theme('colorize')
 ```
 
-### customized totals theme
-#### no total rows
+### customized colorize theme
+##### two colors
 
 ```{r example 7.1}
-mtcars %>% 
+mtcars %>%
  tableHTML(rownames = TRUE,
           widths = c(140, rep(50, 11))) %>%
- add_theme_totals(color='steelblue', total_rows=NULL)
+ add_theme_colorize(color=c('steelblue', 'green'))
 ```
 
-#### multiple total rows
+##### with total rows and an id_column
 
 ```{r example 7.2}
 ts_to_df <- data.frame(year = trunc(time(AirPassengers)), 
@@ -128,7 +124,7 @@ rbind(ts_to_df[1:12, 2:3],
             widths = rep(75, 3),
             row_groups = list(c(13, 13), 
                               unique(ts_to_df$year))) %>% 
-  add_theme_totals(id_column = TRUE, 
+  add_theme_colorize(id_column = TRUE, 
                    total_rows = c(13, 26), 
                    color = c('#009999', 'yellow2'))
 ```
