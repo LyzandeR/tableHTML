@@ -24,7 +24,7 @@ library(tableHTML)
 
 Although the package has been designed so that it gives the utmost freedom to the user to style the
 HTML table as they please, some themes have been included for those who need something quick and nice.
-The package offers three themes for now: scientific, rshiny-blue and colorize To use them, you need to use the
+The package offers three themes for now: scientific, rshiny-blue and, colorize. To use them, you need to use the
 `add_theme` function. 
      
 **Notice**: When working with themes you can still add extra css (using the add\_css\_* family from
@@ -75,7 +75,7 @@ tableHTML(mtcars,
 
 This theme is used to create MS Excel-like tables (with any color you like). You can also use it to highlight 
 specific rows (usually corresponding to some aggregation function, for example totals or averages). The arguments that can be 
-used with the colorize theme are `color`, `total_rows` and `id_column`. The default color is 
+used with the colorize theme are `color`, `total_rows`, and `id_column`. The default color is 
 steelblue and by default no rows are chosen to be highlighted. You can also highlight the first column 
 with the `id_column` argument. The documentation can be found at `?add_theme_colorize`.
 

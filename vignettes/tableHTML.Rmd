@@ -538,7 +538,7 @@ mtcars %>%
 (`print(tableHTML(mtcars), viewer = FALSE)`), see how the part you want to
 change is written and change that with the appropriate HTML text.
 
-### Taking a picture of the tableHTML
+### Export tableHTML as a picture
 
 If you would like to export a tableHTML as a picture, you can use the function `tableHTML_to_image()`.
 This makes tableHTML compatible with MS Word and PDF (when rendering rmarkdown as pdf or word for example).

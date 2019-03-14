@@ -1,6 +1,6 @@
 ---
 title: "tableHTML"
-author: "Theo Boutaris, Clemens Zauchner, Dana Jomer"
+author: "Theo Boutaris, Clemens Zauchner, Dana Jomar"
 date: "`r Sys.Date()`"
 output: 
   html_document
