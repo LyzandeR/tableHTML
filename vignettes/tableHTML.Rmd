@@ -721,7 +721,7 @@ mtcars %>%
 
 \
 
-And in order to align the first of the second_headers in the right our css would look like:
+And in order to change the color of the first second_header our css would look like:
 
 ```{css ex_3, eval = FALSE}
 #tableHTML_column_1 {
