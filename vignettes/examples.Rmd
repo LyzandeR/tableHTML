@@ -1,6 +1,6 @@
 ---
 title: "tableHTML"
-author: "Theo Boutaris, Clemens Zauchner"
+author: "Theo Boutaris, Clemens Zauchner, Dana Jomer"
 date: "`r Sys.Date()`"
 output: 
   html_document
@@ -94,11 +94,10 @@ tableHTML(mtcars,
 mtcars %>% 
  tableHTML(rownames = TRUE,
            widths = c(140, rep(50, 11))) %>%
- add_theme('colorize')
+ add_theme('colorize', color = 'navyblue')
 ```
 
-### customized colorize theme
-##### two colors
+### colorize theme with Two Colors
 
 ```{r example 7.1}
 mtcars %>%
@@ -107,14 +106,14 @@ mtcars %>%
  add_theme_colorize(color=c('steelblue', 'green'))
 ```
 
-##### with total rows and an id_column
+### colorize theme with total rows and an id_column
 
 ```{r example 7.2}
 ts_to_df <- data.frame(year = trunc(time(AirPassengers)), 
                  Month = month.abb[cycle(AirPassengers)],
                  AirPassengers, 
-                 stringsAsFactors = F) %>% 
-  subset(year<1951)
+                 stringsAsFactors = F) 
+ts_to_df <- ts_to_df[ts_to_df$year < 1951, ]
   
 rbind(ts_to_df[1:12, 2:3],
       c('AVG', round(mean(ts_to_df[1:12, ]$AirPassengers), 2)),

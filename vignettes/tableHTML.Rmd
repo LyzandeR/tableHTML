@@ -192,8 +192,15 @@ can see the difference below:
 ```{r escaping} 
 df <- data.frame(a = c('abcd<efgh'))
 tableHTML(df, escape = FALSE, rownames = FALSE)
+```
+
+\
+
+```{r escaping_2}
 tableHTML(df, escape = TRUE, rownames = FALSE)
 ```
+
+\
 
 In order to fix this, the argument `escape` is set to `TRUE` by default. `<` and `>` will be replaced
 with `&#62` and `&#60`. However, if you would like to include clickable links in your HTML table you 
@@ -549,7 +556,7 @@ mtcars %>%
 ### Themes
 
 The package was built to give the absolute freedom to users to design their own HTML tables the way the want.
-However, we have included three categories of themes (scientific, rshiny-blue and totals) to give the users a 
+However, we have included three categories of themes (scientific, rshiny-blue and colorize) to give the users a 
 way to build nice looking tables very fast. 
 
 You can find out more about the themes and the functions to use in our themes vignette.
@@ -726,8 +733,8 @@ And in order to align the first of the second_headers in the right our css would
 }
 
 #tableHTML_second_header_1 { 
- 	text-align: right;
- } 
+ 	background-color: steelblue; 
+} 
 ```
 
 ```{r css_ex3, echo=FALSE}
@@ -735,7 +742,7 @@ mtcars %>%
   tableHTML(second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
   add_css_column(list('border-left', '5px solid red'), columns = 1) %>%
   add_css_header(list('background-color', 'green'), 2) %>%
-  add_css_second_header(list('text-align', 'right'), 1)
+  add_css_second_header(list('background-color', 'steelblue'), 1)
 ```
 
 \

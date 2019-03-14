@@ -24,9 +24,8 @@ library(tableHTML)
 
 Although the package has been designed so that it gives the utmost freedom to the user to style the
 HTML table as they please, some themes have been included for those who need something quick and nice.
-The package offers three themes for now: scientific, rshiny-blue and totals. To use them, you need to use the
-`add_theme` function. The first two are meant for any table whereas the totals theme is mainly designed
-for tables showing a summary metric on the final row.
+The package offers three themes for now: scientific, rshiny-blue and colorize To use them, you need to use the
+`add_theme` function. 
      
 **Notice**: When working with themes you can still add extra css (using the add\_css\_* family from
 below) but you will not be able to overwrite the styling that is there e.g. to change the width of
@@ -34,7 +33,7 @@ the lines.
 
 ## scientific
 
-This is the scientifc theme where the table design corresponds to scientific tables for publishing.
+This is the scientifc theme where the table design resembles scientific tables for publishing.
 
 ```{r theme-scientific}
 tableHTML(mtcars, widths = c(140, rep(50, 11))) %>%
@@ -48,7 +47,7 @@ tableHTML(mtcars,
           rownames = FALSE,
           widths = c(140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(3, 4), c('col1', 'col2'))) %>%
+          second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
   add_theme('scientific')
 ```
 
@@ -68,32 +67,32 @@ tableHTML(mtcars,
           rownames = FALSE,
           widths = c(140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(3, 4), c('col1', 'col2'))) %>%
+          second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
   add_theme('rshiny-blue')
 ```
 
-## Totals
+## colorize
 
-This theme was mainly designed for highlighting the final row of a data.frame. The function `add_themes` 
-can be used for totals in a quick way, but to read about the arguments that you can use with totals please 
-visit `?add_theme_totals`.
+This theme is used to create MS Excel-like tables (with any color you like). You can also use it to highlight 
+specific rows (usually corresponding to some aggregation function, for example totals or averages). The arguments that can be 
+used with the colorize theme are `color`, `total_rows` and `id_column`. The default color is 
+steelblue and by default no rows are chosen to be highlighted. You can also highlight the first column 
+with the `id_column` argument. The documentation can be found at `?add_theme_colorize`.
 
 ```{r totals_1}
 df <- mtcars[, 1:6]
-df['Mean', ] <- (df %>% apply(2, mean))
 df %>%
   tableHTML(widths = c(150, rep(70, ncol(df))), rownames = TRUE) %>%
-  add_theme('totals')
+  add_theme('colorize')
 ```
 
 \
 
 ```{r totals_2}
 df <- mtcars[, 1:6]
-df['Mean', ] <- (df %>% apply(2, mean))
 df %>%
   tableHTML(widths = c(150, rep(70, ncol(df))), rownames = TRUE) %>%
-  add_theme('totals', color = 'steelblue')
+  add_theme('colorize', color = 'darkgreen')
 ```
 
 \
@@ -103,10 +102,25 @@ df <- mtcars[, 1:6]
 df['Mean', ] <- (df %>% apply(2, mean))
 df %>%
   tableHTML(widths = c(150, rep(70, ncol(df))), rownames = TRUE) %>%
-  add_theme('totals', color = c('steelblue', 'red'))
+  add_theme('colorize', color = c('steelblue', 'red'))
 ```
 
-## Totals with add_theme_totals
+\
+
+#### Here we are hightlighting the last row which contains the average of the columns.
+
+```{r totals_4}
+df <- mtcars[, 1:6]
+df['Mean', ] <- (df %>% apply(2, mean))
+df %>%
+  tableHTML(widths = c(150, rep(70, ncol(df))), rownames = TRUE) %>%
+  add_theme('colorize', color = c('steelblue', 'red'), total_rows = nrow(df))
+```
+
+## Totals with add_theme_colorize
+
+Instead of using the umbrella function `add_theme`, you could also explicitly use `add_theme_colorize`. The two functions are identical in
+terms of the output. To see the documentation visit `?add_theme_colorize`.
 
 ```{r total_theme_1}
 # one total row
@@ -121,7 +135,7 @@ df[nrow(df) + 1, ] <- c('Total', sum(x1), sum(x2), sum(x3))
 
 df %>%
   tableHTML(widths = rep(50, 4), rownames = FALSE) %>%
-  add_theme_totals(color = 'darkred')
+  add_theme_colorize(color = 'darkred', total_rows = nrow(df))
 ```
 
 \
@@ -143,8 +157,8 @@ df_q %>%
             rownames = FALSE,
             row_groups = list(c(4, 4, 4, 4),
                               c('Q1', 'Q2', 'Q3', 'Q4'))) %>%
-  add_theme_totals(color = c('pink3', 'yellow2'),
-                   total_rows = c(4, 8, 12, 16), id_column = TRUE)
+  add_theme_colorize(color = c('pink3', 'yellow2'),
+                     total_rows = c(4, 8, 12, 16), id_column = TRUE)
 
 ```
 
