@@ -1,9 +1,9 @@
 #' Add a theme to a tableHTML with a total row.
 #'
-#' \code{add_theme_totals} will add an Excel-like theme to tableHTML
+#' \code{add_theme_colorize} will add an Excel-like theme to tableHTML
 #'  and hightlights one or more total-rows.
 #'
-#' \code{add_theme_totals} will add an Excel-like theme to tableHTML.
+#' \code{add_theme_colorize} will add an Excel-like theme to tableHTML.
 #' Column widths are not provided with the theme.
 #' Please use the width argument for column widths.
 #'
@@ -18,8 +18,8 @@
 #' will alternate between the first and second color.
 #'
 #' @param total_rows A numeric atomic vector with the indices
-#' of the total/subtotal rows. If total_rows is \code{NULL}, the last row
-#' will be highlighted.
+#' of the total/subtotal rows. Default is \code{NULL} which means
+#' no row will be highlighted.
 #'
 #' @param  id_column A boolean, if set to \code{TRUE} the first column will
 #' be highlighted as an ID column.
@@ -28,6 +28,11 @@
 #' @return A tableHTML object.
 #'
 #' @examples
+#' # no total rows
+#' mtcars %>%
+#'  tableHTML(widths = c(140, rep(50, 11))) %>%
+#'  add_theme_colorize()
+#'
 #' # one total row
 #' x1 <- sample(1:100, 12)
 #' x2 <- sample(1:100, 12)
@@ -40,11 +45,8 @@
 #'
 #' df %>%
 #'   tableHTML(widths = rep(50, 4), rownames = FALSE) %>%
-#'   add_theme_totals(color = 'darkred')
-#'
-#' df %>%
-#'   tableHTML(widths = rep(50, 4), rownames = FALSE) %>%
-#'   add_theme_totals(color = c('steelblue', 'green'))
+#'   add_theme_colorize(total_rows = nrow(df),
+#'                      color = 'darkred')
 #'
 #'
 #' # multiple subtotal rows
@@ -63,7 +65,7 @@
 #'             rownames = FALSE,
 #'             row_groups = list(c(4, 4, 4, 4),
 #'                               c('Q1', 'Q2', 'Q3', 'Q4'))) %>%
-#'   add_theme_totals(color = '#009999',
+#'   add_theme_colorize(color = '#009999',
 #'                    total_rows = c(4, 8, 12, 16))
 #'
 #' # Two colors and an id_column
@@ -72,17 +74,28 @@
 #'             rownames = FALSE,
 #'             row_groups = list(c(4, 4, 4, 4),
 #'                               c('Q1', 'Q2', 'Q3', 'Q4'))) %>%
-#'   add_theme_totals(color = c('pink3', 'yellow2'),
+#'   add_theme_colorize(color = c('pink3', 'yellow2'),
 #'                    total_rows = c(4, 8, 12, 16), id_column = TRUE)
 #'
 #' @export
-add_theme_totals <- function(tableHTML, color,
-                             total_rows=NULL, id_column=FALSE)
+add_theme_colorize <- function(tableHTML, color,
+                             total_rows, id_column=FALSE)
 {
+ # extract attributes
+ n_rows <- attr(tableHTML, "nrows")
+ n_cols <- attr(tableHTML, "ncols")
+ second_headers <- attr(tableHTML, "second_headers_data")
+ exist_second_header <- !is.null(second_headers)
+ rownames <- attr(tableHTML, "rownames")
+ row_groups <- attr(tableHTML, "row_groups_data")
+ exist_row_groups <- !is.null(row_groups)
 
- # default parameters
+ # set default parameters
  if(missing(color)){
   color <- 'darkgreen'
+ }
+ if(missing(total_rows)){
+  total_rows <- NULL
  }
 
  # checks
@@ -98,14 +111,6 @@ add_theme_totals <- function(tableHTML, color,
 
  if (!is.logical(id_column) || is.na(id_column))
   stop('id_column should be TRUE or FALSE')
-
- n_rows <- attr(tableHTML, "nrows")
- n_cols <- attr(tableHTML, "ncols")
- second_headers <- attr(tableHTML, "second_headers_data")
- exist_second_header <- !is.null(second_headers)
- rownames <- attr(tableHTML, "rownames")
- row_groups <- attr(tableHTML, "row_groups_data")
- exist_row_groups <- !is.null(row_groups)
 
  # prepare colors
  if(length(color) == 1){
@@ -125,23 +130,21 @@ add_theme_totals <- function(tableHTML, color,
  # row indices to style
  x_rows <- 1 + exist_second_header
  rows <- 1:(n_rows + x_rows)
- # separate totals from the rest of the rows
- if(!is.null(total_rows)){
-  total_rows <- total_rows + x_rows
- }else{
-  total_rows <- n_rows + x_rows
- }
- rows <- setdiff(rows, total_rows)
 
  # column indices to style
  x_cols <- rownames + exist_row_groups
  cols <- 1:(n_cols + x_cols)
 
- # style the total rows
- tableHTML <- tableHTML %>%
-  add_css_row(list(c('background', 'color'),
-                   c(color, 'white')),
-              rows = total_rows)
+ # style the total rowsand separate them from the rest of the rows
+ if(!is.null(total_rows)){
+  total_rows <- total_rows + x_rows
+  tableHTML <- tableHTML %>%
+   add_css_row(list(c('background', 'color'),
+                    c(color, 'white')),
+               rows = total_rows)
+  rows <- setdiff(rows, total_rows)
+ }
+
  # style the rest of the table
  tableHTML <- tableHTML %>%
   add_css_table(css = list(c('border'), c(paste0('3px solid ', color)))) %>%
@@ -163,7 +166,6 @@ add_theme_totals <- function(tableHTML, color,
                              c(header_background, 'white')), columns = 0)
  }
  if(exist_second_header){
-
   tableHTML <- tableHTML %>%
    add_css_second_header(css = list(c('border', 'background', 'color'),
                                     c(paste0('2px solid ', color), header_background, 'white')),
@@ -186,5 +188,3 @@ add_theme_totals <- function(tableHTML, color,
  }
  tableHTML
 }
-
-

@@ -88,9 +88,50 @@ tableHTML(mtcars,
  add_theme('rshiny-blue')
 ```
 
-### Coloring a Row Group
+### colorize theme
 
 ```{r example 6}
+mtcars %>% 
+ tableHTML(rownames = TRUE,
+           widths = c(140, rep(50, 11))) %>%
+ add_theme('colorize')
+```
+
+### customized colorize theme
+##### two colors
+
+```{r example 7.1}
+mtcars %>%
+ tableHTML(rownames = TRUE,
+          widths = c(140, rep(50, 11))) %>%
+ add_theme_colorize(color=c('steelblue', 'green'))
+```
+
+##### with total rows and an id_column
+
+```{r example 7.2}
+ts_to_df <- data.frame(year = trunc(time(AirPassengers)), 
+                 Month = month.abb[cycle(AirPassengers)],
+                 AirPassengers, 
+                 stringsAsFactors = F) %>% 
+  subset(year<1951)
+  
+rbind(ts_to_df[1:12, 2:3],
+      c('AVG', round(mean(ts_to_df[1:12, ]$AirPassengers), 2)),
+      ts_to_df[13:24, 2:3],
+      c('AVG', round(mean(ts_to_df[13:24, ]$AirPassengers), 2))) %>% 
+ tableHTML(rownames = FALSE, 
+            widths = rep(75, 3),
+            row_groups = list(c(13, 13), 
+                              unique(ts_to_df$year))) %>% 
+  add_theme_colorize(id_column = TRUE, 
+                   total_rows = c(13, 26), 
+                   color = c('#009999', 'yellow2'))
+```
+
+### Coloring a Row Group
+
+```{r example 8}
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -106,7 +147,7 @@ tableHTML(mtcars,
 
 ### Collapsed table
 
-```{r example 7, eval = FALSE}
+```{r example 9, eval = FALSE}
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -123,7 +164,7 @@ tableHTML(mtcars,
 
 ### Table with Second Headers
 
-```{r example 8}
+```{r example 10}
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -137,7 +178,7 @@ tableHTML(mtcars,
 
 ### add_css_column overwrites add_css_row
 
-```{r example 9}
+```{r example 11}
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -152,7 +193,7 @@ tableHTML(mtcars,
 
 ### Table with thead and tbody
 
-```{r example 10}
+```{r example 12}
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -164,7 +205,7 @@ tableHTML(mtcars,
 
 ### Column Overwrites Row Overwrites tbody / thead Overwrites table
 
-```{r example 11}
+```{r example 13}
 tableHTML(mtcars, 
           rownames = TRUE, 
           widths = c(140, rep(50, 11)),
@@ -177,7 +218,7 @@ tableHTML(mtcars,
 
 ### Table with One Empty Second Header
 
-```{r example 12}
+```{r example 14}
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -191,7 +232,7 @@ tableHTML(mtcars,
 
 ### Table with the Last Second Header Missing
 
-```{r example 13}
+```{r example 15}
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -205,7 +246,7 @@ tableHTML(mtcars,
 
 ### Only Row Groups no Second Headers
 
-```{r example 14}
+```{r example 16}
 tableHTML(mtcars, 
           rownames = TRUE, 
           widths = c(100, 140, rep(50, 11)),
@@ -218,7 +259,7 @@ tableHTML(mtcars,
 
 ### Using non-collapsed tables in shiny
 
-```{r example 15}
+```{r example 17}
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px') %>%
     add_css_table(css = list(c('background-color'), c('lightgray'))) %>% 
     add_css_table(css = list('color', 'blue'))
@@ -226,7 +267,7 @@ tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px') %>%
 
 ### Using conditional formatting with other tableHTML functions
 
-```{r example_16}
+```{r example 18}
 tableHTML(mtcars,
           widths = c(140, rep(50, 11))) %>%
   add_theme('scientific') %>%
@@ -247,7 +288,7 @@ Note: the `<div>` container is introduced,
 because the css property `'transform:rotate(...deg);'` would rotate the whole `<td>` 
 element would be rotated and background color would be out of place
 
-```{r example_17}
+```{r example 19}
 tableHTML(iris[c(1:5, 51:55, 101:105), 1:4], 
           rownames = FALSE,
           headers = rep(c('Length', 'Width'), 2),
@@ -280,7 +321,7 @@ tableHTML(iris[c(1:5, 51:55, 101:105), 1:4],
 
 This works perfectly with rmarkdown when you want to add the table as an image in a pdf, word or html document.
 
-```{r example_18}
+```{r example 20}
 mtcars %>%
  tableHTML(widths = c(140, rep(50, 11))) %>%
  add_theme('rshiny-blue') %>%
@@ -292,7 +333,7 @@ mtcars %>%
 To increase the size of the image, you can use the rmarkdown chunk options. Here,
 I am using `fig.height=7` and `fig.width=7`.
 
-```{r example_19, fig.height=7, fig.width=7}
+```{r example 21, fig.height=7, fig.width=7}
 mtcars %>%
  tableHTML(widths = c(140, rep(50, 11))) %>%
  add_theme('rshiny-blue') %>%
