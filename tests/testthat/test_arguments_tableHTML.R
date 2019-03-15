@@ -158,3 +158,42 @@ test_that("add_data works", {
 
 })
 
+test_that("spacing starts with a number", {
+  
+  expect_error(mtcars %>% 
+                 tableHTML(collapse = 'separate', spacing = 'abc'),
+               'distances in spacing')
+  
+})
+
+test_that("round is numeric", {
+  
+  expect_error(mtcars %>%
+                 tableHTML(round = 'abc'),
+               'round needs')
+  
+}) 
+
+test_that("separate works", {
+  
+  expect_true(grepl('border-collapse:separate', 
+              mtcars %>% tableHTML(collapse = 'separate')))
+  
+})
+
+test_that("separate_shiny works", {
+  
+  expect_true(grepl('border-collapse:separate !important', 
+                    mtcars %>% tableHTML(collapse = 'separate_shiny')))
+  
+})
+
+test_that("print works", {
+  
+  out <- capture.output(mtcars %>% 
+                          tableHTML() %>% 
+                          print(viewer = FALSE)
+                        )
+  expect_true(any(grepl('tableHTML_column_1', out)))
+  
+})
