@@ -1,6 +1,7 @@
 context("create_hexlogo testing")
 
 test_that("Function fails for wrong inputs", {
+ skip_on_cran()
  #invalid format
  expect_error(create_hexlogo(format = 'doc'),
               "format should be")
@@ -10,11 +11,13 @@ test_that("Function fails for wrong inputs", {
 })
 
 test_that("Output is of the right class", {
+ skip_on_cran()
  # output is a tableHTML object
  expect_is(create_hexlogo(save =FALSE), 'tableHTML')
 })
 
 test_that('css style is well defined', {
+ skip_on_cran()
  hex_logo <- create_hexlogo(save=FALSE)
  # extract the style from the logo, which should be defined on top
  css_style <- strsplit(hex_logo, '>')[[1]][1:2] %>%
@@ -39,6 +42,7 @@ test_that('css style is well defined', {
 })
 
 test_that('logo is saved when save=TRUE', {
+ skip_on_cran()
  # when format=html
  expect_true({
   create_hexlogo(file='logo.html')

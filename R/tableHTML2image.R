@@ -14,6 +14,9 @@
 #'
 #' When working on rmarkdown and you want to knit as pdf, use this function.
 #' Works with microsoft word as well.
+#' 
+#' To use this function you need phantomjs installed. Please use \code{webshot::install_phantomjs()} 
+#' to install if it is not installed already.
 #'
 #' @param tableHTML A tableHTML object created by the tableHTML function.
 #'
@@ -32,10 +35,12 @@
 #' @return An image of the tableHTML.
 #'
 #' @examples
+#' \dontrun{
 #' mtcars %>%
 #'   tableHTML() %>%
 #'   tableHTML_to_image()
-#'
+#' }
+#' 
 #' @importFrom graphics par plot.new
 #'
 #' @export
@@ -52,6 +57,13 @@ tableHTML_to_image <- function(tableHTML,
  #check add argument
  if (!is.logical(add)) {
   stop("add must be TRUE or FALSE")
+ }
+ 
+ #check if phantom_js is installed
+ jsinstalled <- suppressMessages(find_phantom())
+ if (is.null(jsinstalled)) {
+   stop('To use this function, phantomjs needs to be installed. 
+        You can install it with webshot::install_phantomjs')
  }
 
  #save tableHTML to html file

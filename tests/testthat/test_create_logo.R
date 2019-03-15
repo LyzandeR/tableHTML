@@ -2,6 +2,7 @@ context("create_logo testing")
 
 test_that("Function fails for wrong inputs", {
 
+  skip_on_cran()
   #invalid format
   expect_error(create_logo(format = 'doc'),
                "format should be")
@@ -12,6 +13,7 @@ test_that("Function fails for wrong inputs", {
 })
 
 test_that("Output is of the right class and style", {
+  skip_on_cran()
   # find class hexagon inner
   expect_match(create_logo(save = FALSE),
                'class="hexagon inner"' )
@@ -21,6 +23,7 @@ test_that("Output is of the right class and style", {
 })
 
 test_that("The number of colored cells is the same as the number of letters in ",{
+  skip_on_cran()
   # for each letter the color should exist in 5 locations (4 borders and background)
   # plus the background of the second header
   logo <- create_logo(save = FALSE)
@@ -53,6 +56,7 @@ test_that("The number of colored cells is the same as the number of letters in "
 })
 
 test_that("The number of headers is correct and they're identical", {
+  skip_on_cran()
   logo <- create_logo(save = FALSE)
   expect_equal({
     trimws(attributes(logo)$headers)
@@ -62,6 +66,7 @@ test_that("The number of headers is correct and they're identical", {
 })
 
 test_that('logo is saved when save=TRUE', {
+ skip_on_cran()
  # when format=html
  expect_true({
   create_logo(file='logo.html')

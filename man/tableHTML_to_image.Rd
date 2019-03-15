@@ -47,10 +47,15 @@ built-in themes (rshiny-blue, scientific) work well with JPEG.
 
 When working on rmarkdown and you want to knit as pdf, use this function.
 Works with microsoft word as well.
+
+To use this function you need phantomjs installed. Please use \code{webshot::install_phantomjs()} 
+to install if it is not installed already.
 }
 \examples{
+\dontrun{
 mtcars \%>\%
   tableHTML() \%>\%
   tableHTML_to_image()
+}
 
 }
