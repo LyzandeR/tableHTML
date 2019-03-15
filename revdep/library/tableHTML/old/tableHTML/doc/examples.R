@@ -1,40 +1,15 @@
----
-title: "tableHTML"
-author: "Theo Boutaris, Clemens Zauchner, Dana Jomar"
-date: "`r Sys.Date()`"
-output: 
-  html_document
-vignette: >
-  %\VignetteIndexEntry{gallery}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+## ----setup, include=FALSE------------------------------------------------
+knitr::opts_chunk$set(echo = TRUE)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=TRUE)
-```
-
-The following are a set of more complex examples of the tableHTML package. The goal of these 
-examples is to show you what you can do with the package and all the different ways you can use it 
-to make the HTML tables they way you want them to look. The point of the examples is to 
-demonstrate what can be achieved and not to show nice looking HTML tables (apart from the 
-demonstration of the themes).    
-
-
-### Row groups and Second Headers
-
-```{r example1}
+## ----example 1-----------------------------------------------------------
 library(tableHTML)
 tableHTML(mtcars, 
           rownames = FALSE, 
           widths = c(120, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
           second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
-```
 
-### Add row css and column css
-
-```{r example2}
+## ----example 2-----------------------------------------------------------
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -44,11 +19,8 @@ tableHTML(mtcars,
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
  add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
  add_css_column(css = list('background-color', 'white'), columns = 'row_groups')
-```
 
-### Add row, column, second header and header css
-
-```{r example3}
+## ----example 3-----------------------------------------------------------
 tableHTML(mtcars, 
           border = 1,
           rownames = TRUE, 
@@ -64,73 +36,26 @@ tableHTML(mtcars,
                            c('1px solid white', '1px solid white', '1px solid white')), 
                            headers = 1) %>%
  add_css_header(css = list('background-color', 'lightgreen'), headers = 3:13)
-```
 
-### scientific theme
-
-```{r example4}
+## ----example 4-----------------------------------------------------------
 tableHTML(mtcars, 
+          border = 1,
           rownames = TRUE, 
           widths = c(110, 140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(2, 5, 6), c('col1', '', 'col3'))) %>%
- add_theme('scientific')
-```
+          second_headers = list(c(2, 5, 6), c('col1', '', 'col3')),
+          theme = 'scientific')
 
-### rshiny-blue theme
-
-```{r example5}
+## ----example 5-----------------------------------------------------------
 tableHTML(mtcars, 
+          border = 1,
           rownames = TRUE, 
           widths = c(110, 140, rep(50, 11)),
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(2, 5, 6), c('', 'col2', 'col3'))) %>%
- add_theme('rshiny-blue')
-```
+          second_headers = list(c(2, 5, 6), c('', 'col2', 'col3')),
+          theme = 'rshiny-blue')
 
-### colorize theme
-
-```{r example6}
-mtcars %>% 
- tableHTML(rownames = TRUE,
-           widths = c(140, rep(50, 11))) %>%
- add_theme('colorize', color = 'navyblue')
-```
-
-### colorize theme with Two Colors
-
-```{r example7.1}
-mtcars %>%
- tableHTML(rownames = TRUE,
-          widths = c(140, rep(50, 11))) %>%
- add_theme_colorize(color=c('steelblue', 'green'))
-```
-
-### colorize theme with total rows and an id_column
-
-```{r example7.2}
-ts_to_df <- data.frame(year = trunc(time(AirPassengers)), 
-                 Month = month.abb[cycle(AirPassengers)],
-                 AirPassengers, 
-                 stringsAsFactors = F) 
-ts_to_df <- ts_to_df[ts_to_df$year < 1951, ]
-  
-rbind(ts_to_df[1:12, 2:3],
-      c('AVG', round(mean(ts_to_df[1:12, ]$AirPassengers), 2)),
-      ts_to_df[13:24, 2:3],
-      c('AVG', round(mean(ts_to_df[13:24, ]$AirPassengers), 2))) %>% 
- tableHTML(rownames = FALSE, 
-            widths = rep(75, 3),
-            row_groups = list(c(13, 13), 
-                              unique(ts_to_df$year))) %>% 
-  add_theme_colorize(id_column = TRUE, 
-                   total_rows = c(13, 26), 
-                   color = c('#009999', 'yellow2'))
-```
-
-### Coloring a Row Group
-
-```{r example8}
+## ----example 6-----------------------------------------------------------
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -142,28 +67,20 @@ tableHTML(mtcars,
  add_css_column(css = list('background-color', 'white'), columns = 'row_groups') %>%
  replace_html(pattern = '<td id="tableHTML_row_groups" style="background-color:white;" rowspan="10">Group 1',
               replacement = '<td id="tableHTML_row_groups" style="background-color:lightyellow;" rowspan="10">Group 1')
-```
 
-### Collapsed table
+## ----example 7, eval = FALSE---------------------------------------------
+#  tableHTML(mtcars,
+#            border = 5,
+#            rownames = TRUE,
+#            collapse = 'separate',
+#            widths = c(100, 140, rep(50, 11)),
+#            row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+#            second_headers = list(c(3, 4, 6), c('col1', 'col2', 'col3'))) %>%
+#   add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
+#   add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
+#   add_css_column(css = list('background-color', 'white'), columns = 'row_groups')
 
-```{r example9, eval = FALSE}
-tableHTML(mtcars, 
-          border = 5,
-          rownames = TRUE, 
-          collapse = 'separate',
-          widths = c(100, 140, rep(50, 11)),
-          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
-          second_headers = list(c(3, 4, 6), c('col1', 'col2', 'col3'))) %>%
- add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
- add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
- add_css_column(css = list('background-color', 'white'), columns = 'row_groups')
-```
-
-![](Collapsed_examples.PNG)
-
-### Table with Second Headers
-
-```{r example10}
+## ----example 8-----------------------------------------------------------
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -173,11 +90,8 @@ tableHTML(mtcars,
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
  add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
  add_css_thead(css = list('background-color', 'lightblue'))
-```
 
-### add_css_column overwrites add_css_row
-
-```{r example11}
+## ----example 9-----------------------------------------------------------
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -188,11 +102,8 @@ tableHTML(mtcars,
  add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
  add_css_column(css = list('background-color', 'lightyellow'), columns = 'mpg') %>%
  add_css_thead(css = list('background-color', 'lightblue'))
-```
 
-### Table with thead and tbody
-
-```{r example12}
+## ----example 10----------------------------------------------------------
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -200,11 +111,8 @@ tableHTML(mtcars,
           second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>%
  add_css_thead(css = list('background-color', 'lightgray')) %>%
  add_css_tbody(css = list('background-color', 'lightblue')) 
-```
 
-### Column Overwrites Row Overwrites tbody / thead Overwrites table
-
-```{r example13}
+## ----example 11----------------------------------------------------------
 tableHTML(mtcars, 
           rownames = TRUE, 
           widths = c(140, rep(50, 11)),
@@ -213,11 +121,8 @@ tableHTML(mtcars,
  add_css_tbody(css = list('background-color', 'lightblue')) %>%
  add_css_row(css = list('background-color', 'red'), row = 5) %>%
  add_css_column(css = list('background-color', 'lightgreen'), columns = 'mpg') 
-```
 
-### Table with One Empty Second Header
-
-```{r example14}
+## ----example 12----------------------------------------------------------
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -227,11 +132,8 @@ tableHTML(mtcars,
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
  add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
  add_css_thead(css = list('background-color', 'lightblue'))
-```
 
-### Table with the Last Second Header Missing
-
-```{r example15}
+## ----example 13----------------------------------------------------------
 tableHTML(mtcars, 
           border = 5,
           rownames = TRUE, 
@@ -241,11 +143,8 @@ tableHTML(mtcars,
  add_css_row(css = list('background-color', 'lightgray'), rows = odd(3:34)) %>%
  add_css_row(css = list('background-color', 'lightblue'), rows = even(3:34)) %>%
  add_css_thead(css = list('background-color', 'lightblue'))
-```
 
-### Only Row Groups no Second Headers
-
-```{r example16}
+## ----example 14----------------------------------------------------------
 tableHTML(mtcars, 
           rownames = TRUE, 
           widths = c(100, 140, rep(50, 11)),
@@ -254,22 +153,16 @@ tableHTML(mtcars,
  add_css_row(css = list('background-color', 'lightblue'), rows = even(2:33)) %>%
  add_css_row(css = list('background-color', 'lightgreen'), rows = 1) %>%
  add_css_column(css = list('background-color', 'lightyellow'), columns = 'row_groups') 
-```
 
-### Using non-collapsed tables in shiny
-
-```{r example17}
+## ----example 15----------------------------------------------------------
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px') %>%
     add_css_table(css = list(c('background-color'), c('lightgray'))) %>% 
     add_css_table(css = list('color', 'blue'))
-```
 
-### Using conditional formatting with other tableHTML functions
-
-```{r example18}
+## ----example_17----------------------------------------------------------
 tableHTML(mtcars,
-          widths = c(140, rep(50, 11))) %>%
-  add_theme('scientific') %>%
+          widths = c(140, rep(50, 11)),
+          theme = 'scientific') %>%
   add_css_row(css = list('background-color', '#E0E0E0'), rows = odd(3:34)) %>%
   add_css_conditional_column(conditional = 'between',
                              between = c(3.5, 4.22), 
@@ -279,15 +172,8 @@ tableHTML(mtcars,
                             c('rotate(-45deg)', '40px')),
                  headers = 1:12)
 
-```
 
-### Iris dataset with second headers, rowgroups, and conditional css
-
-Note: the `<div>` container is introduced,
-because the css property `'transform:rotate(...deg);'` would rotate the whole `<td>` 
-element would be rotated and background color would be out of place
-
-```{r example19}
+## ----example_16----------------------------------------------------------
 tableHTML(iris[c(1:5, 51:55, 101:105), 1:4], 
           rownames = FALSE,
           headers = rep(c('Length', 'Width'), 2),
@@ -306,47 +192,12 @@ tableHTML(iris[c(1:5, 51:55, 101:105), 1:4],
   add_css_header(css = list(c('color', 'background-color'),
                             c('white', 'gray')),
                  headers = 1:5) %>%
-  add_css_conditional_column('color_rank',
-                             color_rank_theme = 'White-Green',
+  add_css_conditional_column('colour_rank',
+                             colour_rank_theme = 'White-Green',
                              columns = 1:2,
                              same_scale = FALSE) %>%
-  add_css_conditional_column('color_rank',
-                             color_rank_theme = 'White-Blue',
+  add_css_conditional_column('colour_rank',
+                             colour_rank_theme = 'White-Blue',
                              columns = 3:4,
                              same_scale = FALSE)
-```
-
-### Table added as an image (not as html)
-
-This works perfectly with rmarkdown when you want to add the table as an image in a pdf, word or html document.
-
-```{r example20, eval=FALSE}
-mtcars %>%
- tableHTML(widths = c(140, rep(50, 11))) %>%
- add_theme('rshiny-blue') %>%
- tableHTML_to_image(type = 'png')
-```
-
-![](image_table2.png)
-
-### Table added as an image (changing size of image)
-
-To increase the size of the image, you can use the rmarkdown chunk options. Here,
-I am using `fig.height=7` and `fig.width=7`.
-
-```{r example21, fig.height=7, fig.width=7, eval=FALSE}
-mtcars %>%
- tableHTML(widths = c(140, rep(50, 11))) %>%
- add_theme('rshiny-blue') %>%
- tableHTML_to_image(type = 'png')
-```
-
-![](image_table3.png)
-
-\     
-
-
-
-
-
 
