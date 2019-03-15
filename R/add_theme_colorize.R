@@ -78,8 +78,8 @@
 #'                    total_rows = c(4, 8, 12, 16), id_column = TRUE)
 #'
 #' @export
-add_theme_colorize <- function(tableHTML, color,
-                             total_rows, id_column=FALSE)
+add_theme_colorize <- function(tableHTML, color = 'steelblue',
+                             total_rows = NULL, id_column=FALSE)
 {
  # extract attributes
  n_rows <- attr(tableHTML, "nrows")
@@ -89,14 +89,6 @@ add_theme_colorize <- function(tableHTML, color,
  rownames <- attr(tableHTML, "rownames")
  row_groups <- attr(tableHTML, "row_groups_data")
  exist_row_groups <- !is.null(row_groups)
-
- # set default parameters
- if(missing(color)){
-  color <- 'darkgreen'
- }
- if(missing(total_rows)){
-  total_rows <- NULL
- }
 
  # checks
  if (!inherits(tableHTML, 'tableHTML'))
