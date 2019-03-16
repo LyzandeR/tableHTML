@@ -1,0 +1,423 @@
+---
+title: "tableHTML"
+author: "Clemens Zauchner"
+date: "`r Sys.Date()`"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{conditional formatting on columns}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+When presenting data in a table, you might want to put emphasis on certain areas of your table. `add_css_column()` 
+allows you to apply the same CSS to all rows in a column. E.g. you can change the background colour of a column. 
+What you cannot do though, is change the colour of the column if a condition is met. This is why 
+`add_css_conditional_column()` was implemented. You can choose from a range of conditionals, equalities and 
+inequalities ("==", "!=", ">", ">=", "<", "<="), "min", "max", "top_n", "bottom_n", 
+  "between", "contains")
+
+### Highlight specific value in a column
+
+The most basic use case of the function is highlighting a specific value in a column.
+In this case it will apply green background to all values that are equal to 21.4 in column 'mpg'.
+
+```{r example_1}
+library(tableHTML)
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = '==', 
+                             value = 21.4, 
+                             css = list('background-color', 'green'), 
+                             columns = 'mpg')
+```
+
+### Highlight specific value in multiple columns
+It is possible to apply the same condition to multiple columns in one function call.
+
+```{r example_2}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = '==', 
+                             value = 3.15,
+                             css = list('background-color', 'steelblue'), 
+                             columns = c('drat', 'wt'))
+```
+
+### Chaining
+As usual, the function can be chained
+
+```{r example_3}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = '==', 
+                             value = 21.4, 
+                             css = list('background-color', 'green'), 
+                             columns = 'mpg') %>%
+  add_css_conditional_column(conditional = '==',
+                             value = 3.15,
+                             css = list('background-color', 'steelblue'), 
+                             columns = c('drat', 'wt'))
+```
+
+\
+
+The function can also be chained changing the same column
+
+```{r example_4}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = '==', 
+                             value = 21.4, 
+                             css = list('background-color', 'green'), 
+                             columns = 'mpg') %>%
+  add_css_conditional_column(conditional = '==', 
+                             value = 15.2, 
+                             css = list('background-color', 'steelblue'), 
+                             columns = 'mpg')
+```
+
+\
+
+You may want to apply styles depending on quantiles and use several conditionals to achieve this.
+
+```{r example_5}
+ qu_25_75 <- quantile(mtcars$disp, c(0.25, 0.75))
+ 
+ tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+   add_css_conditional_column(conditional = "<",
+                              value = qu_25_75[1], 
+                              css = list('background-color', "green"),
+                              columns = c("disp")) %>%
+   add_css_conditional_column(conditional = "between",
+                              between = qu_25_75, 
+                              css = list('background-color', "orange"), 
+                              columns = c("disp")) %>%
+   add_css_conditional_column(conditional = ">", 
+                              value = qu_25_75[2], 
+                              css = list('background-color', "red"), 
+                              columns = c("disp"))
+```
+
+### Applying function on multiple columns
+If you want to apply conditional formatting to multiple columns, you might want to compare the columns individually or together.
+E.g. you might want to find the minimum value in columns 'disp' and 'hp'. If you want to find the minimum in both columns, 
+use `same_scale = TRUE`:
+
+```{r example_6}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = 'min', 
+                             css = list('background-color', 'orange'), 
+                             columns = c('disp', 'hp'),
+                             same_scale = TRUE)
+```
+
+\
+
+If you want to highlight the minimum in 'disp' and the minimum in 'hp' columns, use `same_scale = FALSE`:
+
+```{r example_7}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = 'min', 
+                             css = list('background-color', 'orange'), 
+                             columns = c('disp', 'hp'),
+                             same_scale = FALSE)
+```
+
+\
+
+If you want to find the minimum values in every column you can use `same_scale = FALSE`
+
+```{r example_8}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>% 
+  add_css_conditional_column(conditional = "min", 
+                             css = list('background-color', "green"),
+                             columns = seq_along(mtcars),
+                             same_scale = FALSE)
+```
+
+
+### Equalities and inequalities
+
+When evaluating equalities or inequalities there is a choice of all common operators. A `value` argument 
+needs to be specified.
+
+```{r example_9}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = "==",
+                             value = 14.3, 
+                             css = list('background-color', "steelblue"), 
+                             columns = 1) %>%
+  add_css_conditional_column(conditional = "!=", 
+                             value = 8,
+                             css = list('background-color', "mediumvioletred"), 
+                             columns = 2) %>%
+  add_css_conditional_column(conditional = ">",
+                             value = 440,
+                             css = list('background-color', "orange"),
+                             columns = 3) %>%
+  add_css_conditional_column(conditional = ">=", 
+                             value = 264,
+                             css = list('background-color', "green"),
+                             columns = 4) %>%
+  add_css_conditional_column(conditional = "<",
+                             value = 3, 
+                             css = list('background-color', "yellow"),
+                             columns = 5) %>%
+  add_css_conditional_column(conditional = "<=", 
+                             value = 2.20, 
+                             css = list('background-color', "lightgray"), 
+                             columns = 6)
+  
+
+```
+
+### Highest and lowest values
+
+You can use 'min' and 'max' to highlight the minimum or maximum value in a column (or columns). 'bottom_n' and 'top_n'
+are similar functions, only that they allow to hightlight n values, where 'bottom_n' with `n = 1` is an equivalent
+to 'min' and 'top_n' with `n = 1` is an equivalent to 'max': 
+
+Notice that you can use `same_scale` to define the context for a function:
+
+```{r example_10}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = "min",
+                             css = list('background-color', "steelblue"), 
+                             columns = 1) %>%
+  add_css_conditional_column(conditional = "max", 
+                             css = list('background-color', "mediumvioletred"), 
+                             columns = 2) %>%
+  add_css_conditional_column(conditional = "bottom_n",
+                             n = 5, 
+                             css = list('background-color', "green"), 
+                             columns = c(3, 4), 
+                             same_scale = FALSE) %>% 
+  add_css_conditional_column(conditional = "top_n",
+                             n = 5, 
+                             css = list('background-color', "orange"), 
+                             columns = c(5, 6)) 
+```
+
+### Between
+
+The between operator can be used to format values that are in a defined range. The operator is very much like
+SQL with inclusive lower and upper bound. You need to provide a vector with two elements in `between`. 
+
+```{r example_11}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = "between",
+                             between = c(15, 25),
+                             css = list('background-color', "steelblue"), 
+                             columns = 1)
+```
+
+\
+
+Again, the 'between' conditional can be applied to multiple columns in one function call. 
+
+```{r example_12}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = "between", 
+                             between = c(20, 22), 
+                             css = list('background-color', "steelblue"), 
+                             columns = c(1, 7))
+
+```
+
+### Character columns - Pattern matching
+
+If you want to highlight elements that contain a specific substring, you can use 'contains'. The function
+will check if a pattern or regular expression can be found (Note: case sensitive). The R coecion rules apply: if you use it on numeric columns, 
+they will be evaluated as character. 
+
+```{r example_13}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(conditional = "contains", 
+                             value = "[0-9]", 
+                             css = list('background-color', "steelblue"), 
+                             columns = "rownames") %>%
+  add_css_conditional_column(conditional = "contains", 
+                             value = "Honda",
+                             css = list('background-color', "silver"), 
+                             columns = "rownames")
+```
+
+### Sorting factors with levels
+
+For factors, the default order of levels is alphabetic. If you want to change
+it to a specific order, you can add them with the argument `levels`.
+
+```{r example_20}
+df <- data.frame(factor_alphabetic = c('d', 'a', 'e', 'a', 'd', 'd', 'a', 'c', 'd', 'a'),
+                 factor_ordered = c('D', 'A', 'E', 'A', 'D', 'D', 'A', 'C', 'D', 'A'),
+                 stringsAsFactors = TRUE)
+tableHTML(df, 
+          rownames = FALSE) %>%
+  add_css_conditional_column(colour_rank_theme = 'White-Green',
+                             columns = 1) %>%
+  add_css_conditional_column(colour_rank_theme = 'White-Green', 
+                             columns = 2,
+                             levels = c('B', 'D', 'A', 'E', 'C'))
+```
+
+### Colour rank 
+
+A common conditional formatting usecase is to apply a colour rank to columns. There are a few of them pre-defined:
+
+```{r example_14}
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(colour_rank_theme = "RAG", columns = 1) %>%
+  add_css_conditional_column(colour_rank_theme = "Spectral", columns = 2) %>%
+  add_css_conditional_column(colour_rank_theme = "Rainbow", columns = 3) %>%
+  add_css_conditional_column(colour_rank_theme = "White-Green", columns = 4) %>%
+  add_css_conditional_column(colour_rank_theme = "White-Blue", columns = 5) %>%
+  add_css_conditional_column(colour_rank_theme = "White-Red", columns = 6) 
+```
+
+\
+
+You can reverese the colour by using `decreasing = TRUE`
+
+```{r example_15}
+tableHTML(mtcars,
+          widths = rep(100, 12)) %>%
+  add_css_conditional_column(colour_rank_theme = "RAG", 
+                             columns = 1, 
+                             decreasing = TRUE) 
+```
+
+\
+
+Colour ranks can be applied to multiple columns with one function call as well and 
+the context can be set using `same_scale`:
+
+```{r example_16}
+tableHTML(data.frame(a = 1:20, b = rep(1:5, 4), c = 1:20, d = rep(1:5, 4)), 
+          width = rep(80, 4),
+          second_headers = list(c(2, 2), 
+                                c("same_scale = TRUE",
+                                  "same_scale = FALSE")),
+          rownames = FALSE) %>%
+  add_css_conditional_column(colour_rank_theme = "RAG",
+                             columns = c(1, 2), 
+                             decreasing = FALSE, 
+                             same_scale = TRUE) %>%
+  add_css_conditional_column(colour_rank_theme = "RAG", 
+                             columns = c(3, 4), 
+                             decreasing = FALSE, 
+                             same_scale = FALSE)
+```
+
+### Using custom CSS
+
+You can also provide custom css. The css needs to be a named list where the name corresponds to the 
+name of the column the css should be applied to. The elements of that named list a vector of 
+css style attributes and a list of style attribute values. For each style attribute you need to
+have a list of attribute values and you need to have an attribute value for every row in the column. 
+
+You can use `make_css_colour_rank_theme()` with specific colours that you wish to apply. You can provide
+your own colours here or use palettes from e.g. RColorBrewer, as long as they are a valid argument to `col2rgb()`.
+
+```{r example_17}
+colour_rank_css <- 
+  make_css_colour_rank_theme(list(qsec = mtcars$qsec),
+                             colors = RColorBrewer::brewer.pal(9, "Set1"))
+
+tableHTML(mtcars,
+          widths = c(140, rep(45, 11))) %>%
+  add_css_conditional_column(colour_rank_theme =  "Custom", 
+                             colour_rank_css = colour_rank_css, 
+                             columns = 7)
+```
+
+
+### Integration with other tableHTML functions
+
+The functions `add_css_column()` and `add_css_conditinal_column()` can be combined. 
+
+```{r example_18} 
+tableHTML(mtcars,
+          widths = c(120, 200, rep(100, 11)),
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+          theme = "rshiny-blue") %>%
+ add_css_column(css = list('border', '1px solid'), columns = 1) %>%
+ add_css_conditional_column(colour_rank_theme = "RAG", columns = 1) %>%
+ add_css_conditional_column(conditional = "contains",
+                            value = "1", 
+                            css = list(c('color', 'font-size', 'border'), 
+                                       c('steelblue', '20', '1px solid steelblue')),
+                            columns = "row_groups") %>%
+ add_css_conditional_column(conditional = "contains",
+                            value = "2", 
+                            css = list(c('color', 'font-size', 'border'),
+                                       c('royalblue', '30', '1px solid royalblue')),
+                            columns = "row_groups") %>%
+ add_css_conditional_column(conditional = "contains",
+                            value = "3", 
+                            css = list(c('color', 'border'),
+                                       c('navy', '1px solid navy')),
+                            columns = "row_groups")
+```
+
+\
+
+In the example below you can see how to combine a few other functions from the `add_css_` family. First, 
+a tableHTML is created with rownames, an outside boarder, specified column widths, row groups, and 
+second headers. 
+CSS is then applied to the second header, the header, every second row, a colour rank is added to the 
+row groups, and in addition conditional formatting if the row groups contain specific numbers. 
+
+```{r example_19}
+tableHTML(mtcars, 
+          border = 2,
+          rownames = TRUE, 
+          widths = c(80, 140, rep(50, 11)),
+          row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')),
+          second_headers = list(c(3, 4, 6), c('col1', 'col2', 'col3'))) %>%
+  add_css_second_header(css = list(c('background-color', 'color', 'height'),
+                                   c('#2E5894', 'white', '50px')),
+                        second_headers = 1:3) %>%
+  add_css_header(css = list(c('transform', 'height'),
+                            c('rotate(-45deg)', '50px')),
+                 headers = 3:13) %>%
+  add_css_row(css = list('background-color', '#f2f2f2'), 
+              rows = even(3:34)) %>%
+  add_css_conditional_column(colour_rank_css = 
+                               make_css_colour_rank_theme(list(row_groups = 1:3),
+                                                          colors = c('#00b200',
+                                                                     '#007f00',
+                                                                     '#004c00'),
+                                                          css_property = 'color'),
+                             columns = 'row_groups') %>%
+  add_css_conditional_column(conditional = "contains",
+                             value = "1", 
+                             css = list('background-color', '#F5F5F5'),
+                             columns = "row_groups") %>%
+  add_css_conditional_column(conditional = "contains",
+                             value = "2", 
+                             css = list('background-color', '#D0D0D0'),
+                             columns = "row_groups") %>%
+  add_css_conditional_column(conditional = "contains",
+                             value = "3", 
+                             css = list('background-color', '#A9A9A9'),
+                             columns = "row_groups") %>%
+  add_css_conditional_column(colour_rank_theme = 'RAG', 
+                             columns = 4)
+```
+
+
+\

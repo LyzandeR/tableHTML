@@ -36,8 +36,10 @@ either as an image or as an HTML.
 \code{create_logo} will create and generate the package's logo.
 }
 \examples{
+\dontrun{
 create_logo(save = FALSE)
 
 create_logo(format = 'png', file = '~/exported_logo.png')
+}
 
 }
