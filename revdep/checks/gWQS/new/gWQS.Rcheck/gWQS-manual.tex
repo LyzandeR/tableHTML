@@ -1,0 +1,227 @@
+\nonstopmode{}
+\documentclass[a4paper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\usepackage[utf8,latin1]{inputenc}
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `gWQS'}}
+\par\bigskip{\large \today}
+\end{center}
+\begin{description}
+\raggedright{}
+\item[Type]\AsIs{Package}
+\item[Title]\AsIs{Generalized Weighted Quantile Sum Regression}
+\item[Version]\AsIs{1.1.0}
+\item[Author]\AsIs{Stefano Renzetti, Paul Curtin, Allan C Just, Ghalib Bello, Chris Gennings}
+\item[Maintainer]\AsIs{Stefano Renzetti }\email{stefano.renzetti88@gmail.com}\AsIs{}
+\item[Description]\AsIs{Fits Weighted Quantile Sum (WQS) regressions for continuous or binomial outcomes.}
+\item[Imports]\AsIs{Rsolnp, ggplot2, ztable, tableHTML}
+\item[License]\AsIs{GPL (>= 2)}
+\item[LazyData]\AsIs{true}
+\item[RoxygenNote]\AsIs{6.0.1}
+\item[Suggests]\AsIs{knitr, rmarkdown, pander}
+\item[VignetteBuilder]\AsIs{knitr}
+\item[NeedsCompilation]\AsIs{no}
+\item[Repository]\AsIs{CRAN}
+\item[Date/Publication]\AsIs{2018-05-07 16:38:54 UTC}
+\end{description}
+\Rdcontents{\R{} topics documented:}
+\inputencoding{utf8}
+\HeaderA{gwqs}{Fitting Weighted Quantile Sum regression models}{gwqs}
+%
+\begin{Description}\relax
+Fits Weighted Quantile Sum (WQS) regressions for continuous or binomial outcomes.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+gwqs(formula, mix_name, data, q = 4, validation = 0.6, valid_var = NULL,
+  b = 100, b1_pos = TRUE, b1_constr = FALSE, family = "gaussian",
+  seed = NULL, wqs2 = FALSE, plots = FALSE, tables = FALSE)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{formula}] An object of class \code{formula} specifying the relationship to be tested. If no
+covariates are being tested specify \code{y \textasciitilde{} NULL}.
+
+\item[\code{mix\_name}] A character vector listing the variables contributing to a mixture effect.
+
+\item[\code{data}] The \code{data.frame} containing the variables to be included in the model.
+
+\item[\code{q}] An \code{integer} to specify how mixture variables will be ranked, e.g. in quartiles
+(\code{q = 4}), deciles (\code{q = 10}), or percentiles (\code{q = 100}). If \code{q = NULL} then
+the values of the mixture variables are taken (these must be standardized).
+
+\item[\code{validation}] Percentage of the dataset to be used to validate the model. If
+\code{validation = 0} then the test dataset is used as validation dataset too.
+
+\item[\code{valid\_var}] A character value containing the name of the variable that identifies the validation
+and the training dataset. You previously need to create a variable in the dataset which is equal to 1
+for the observations you want to include in the validation dataset and equal to 0 for the observation
+you want to include in the training dataset. Assign \code{valid\_var = NULL} if you want to let the
+function create the validation and training dataset by itself.
+
+\item[\code{b}] Number of bootstrap samples used in parameter estimation.
+
+\item[\code{b1\_pos}] A logical value that determines whether weights are derived from models where the beta
+values were positive or negative.
+
+\item[\code{b1\_constr}] A logial value that determines whether to apply positive (if \code{b1\_pos = TRUE}) or
+negative (if \code{b1\_pos = FALSE}) constraints in the optimization function for the weight estimation.
+
+\item[\code{family}] A character value, if equal to \code{"gaussian"} a linear model is implemented, if
+equal to \code{"binomial"} a logistic model is implemented.
+
+\item[\code{seed}] An \code{integer} value to fix the seed, if it is equal to NULL no seed is chosen.
+
+\item[\code{wqs2}] A logical value indicating whether a quadratic term should be included in the model
+(\code{wqs2 = TRUE}) or not (\code{wqs2 = FALSE}).
+
+\item[\code{plots}] A logical value indicating whether plots should be generated with the output
+(\code{plots = TRUE}) or not (\code{plots = FALSE}).
+
+\item[\code{tables}] A logical value indicating whether tables should be generated in the directory
+with the output (\code{tables = TRUE}) or not (\code{tables = FALSE}). A preview of the estimates
+of the final weights is generated in the Viewer Pane
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+\code{gWQS} uses the \code{glm2} function in the \bold{glm2} package to fit the model. The
+\code{glm2} package is a modified version of the \code{\LinkA{glm}{glm}} function provided and
+documented in the stats package.\\{}
+
+The \code{\LinkA{solnp}{solnp}} optimization function is used to estimate the weights in each
+bootstrap sample.
+
+The \code{seed} argument  specifies a fixed seed through the \code{\LinkA{set.seed}{set.seed}} function.\\{}
+
+The \code{wqs2} argument includes a quadratic mixture effect in the linear model. In order to test
+the significance of this term an Analysis of Variance is executed through the
+\code{\LinkA{anova}{anova}} function.\\{}
+
+The \code{plots} argument produces two figures through the \code{\LinkA{ggplot}{ggplot}} function.\\{}
+\end{Details}
+%
+\begin{Value}
+\code{gwqs} return the results of the WQS regression as well as many other objects and datasets.
+
+\begin{ldescription}
+\item[\code{fit}] A \code{glm2} object that summarizes the output of the WQS model, reflecting either a
+linear or logistic regression depending on how the \code{family} parameter was specified
+(respectively, \code{"gaussian"} or \code{"binomial"}). The summary function can be used to call and
+print fit data.
+\item[\code{conv}] Indicates whether the solver has converged (0) or not (1 or 2).
+\item[\code{wb1pm}] Matrix of estimated weights, mixture effect parameter estimates and the associated
+p-values estimated for each bootstrap iteration.
+\item[\code{y\_adj}] Vector containing the y values (dependent variable) adjusted for the residuals of a
+fitted model adjusted for covariates.
+\item[\code{wqs}] Vector containing the wqs index for each subject.
+\item[\code{index\_b}] List of vectors containing the \code{rownames} of the subjects included in each
+bootstrap dataset.
+\item[\code{data\_t}] \code{data.frame} containing the subjects used to estimate the weights in each
+bootstrap.
+\item[\code{data\_v}] \code{data.frame} containing the subjects used to estimate the parameters of the final
+model.
+\item[\code{final\_weights}] \code{data.frame} containing the final weights associated to each chemical.
+\item[\code{fit\_2}] It is the same as fit, but it containes the results of the regression with the wqs
+quadratic term. If \code{wqs2 = FALSE}, NULL is returned.
+\item[\code{aov}] Analysis of variance table to test the significance of the wqs quadratic term in the
+model. If \code{wqs2 = FALSE}, NULL is returned.
+\end{ldescription}
+\end{Value}
+%
+\begin{Author}\relax
+Stefano Renzetti, Paul Curtin, Allan C Just, Ghalib Bello, Chris Gennings
+\end{Author}
+%
+\begin{References}\relax
+Carrico C, Gennings C, Wheeler D, Factor-Litvak P. Characterization of a weighted quantile sum
+regression for highly correlated data in a risk analysis setting. J Biol Agricul Environ Stat.
+2014:1-21. ISSN: 1085-7117. DOI: 10.1007/ s13253-014-0180-3.
+\url{http://dx.doi.org/10.1007/s13253-014-0180-3}.\\{}
+
+Czarnota J, Gennings C, Colt JS, De Roos AJ, Cerhan JR, Severson RK, Hartge P, Ward MH,
+Wheeler D. 2015. Analysis of environmental chemical mixtures and non-Hodgkin lymphoma risk in the
+NCI-SEER NHL study. Environmental Health Perspectives, DOI:10.1289/ehp.1408630.\\{}
+
+Czarnota J, Gennings C, Wheeler D. 2015. Assessment of weighted quantile sum regression for modeling
+chemical mixtures and cancer risk. Cancer Informatics,
+2015:14(S2) 159-171 DOI: 10.4137/CIN.S17295.\\{}
+\end{References}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# we save the names of the mixture variables in the variable "toxic_chems"
+toxic_chems = c("log_LBX074LA", "log_LBX099LA", "log_LBX105LA", "log_LBX118LA",
+"log_LBX138LA", "log_LBX153LA", "log_LBX156LA", "log_LBX157LA", "log_LBX167LA",
+"log_LBX170LA", "log_LBX180LA", "log_LBX187LA", "log_LBX189LA", "log_LBX194LA",
+"log_LBX196LA", "log_LBX199LA", "log_LBXD01LA", "log_LBXD02LA", "log_LBXD03LA",
+"log_LBXD04LA", "log_LBXD05LA", "log_LBXD07LA", "log_LBXF01LA", "log_LBXF02LA",
+"log_LBXF03LA", "log_LBXF04LA", "log_LBXF05LA", "log_LBXF06LA", "log_LBXF07LA",
+"log_LBXF08LA", "log_LBXF09LA", "log_LBXPCBLA", "log_LBXTCDLA", "log_LBXHXCLA")
+
+# To run a linear model and save the results in the variable "results". This linear model
+# (family="Gaussian") will rank/standardize variables in quartiles (q = 4), perform a
+# 40/60 split of the data for training/validation (validation = 0.6), and estimate weights
+# over 5 bootstrap samples (b = 3). Weights will be derived from mixture effect
+# parameters that are positive (b1_pos = TRUE). A unique seed was specified (seed = 2016) so
+# this model will be reproducible, and plots describing the variable weights and linear
+# relationship will be generated as output (plots = TRUE). In the end tables describing the
+# weights values and the model parameters with the respectively statistics are generated in
+# the viewer window
+results = gwqs(y ~ NULL, mix_name = toxic_chems, data = wqs_data, q = 4, validation = 0.6,
+               b = 3, b1_pos = TRUE, b1_constr = FALSE, family = "gaussian", seed = 2016,
+               wqs2 = FALSE, plots = TRUE, tables = TRUE)
+
+# to test the significance of the covariates
+summary(results$fit)
+
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{wqs\_data}{Exposure concentrations of 34 PCB (simulated dataset)}{wqs.Rul.data}
+\keyword{datasets}{wqs\_data}
+%
+\begin{Description}\relax
+We created the `wqs\_data` dataset to show how to use this function. These data reflect
+34 exposure concentrations simulated from a distribution of PCB exposures measured in
+subjects participating in the NHANES study (2001-2002). Additionally, an end-point
+meaure, simulated from a distribution of leukocyte telomere length (LTL), a biomarker
+of chronic disease, is provided as well (variable name: y), as well as simulated
+covariates, e.g. sex, and a dichotomous outcome variable (variable name: disease\_state).
+This dataset can thus be used to test the `gWQS` package by analyzing the mixed effect
+of the 34 simulated PCBs on the continuous or binary outcomes, with adjustments for
+covariates.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+wqs_data
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+A data frame with 500 rows and 37 variables
+\end{Format}
+%
+\begin{Details}\relax
+\begin{description}
+
+\item[y] continuous outcome, biomarker of chronic disease
+\item[disease\_state] dichotomous outcome, state of disease
+\item[sex] covariate, gender of the subject
+\item[log\_LBX] 34 exposure concentrations of PCB exposures
+...
+
+\end{description}
+
+\end{Details}
+\printindex{}
+\end{document}

@@ -24,9 +24,11 @@
 #' either as an image or as an HTML.
 #'
 #' @examples
+#' \dontrun{
 #' create_logo(save = FALSE)
 #'
 #' create_logo(format = 'png', file = '~/exported_logo.png')
+#' }
 #'
 #' @importFrom stats setNames
 #'

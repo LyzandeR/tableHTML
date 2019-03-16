@@ -4,7 +4,8 @@
 \alias{add_theme_colorize}
 \title{Add a theme to a tableHTML with a total row.}
 \usage{
-add_theme_colorize(tableHTML, color, total_rows, id_column = FALSE)
+add_theme_colorize(tableHTML, color = "steelblue", total_rows = NULL,
+  id_column = FALSE)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object.}
