@@ -55,4 +55,6 @@ To use conditional formatting or colour ranking for your table you can visit the
 
 For a tutorial on how to build a CSS file and how to use that in shiny (in a fast way) you can visit the [make_css and shiny](https://cran.r-project.org/package=tableHTML/vignettes/make_css.html) link. 
 
-To see the released version you can visit [CRAN](https://cran.r-project.org/package=tableHTML).
+To check the themes included in the package you can visit [themes](https://cran.r-project.org/package=tableHTML/vignettes/themes.html)
+
+To see the released version (and all the vignette links) you can visit [CRAN](https://cran.r-project.org/package=tableHTML).
