@@ -466,6 +466,7 @@ tableHTML <- function(obj,
   attr(htmltable, 'second_headers') <- !is.null(second_headers)
   attr(htmltable, 'second_headers_data') <- second_headers
   attr(htmltable, 'table_class') <- class
+  attr(htmltable, 'file_loc') <- tempfile(fileext = ".html")
   if (add_data) attr(htmltable, 'data') <- obj
 
   #Adding Collapse arg------------------------------------------------------------------------
@@ -501,7 +502,11 @@ print.tableHTML <- function(x, viewer = TRUE, ...) {
  if (interactive() & viewer == TRUE) {
 
   rstudioviewer <- getOption("viewer")
-  file <- tempfile(fileext = ".html")
+  if (!is.null(attr(x, 'file_loc'))) {
+    file <- attr(x, 'file_loc')
+  } else {
+    file <- tempfile(fileext = ".html")
+  }
   htmlfile <- htmltools::HTML(paste('<html>\n<body>',
                                     x,
                                     '</body>\n</html>',
