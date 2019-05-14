@@ -20,8 +20,6 @@
 #'   and the position is 0. If row_groups are are included the column name is "tableHTML_row_groups"
 #'   and the position is -1.
 #'
-#' @param column_names Deprecated. Please use the argument columns.
-#'
 #' @return A tableHTML object.
 #'
 #' @examples
