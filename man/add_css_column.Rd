@@ -19,8 +19,6 @@ with the positions of the columns where the style definitions will be applied on
 column must be provided. If the rownames are included the column name is "tableHTML_rownames"
 and the position is 0. If row_groups are are included the column name is "tableHTML_row_groups"
 and the position is -1.}
-
-\item{column_names}{Deprecated. Please use the argument columns.}
 }
 \value{
 A tableHTML object.
