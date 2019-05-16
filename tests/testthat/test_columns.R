@@ -110,6 +110,15 @@ test_that("numeric index, character index and column name work fine", {
   )
  )
 
+  expect_true(
+    grepl(
+      '<td id="tableHTML_rownames" style="background-color:lightgray;height:30px;"',
+      tableHTML(mtcars) %>%
+        add_css_column(css = list(c('background-color', 'height'), c('lightgray', '30px')),
+                       columns = 'rownames')
+    )
+  )
+
  expect_true(
   grepl(
    '<td id="tableHTML_column_1" style="background-color:lightgray;height:30px;"',
