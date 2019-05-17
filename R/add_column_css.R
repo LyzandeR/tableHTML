@@ -79,31 +79,8 @@ add_css_column <- function(tableHTML,
 
  for (i in indices) {
 
-  if (identical(i, 0)) {
+   tableHTML <- add_core_column_css(tableHTML, i, style)
 
-   tableHTML <- gsub(paste0('id="tableHTML_rownames" style='),
-                     paste0('id="tableHTML_rownames"'), tableHTML)
-   tableHTML <- gsub(paste0('id="tableHTML_rownames"'),
-                     paste0('id="tableHTML_rownames" ', style), tableHTML)
-   tableHTML <- gsub(';""', ';', tableHTML)
-
-  } else if (identical(i, -1)) {
-
-   tableHTML <- gsub(paste0('id="tableHTML_row_groups" style='),
-                     paste0('id="tableHTML_row_groups"'), tableHTML)
-   tableHTML <- gsub(paste0('id="tableHTML_row_groups"'),
-                     paste0('id="tableHTML_row_groups" ', style), tableHTML)
-   tableHTML <- gsub(';""', ';', tableHTML)
-
-  } else {
-
-  tableHTML <- gsub(paste0('id="tableHTML_column_', i, '" style='),
-                    paste0('id="tableHTML_column_', i, '"'), tableHTML)
-  tableHTML <- gsub(paste0('id="tableHTML_column_', i, '"'),
-                    paste0('id="tableHTML_column_', i, '" ', style), tableHTML)
-  tableHTML <- gsub(';""', ';', tableHTML)
-
-  }
  }
 
  attributes(tableHTML) <- attributes
