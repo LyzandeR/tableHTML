@@ -14,8 +14,8 @@
 #'
 #' When working on rmarkdown and you want to knit as pdf, use this function.
 #' Works with microsoft word as well.
-#' 
-#' To use this function you need phantomjs installed. Please use \code{webshot::install_phantomjs()} 
+#'
+#' To use this function you need phantomjs installed. Please use \code{webshot::install_phantomjs()}
 #' to install if it is not installed already.
 #'
 #' @param tableHTML A tableHTML object created by the tableHTML function.
@@ -40,7 +40,7 @@
 #'   tableHTML() %>%
 #'   tableHTML_to_image()
 #' }
-#' 
+#'
 #' @importFrom graphics par plot.new
 #'
 #' @export
@@ -58,11 +58,11 @@ tableHTML_to_image <- function(tableHTML,
  if (!is.logical(add)) {
   stop("add must be TRUE or FALSE")
  }
- 
+
  #check if phantom_js is installed
  jsinstalled <- suppressMessages(find_phantom())
  if (is.null(jsinstalled)) {
-   stop('To use this function, phantomjs needs to be installed. 
+   stop('To use this function, phantomjs needs to be installed.
         You can install it with webshot::install_phantomjs')
  }
 
@@ -101,6 +101,7 @@ tableHTML_to_image <- function(tableHTML,
 
  #read
  img <- readfunc(image)
+ class(img) <- c('tableHTML_image', class(img))
 
  #delete temp files
  file.remove(temp_file)
@@ -115,10 +116,11 @@ tableHTML_to_image <- function(tableHTML,
 
  #export the image
  if (is.null(file)) {
-  return(grid::grid.raster(img))
+  grid::grid.raster(img)
+  return(img)
  } else {
   writefunc(img, file)
-  return(invisible(NULL))
+  return(invisible(img))
  }
 
 }
