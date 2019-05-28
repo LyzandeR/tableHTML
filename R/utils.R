@@ -59,13 +59,13 @@ phantom_paths <- function() {
 find_phantom <- function() {
   path <- Sys.which( "phantomjs" )
   if (path != "") return(path)
-  
+
   for (d in phantom_paths()) {
     exec <- if (is_windows()) "phantomjs.exe" else "phantomjs"
     path <- file.path(d, exec)
     if (utils::file_test("-x", path)) break else path <- ""
   }
-  
+
   if (path == "") {
     # It would make the most sense to throw an error here. However, that would
     # cause problems with CRAN. The CRAN checking systems may not have phantomjs

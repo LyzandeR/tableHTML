@@ -34,6 +34,16 @@ test_that("widths are ok", {
   length(gregexpr('<col width="100">', tableHTML(mtcars, widths = rep(100, 12)))[[1]]),
   ncol(mtcars) + 1L
  )
+
+ expect_error(tableHTML(mtcars, widths = rep(100, 11)),
+              'widths must have the same length as the columns')
+ expect_error(tableHTML(mtcars, widths = rep(100, 11), row_groups = list(c(10, 10, 12))),
+              'same length as the columns')
+ expect_error(tableHTML(mtcars, widths = rep(100, 12), rownames = FALSE),
+              'same length as the columns')
+ expect_error(tableHTML(mtcars, widths = rep(100, 11), rownames = FALSE, row_groups = list(c(10, 10, 12))),
+              'length as the columns')
+
 })
 
 test_that("headers are ok", {
@@ -52,6 +62,22 @@ test_that("second headers are ok", {
  )
  expect_true(grepl('id="tableHTML_second_header_1"',
                    tableHTML(mtcars, second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))))
+
+ expect_error(tableHTML(mtcars, second_headers = c('a', 'b')),
+              'second_headers needs to be a list')
+
+ expect_error(tableHTML(mtcars, second_headers = list('a')),
+              'second_headers needs to be a list of length')
+
+ expect_error(tableHTML(mtcars, second_headers = list('a', 5)),
+              'first element needs to be')
+
+ expect_error(tableHTML(mtcars, second_headers = list(5, 5)),
+              'second element needs to be')
+
+ expect_error(tableHTML(mtcars, second_headers = list(5, c('a', 'b'))),
+              'need to have the same length')
+
 })
 
 
@@ -159,41 +185,41 @@ test_that("add_data works", {
 })
 
 test_that("spacing starts with a number", {
-  
-  expect_error(mtcars %>% 
+
+  expect_error(mtcars %>%
                  tableHTML(collapse = 'separate', spacing = 'abc'),
                'distances in spacing')
-  
+
 })
 
 test_that("round is numeric", {
-  
+
   expect_error(mtcars %>%
                  tableHTML(round = 'abc'),
                'round needs')
-  
-}) 
+
+})
 
 test_that("separate works", {
-  
-  expect_true(grepl('border-collapse:separate', 
+
+  expect_true(grepl('border-collapse:separate',
               mtcars %>% tableHTML(collapse = 'separate')))
-  
+
 })
 
 test_that("separate_shiny works", {
-  
-  expect_true(grepl('border-collapse:separate !important', 
+
+  expect_true(grepl('border-collapse:separate !important',
                     mtcars %>% tableHTML(collapse = 'separate_shiny')))
-  
+
 })
 
 test_that("print works", {
-  
-  out <- capture.output(mtcars %>% 
-                          tableHTML() %>% 
+
+  out <- capture.output(mtcars %>%
+                          tableHTML() %>%
                           print(viewer = FALSE)
                         )
   expect_true(any(grepl('tableHTML_column_1', out)))
-  
+
 })
