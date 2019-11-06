@@ -38,8 +38,10 @@ The function \code{create_hexlogo} will generate the hexagon logo
 of the \code{tableHTML} package.
 }
 \examples{
+\dontrun{
 create_hexlogo(save = FALSE)
 
 create_hexlogo(format = 'jpeg',
             file = '~/exported_hexlogo.jpeg')
+}
 }

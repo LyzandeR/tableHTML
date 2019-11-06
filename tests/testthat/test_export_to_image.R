@@ -1,6 +1,7 @@
 context("testing of export to image")
 
 test_that("Function fails for wrong inputs", {
+ skip_on_cran()
 
  #check argument type is picked correctly
  expect_error(

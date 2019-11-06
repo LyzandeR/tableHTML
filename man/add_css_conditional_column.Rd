@@ -39,7 +39,7 @@ and \code{between[2]} is the upper bound of the range. between is inclusive.}
 
 \item{css}{A list of two elements with the corresponding css. The first element of the list
 should be an atomic vector with the style definitions (e.g. background-color). The second
-element will be an atomic vector with the same length as the first element, which will 
+element will be an atomic vector with the same length as the first element, which will
 contain the style definitions' values (e.g. red). Check the examples for more information.}
 
 \item{color_rank_theme}{You can either pick one of the provided themes (RAG, White-Red, White-Green,

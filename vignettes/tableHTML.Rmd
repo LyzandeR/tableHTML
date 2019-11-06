@@ -33,7 +33,7 @@ tableHTML(mtcars)
 To remove row names from the HTML table you can type:
 
 ```{r rownames}
-tableHTML(mtcars, rownames = FALSE)
+tableHTML(mtcars, rownames=FALSE)
 ```
 
 ### Adding a table class
@@ -42,7 +42,7 @@ The class argument sets the class name for the table. The default will be of the
 table\_xxx (random 4-digit number). This makes it easier to add css to it in case there 
 are multiple tables.
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 mytable <- tableHTML(mtcars)
 str(mytable)
 # Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
@@ -56,8 +56,8 @@ str(mytable)
 
 And with a custom class:
 
-```{r, eval = FALSE}
-mytable <- tableHTML(mtcars, class = 'myClass')
+```{r, eval=FALSE}
+mytable <- tableHTML(mtcars, class='myClass')
 str(mytable)
 # Classes 'tableHTML', 'html', 'character'  atomic [1:1] 
 # <table class=myClass border=1 style="border-collapse: collapse;">
@@ -78,7 +78,7 @@ list in the `second_header` argument. The first element will contain the column 
 
 For example:
 
-```{r second header}
+```{r secondheader}
 tableHTML(mtcars, second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3')))
 ```
 
@@ -91,7 +91,7 @@ list in the `row_groups` argument. The first element will contain the row spans
 
 For example:
 
-```{r row groups}
+```{r rowgroups}
 tableHTML(mtcars, 
           rownames = FALSE, 
           row_groups = list(c(10, 10, 12), c('Group 1', 'Group 2', 'Group 3')))
@@ -147,7 +147,7 @@ tableHTML(mtcars, footer = 'This is  a footer')
 By default tableHTML collapses the table, so that there is no spacing between cells. You can change
 this behaviour by using the collapse argument.
 
-```{r collapse, eval = FALSE}
+```{r collapse, eval=FALSE}
 tableHTML(mtcars, collapse = 'separate')
 ```
 
@@ -162,7 +162,7 @@ will use the `!important` keyword in HTML which overwrites the default bootstrap
 developers argue that using `!important` can be dangerous since it overwrites previously set styles,
 so only use it on shiny or other web applications where tables are collapsed by default.
 
-```{r collapse 2}
+```{r collapse2}
 tableHTML(mtcars, collapse = 'separate_shiny')
 ```
 
@@ -173,13 +173,13 @@ the spacing between the cells. This only works if collapse is separate or separa
 it is not taken into account. You can use one or two length distances. If two length distances are
 used, the first specifies the horizontal spacing and the second one the vertical spacing.
 
-```{r spacing 1}
+```{r spacing1}
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '2px')
 ```
 
 \     
 
-```{r spacing 2}
+```{r spacing2}
 tableHTML(mtcars, collapse = 'separate_shiny', spacing = '5px 2px')
 ```
 
@@ -233,7 +233,7 @@ has three arguments:
 
 For example:
 
-```{r add css row 1}
+```{r addcssrow1}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11))) %>% 
   add_css_row(css = list(c('background-color', 'border'), c('lightblue', '2px solid lightgray')))
@@ -243,7 +243,7 @@ mtcars %>%
 
 And adding row indices manually:
 
-```{r add css row 2}
+```{r addcssrow2}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11))) %>% 
   add_css_row(css = list(c('background-color', 'border'), c('lightblue', '2px solid lightgray')),
@@ -256,7 +256,7 @@ It is very common in HTML tables to highlight odd rows with one color and even r
 We can achieve this with the rows argument and the helper funtions from the tableHTML package `odd`
 and `even`.
 
-```{r add css row 3}
+```{r addcssrow3}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11))) %>% 
   add_css_row(css = list('background-color', '#f2f2f2'),
@@ -298,7 +298,7 @@ mtcars %>%
 Keep in mind that if you apply the **same** style to both rows and columns, column styles will 
 overwrite row styles:
 
-```{r add css column 2}
+```{r addcsscolumn2}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11))) %>% 
   add_css_row(css = list('background-color', '#f2f2f2')) %>%
@@ -311,7 +311,7 @@ In general inner tag style definitions will overwrite outer tag style definition
 
 For example:
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 mytable <- tableHTML(mtcars)
 print(mytable, viewer = FALSE)
 <table style="border-collapse:collapse;" class=table_2079 border=1>
@@ -344,7 +344,7 @@ The function has three arguments:
 
 For example:
 
-```{r add css header 1}
+```{r addcssheader1}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11))) %>% 
   add_css_header(css = list('background-color', 'lightgray'), headers = c(1, 4))
@@ -365,7 +365,7 @@ In order to add css to specific table second headers you need to use the
                      be provided.
 For example:
 
-```{r add css second header 1}
+```{r addcsssecondheader1}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11)), 
             second_headers = list(c(3, 4, 5), c('col1', 'col2', 'col3'))) %>% 
@@ -385,7 +385,7 @@ In order to add css to the caption you need to use the
           will be an atomic vector with the same length as the first element, which will contain the
           style definitions' values (e.g. red).
 
-```{r add css caption}
+```{r addcsscaption}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11)), 
             caption = 'This is a table') %>% 
@@ -403,7 +403,7 @@ In order to add css to the caption you need to use the
           will be an atomic vector with the same length as the first element, which will contain the
           style definitions' values (e.g. red).
 
-```{r add css footer}
+```{r addcssfooter}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11)), 
             footer = 'This is a footer') %>% 
@@ -421,7 +421,7 @@ In order to add css to both the headers and second headers (if any) you could us
           will be an atomic vector with the same length as the first element, which will contain the
           style definitions' values (e.g. red).
 
-```{r add css thead}
+```{r addcssthead}
 mtcars %>%
   tableHTML() %>% 
   add_css_thead(css = list('background-color', 'lightgray')) 
@@ -438,7 +438,7 @@ In order to add css to all the table apart from the headers or second headers yo
           will be an atomic vector with the same length as the first element, which will contain the
           style definitions' values (e.g. red).
 
-```{r add css tbody}
+```{r addcsstbody}
 mtcars %>%
   tableHTML() %>% 
   add_css_tbody(css = list('background-color', 'lightgray')) 
@@ -452,7 +452,7 @@ in `thead` or `tbody`.
 
 To demonstrate this with an example:
 
-```{r thead example 1}
+```{r theadexample1}
 mtcars %>%
   tableHTML() %>% 
   add_css_thead(css = list('background-color', 'lightgray')) %>%
@@ -461,7 +461,7 @@ mtcars %>%
 
 \    
 
-```{r thead example 2}
+```{r theadexample2}
 mtcars %>%
   tableHTML() %>% 
   add_css_tbody(css = list('background-color', 'lightgray')) %>%
@@ -479,7 +479,7 @@ In order to add css to the whole table you need to use the
           will be an atomic vector with the same length as the first element, which will contain the
           style definitions' values (e.g. red).
 
-```{r add css table}
+```{r addcsstable}
 mtcars %>%
   tableHTML() %>% 
   add_css_table(css = list('background-color', 'lightgray')) 
@@ -495,7 +495,7 @@ above cases.
 
 An example to put everything in action:
 
-```{r all together}
+```{r alltogether}
 mtcars %>%
   tableHTML(widths = c(140, rep(45, 11)),
             second_headers = list(c(3, 4, 5), c('team1', 'team2', 'team3')),
@@ -525,7 +525,7 @@ that we don't know about (in which case please report it on the
 that it works with the chaining paradigm. The function uses `sub` or `gsub` internally in order to
 replace an HTML string pattern with another.
 
-```{r replace html}
+```{r replacehtml}
 mtcars %>%
  tableHTML(widths = c(140, rep(45, 11))) %>%
  replace_html(' <td id="tableHTML_column_1">21</td>', 
@@ -547,11 +547,13 @@ It can be also be used with plain markdown and rmarkdown but we recommend keepin
 **Note:** In order for the image to be taken properly you need to have `phanton_JS` installed which you can install by running 
 once the following on your console: `webshot::install_phantomjs()`. `tableHTML` uses `webshot` under the hood to take the picture.
 
-```{r picture}
+```{r picture, eval=FALSE}
 mtcars %>%
   tableHTML() %>%
   tableHTML_to_image()
 ```
+
+![     ](image_table1.PNG)
 
 ### Themes
 
@@ -575,7 +577,7 @@ will be enough.
 
 Let's see an example
 
-```{r shiny 1, eval = FALSE}
+```{r shiny1, eval=FALSE}
 library(shiny)
 shinyApp(
  ui = fluidPage(
@@ -594,7 +596,7 @@ shinyApp(
 
 Or with a more complex example:
 
-```{r shiny 2, eval = FALSE}
+```{r shiny2, eval=FALSE}
 shinyApp(
  ui = fluidPage(
    fluidRow(
@@ -651,7 +653,7 @@ Then we load this in R shiny in the following way: In the directory where we sav
 the server.R file we also create a www/ folder where we save our .css file.
 In our case that is named mycss.css. We include this file in R using `includeCSS`:
 
-```{r shiny css, eval = FALSE}
+```{r shinycss, eval=FALSE}
 #ui.R
 shinyUI(
  fluidPage(
@@ -682,7 +684,7 @@ function of the package which helps you create a css file and use that within sh
 In order to add a vertical column line we can use the column ids created by tableHTML. To add a
 vertical red line at mpg column, our css file would look like this:
 
-```{css ex_1, eval = FALSE}
+```{css ex_1, eval=FALSE}
 #tableHTML_column_1 {
 	border-left: 5px solid red;
 }
@@ -701,7 +703,7 @@ mtcars %>%
 In order to change the background color of one of the headers (e.g. the second) our
 CSS would look like this:
 
-```{css ex_2, eval = FALSE}
+```{css ex_2, eval=FALSE}
 #tableHTML_column_1 {
 	border-left: 5px solid red;
 }
@@ -723,7 +725,7 @@ mtcars %>%
 
 And in order to change the color of the first second_header our css would look like:
 
-```{css ex_3, eval = FALSE}
+```{css ex_3, eval=FALSE}
 #tableHTML_column_1 {
 	border-left: 5px solid red;
 }

@@ -15,15 +15,8 @@ theme_scientific <- function(tableHTML) {
 
   indices <- which(!second_headers[[2]] %in% '')
 
-  if (rownames & exist_row_groups) {
-   extra <- 2
-  } else if (!exist_row_groups & exist_row_groups) {
-   extra <- 1
-  } else if (exist_row_groups & !exist_row_groups) {
-   extra <- 1
-  } else {
-   extra <- 0
-  }
+  #the extra places based on rownames + row groups
+  extra <- rownames + exist_row_groups
 
   sum_of_column_span <- sum(second_headers[[1]])
 

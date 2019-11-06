@@ -26,10 +26,12 @@
 #' either as an image or as an HTML.
 #'
 #' @examples
+#' \dontrun{
 #' create_hexlogo(save = FALSE)
 #' 
 #' create_hexlogo(format = 'jpeg',
 #'             file = '~/exported_hexlogo.jpeg')
+#' }
 #' @export
 create_hexlogo <- function(save = TRUE, format = 'html',
                            file = 'tableHTML_hexlogo.html',
