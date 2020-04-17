@@ -13,7 +13,8 @@
 #' columns on the left. 'between' is SQL like, i.e. inclusive. 'top_n' highlights the n highest values columns, 'bottom_n'
 #' hightlights the lowest n values. 'max' and 'min' are equivalent of top_1 and bottom_1. 'contains' uses \code{grepl()} to see
 #' if values of a column contain a pattern specified in \code{value}. 'color-rank' applies
-#' one of the \code{color_rank_theme}s.
+#' one of the \code{color_rank_theme}s. 'custom' allows the user to provide a list of logical vectors to identify where to apply the css
+#' this option is convenient when the condition is complex, for example if it relies on other columns in the table.
 #'
 #' @param n the number of rows to highlight in 'top_n' and 'bottom_n'. If no value for n is provided, 1 is assumed
 #' with a warning.
@@ -44,7 +45,13 @@
 #' in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 #' the condition will be evaluated per column.
 #'
+#' @param logical_conditions A list of logical vectors indicating where the condition holds in each column
+#' provided in the \code{columns} parameter. Should be provided when \code{conditional} is 'custom'.
+#' The length of the list should have the same length as \code{columns}, and the length of each vector
+#' in the list should equal the number of rows in the table.
+#'
 #' @param levels Deprecated. Please change the factor levels in the input data of \code{tableHTML}.
+#'
 #'
 #' @inheritParams add_css_column
 #' @inheritParams base::order
@@ -136,16 +143,17 @@
 add_css_conditional_column <- function(tableHTML,
                                        columns,
                                        conditional = c("color_rank", "==", "!=", "min", "max", "top_n", "bottom_n", ">", ">=",
-                                                       "<", "<=", "between", "contains"),
+                                                       "<", "<=", "between", "contains", "custom"),
                                        n = NULL,
                                        value = NULL,
                                        between = NULL,
                                        css = NULL,
                                        color_rank_theme = c("Custom", "RAG", "Spectral", "Rainbow",
-                                                             "White-Green", "White-Red", "White-Blue"),
+                                                            "White-Green", "White-Red", "White-Blue"),
                                        color_rank_css = NULL,
                                        decreasing = FALSE,
                                        same_scale = TRUE,
+                                       logical_conditions=NULL,
                                        levels = NULL) {
 
   #persist attributes
@@ -156,7 +164,7 @@ add_css_conditional_column <- function(tableHTML,
 
   # check if data in attributes
   if (is.null(attributes$data)) {
-   stop("tableHTML object does not have data in attributes. \nSee documentation in tableHTML()")
+    stop("tableHTML object does not have data in attributes. \nSee documentation in tableHTML()")
   }
 
   # deprecated levels
@@ -179,7 +187,6 @@ add_css_conditional_column <- function(tableHTML,
   }
 
   conditional <- match.arg(conditional)
-
   color_rank_theme <- match.arg(color_rank_theme)
 
   if (conditional %in% c("top_n", "bottom_n")) {
@@ -217,19 +224,27 @@ add_css_conditional_column <- function(tableHTML,
     }
   }
 
+  if (conditional == "custom") {
+    if (is.null(logical_conditions))
+      stop('if the conditional is of type custom then the logical_conditions should be provided')
+    if (length(logical_conditions) != length(columns))
+      stop('logical_conditions should have the same length as the columns')
+    if (! all(lengths(logical_conditions) == nrow(attributes$data)))
+      stop("each vector in logical_conditions should have the same length as the number of rows")
+  }
+
   if (conditional != "color_rank") {
     if (is.null(css)) {
       stop('css needs to be provided')
     }
   }
-
   #color_rank_css structure
   if (color_rank_theme == "Custom" & conditional == "color_rank") {
     if (is.null(color_rank_css)) {
       stop("color_rank_css needs to be provided for custom conditional formatting")
     }
     if (lengths(color_rank_css) != 2) {
-     stop("color_rank_css must be a list of 2 atomic vectors")
+      stop("color_rank_css must be a list of 2 atomic vectors")
     }
     # if (! unique(unlist(lapply(1:length(color_rank_css), function(i) {
     #   lengths(color_rank_css[[i]])
@@ -283,15 +298,15 @@ add_css_conditional_column <- function(tableHTML,
   style <- switch(conditional,
                   "color_rank" = NULL,
                   {
-                  css_comp <- paste0(css[[1]], ':', css[[2]], ';')
-                  css_comp <- paste(css_comp, collapse = '')
-                  style_temp <- rep(list(rep(paste0('style="', css_comp, '"'),
-                                             attributes$nrows)),
-                                    length(all_names))
-                  names(style_temp) <- all_names
-                  style_temp
+                    css_comp <- paste0(css[[1]], ':', css[[2]], ';')
+                    css_comp <- paste(css_comp, collapse = '')
+                    style_temp <- rep(list(rep(paste0('style="', css_comp, '"'),
+                                               attributes$nrows)),
+                                      length(all_names))
+                    names(style_temp) <- all_names
+                    style_temp
                   }
-                  )
+  )
 
   color_rank_theme_colors <- switch(color_rank_theme,
                                     "RAG" = c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
@@ -304,42 +319,49 @@ add_css_conditional_column <- function(tableHTML,
                                     NULL
   )
 
-  if (is.null(style) & !is.null(color_rank_theme_colors)) {
-
-    condition <- rep(list(rep(TRUE, attributes$nrows)), length(indices))
+  if(conditional == "custom") {
+    condition <- logical_conditions
     names(condition) <- all_names
-
   } else {
-    comparison_value <- switch(conditional,
-                               "top_n" = n,
-                               "bottom_n" = n,
-                               "between" = between,
-                               value)
 
-    column_data <- extract_column_data(tableHTML, indices)
+    if (is.null(style) & !is.null(color_rank_theme_colors)) {
 
-    condition <- conditional_test_function(column_data = column_data,
-                                           conditional = conditional,
-                                           same_scale = same_scale,
-                                           comparison_value = comparison_value)
+      condition <- rep(list(rep(TRUE, attributes$nrows)), length(indices))
+      names(condition) <- all_names
+
+    } else {
+
+      comparison_value <- switch(conditional,
+                                 "top_n" = n,
+                                 "bottom_n" = n,
+                                 "between" = between,
+                                 value)
+
+      column_data <- extract_column_data(tableHTML, indices)
+
+      condition <- conditional_test_function(column_data = column_data,
+                                             conditional = conditional,
+                                             same_scale = same_scale,
+                                             comparison_value = comparison_value)
+    }
   }
 
   if (!is.null(color_rank_theme_colors)) {
+
     column_data <- extract_column_data(tableHTML, indices)
     color_rank_css <- make_css_color_rank_theme(column_data,
-                                       color_rank_theme_colors,
-                                       decreasing = decreasing,
-                                       same_scale = same_scale)
+                                                color_rank_theme_colors,
+                                                decreasing = decreasing,
+                                                same_scale = same_scale)
   }
 
   if (is.null(style)) {
+
     style <- lapply(all_names, function(name) {
       make_style_from_css("column")(color_rank_css, name)
     })
     names(style) <- all_names
   }
-
-
 
   for (i in indices) {
 
