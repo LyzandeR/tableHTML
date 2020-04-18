@@ -13,8 +13,8 @@
 #' columns on the left. 'between' is SQL like, i.e. inclusive. 'top_n' highlights the n highest values columns, 'bottom_n'
 #' hightlights the lowest n values. 'max' and 'min' are equivalent of top_1 and bottom_1. 'contains' uses \code{grepl()} to see
 #' if values of a column contain a pattern specified in \code{value}. 'color-rank' applies
-#' one of the \code{color_rank_theme}s. 'custom' allows the user to provide a list of logical vectors to identify where to apply the css
-#' this option is convenient when the condition is complex, for example if it relies on other columns in the table.
+#' one of the \code{color_rank_theme}. 'custom' allows the user to provide a list of logical vectors to identify where to apply the css.
+#' This option is convenient when the condition is complex, for example if it relies on other columns in the table.
 #'
 #' @param n the number of rows to highlight in 'top_n' and 'bottom_n'. If no value for n is provided, 1 is assumed
 #' with a warning.
@@ -138,6 +138,24 @@
 #'                              columns = c(9, 10),
 #'                              same_scale = FALSE)
 #'
+#' # test the condition on a column and apply the css on another
+#' iris %>%
+#'    tableHTML(rownames = FALSE, widths = rep(100, ncol(iris))) %>%
+#'    add_theme('scientific') %>%
+#'    add_css_conditional_column(conditional = 'custom',
+#'                               columns = c('Sepal.Length'),
+#'                               css = list(c('background-color'), c('lightblue')),
+#'                               logical_conditions = list(iris$Sepal.Width==3))
+#'
+#' # apply the css on a full row
+#' iris %>%
+#'    tableHTML(rownames = FALSE,
+#'              widths = rep(100, ncol(iris))) %>%
+#'    add_theme('scientific') %>%
+#'    add_css_conditional_column(conditional = 'custom',
+#'                               columns = 1:ncol(iris),
+#'                               css = list(c('background-color'), c('lightblue')),
+#'                               logical_conditions = list(iris$Sepal.Width==3) %>% rep(ncol(iris)))
 #' @export
 
 add_css_conditional_column <- function(tableHTML,
