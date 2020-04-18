@@ -6,7 +6,7 @@
 \usage{
 add_css_conditional_column(tableHTML, columns,
   conditional = c("color_rank", "==", "!=", "min", "max", "top_n",
-  "bottom_n", ">", ">=", "<", "<=", "between", "contains", "custom"),
+  "bottom_n", ">", ">=", "<", "<=", "between", "contains", "logical"),
   n = NULL, value = NULL, between = NULL, css = NULL,
   color_rank_theme = c("Custom", "RAG", "Spectral", "Rainbow",
   "White-Green", "White-Red", "White-Blue"), color_rank_css = NULL,
@@ -27,7 +27,7 @@ and inequality resp. '<', '<=', '>', and '>=' evaluate the respective operators 
 columns on the left. 'between' is SQL like, i.e. inclusive. 'top_n' highlights the n highest values columns, 'bottom_n'
 hightlights the lowest n values. 'max' and 'min' are equivalent of top_1 and bottom_1. 'contains' uses \code{grepl()} to see
 if values of a column contain a pattern specified in \code{value}. 'color-rank' applies
-one of the \code{color_rank_theme}. 'custom' allows the user to provide a list of logical vectors to identify where to apply the css.
+one of the \code{color_rank_theme}. 'logical' allows the user to provide a list of logical vectors to identify where to apply the css.
 This option is convenient when the condition is complex, for example if it relies on other columns in the table.}
 
 \item{n}{the number of rows to highlight in 'top_n' and 'bottom_n'. If no value for n is provided, 1 is assumed
@@ -64,7 +64,7 @@ in conjunction. If TRUE, the condition will be evaluated on all values of all \c
 the condition will be evaluated per column.}
 
 \item{logical_conditions}{A list of logical vectors indicating where the condition holds in each column
-provided in the \code{columns} parameter. Should be provided when \code{conditional} is 'custom'.
+provided in the \code{columns} parameter. Should be provided when \code{conditional} is 'logical'.
 The length of the list should have the same length as \code{columns}, and the length of each vector
 in the list should equal the number of rows in the table.}
 
@@ -167,7 +167,7 @@ tableHTML(mtcars) \%>\%
 iris \%>\%
    tableHTML(rownames = FALSE, widths = rep(100, ncol(iris))) \%>\%
    add_theme('scientific') \%>\%
-   add_css_conditional_column(conditional = 'custom',
+   add_css_conditional_column(conditional = 'logical',
                               columns = c('Sepal.Length'),
                               css = list(c('background-color'), c('lightblue')),
                               logical_conditions = list(iris$Sepal.Width==3))
@@ -177,7 +177,7 @@ iris \%>\%
    tableHTML(rownames = FALSE,
              widths = rep(100, ncol(iris))) \%>\%
    add_theme('scientific') \%>\%
-   add_css_conditional_column(conditional = 'custom',
+   add_css_conditional_column(conditional = 'logical',
                               columns = 1:ncol(iris),
                               css = list(c('background-color'), c('lightblue')),
                               logical_conditions = list(iris$Sepal.Width==3) \%>\% rep(ncol(iris)))
