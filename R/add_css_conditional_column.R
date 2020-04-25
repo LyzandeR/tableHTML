@@ -48,7 +48,8 @@
 #' @param logical_conditions A list of logical vectors indicating where the condition holds in each column
 #' provided in the \code{columns} parameter. Should be provided when \code{conditional} is 'logical'.
 #' The length of the list should have the same length as \code{columns}, and the length of each vector
-#' in the list should equal the number of rows in the table.
+#' in the list should equal the number of rows in the table. If one logical vector is given it wil be
+#' applied on all given columns.
 #'
 #' @param levels Deprecated. Please change the factor levels in the input data of \code{tableHTML}.
 #'
@@ -140,22 +141,22 @@
 #'
 #' # test the condition on a column and apply the css on another
 #' iris %>%
-#'    tableHTML(rownames = FALSE, widths = rep(100, ncol(iris))) %>%
-#'    add_theme('scientific') %>%
-#'    add_css_conditional_column(conditional = 'logical',
-#'                               columns = c('Sepal.Length'),
-#'                               css = list(c('background-color'), c('lightblue')),
-#'                               logical_conditions = list(iris$Sepal.Width==3))
-#'
+#' tableHTML(rownames = FALSE,
+#'           widths = rep(100, ncol(iris))) %>%
+#'   add_css_conditional_column(
+#'     conditional = 'logical',
+#'     columns = c('Sepal.Length', 'Petal.Length'),
+#'     css = list(c('background-color'), c('lightblue')),
+#'     logical_conditions = list(iris$Sepal.Width==3,
+#'                               iris$Petal.Width==0.3))
 #' # apply the css on a full row
 #' iris %>%
 #'    tableHTML(rownames = FALSE,
 #'              widths = rep(100, ncol(iris))) %>%
-#'    add_theme('scientific') %>%
 #'    add_css_conditional_column(conditional = 'logical',
 #'                               columns = 1:ncol(iris),
 #'                               css = list(c('background-color'), c('lightblue')),
-#'                               logical_conditions = list(iris$Sepal.Width==3) %>% rep(ncol(iris)))
+#'                               logical_conditions = list(iris$Sepal.Width==3))
 #' @export
 
 add_css_conditional_column <- function(tableHTML,
@@ -244,8 +245,8 @@ add_css_conditional_column <- function(tableHTML,
 
   if (conditional == "logical") {
     if (is.null(logical_conditions))
-      stop('if the conditional is of type logical then the logical_conditions should be provided')
-    if (length(logical_conditions) != length(columns))
+      stop('logical_conditions should be provided for logical conditional')
+    if ((length(logical_conditions) != 1) & (length(logical_conditions) != length(columns)))
       stop('logical_conditions should have the same length as the columns')
     if (! all(lengths(logical_conditions) == nrow(attributes$data)))
       stop("each vector in logical_conditions should have the same length as the number of rows")
@@ -338,6 +339,9 @@ add_css_conditional_column <- function(tableHTML,
   )
 
   if(conditional == "logical") {
+    if(length(logical_conditions) == 1){
+      logical_conditions <- rep(logical_conditions, length(columns))
+    }
     condition <- logical_conditions
     names(condition) <- all_names
   } else {

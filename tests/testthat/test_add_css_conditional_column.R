@@ -6,10 +6,10 @@ test_that("Function fails for wrong inputs", {
   expect_error(add_css_conditional_column(mtcars, 1),
                'tableHTML needs to be')
 
- #deprecated levels
- expect_error(tableHTML(mtcars) %>%
-               add_css_conditional_column(columns = 1, levels = "13"),
-              "levels is deprecated")
+  #deprecated levels
+  expect_error(tableHTML(mtcars) %>%
+                 add_css_conditional_column(columns = 1, levels = "13"),
+               "levels is deprecated")
 
   # no columns specified
   expect_error(tableHTML(mtcars) %>% add_css_conditional_column(conditional = "==", value = 1,
@@ -92,64 +92,88 @@ test_that("Function fails for wrong inputs", {
 
   # n greater than number of rows
   expect_error(tableHTML(mtcars) %>%
-                  add_css_conditional_column(conditional = "top_n",
-                                             columns = c(1),
-                                             css = list('background-color', 'lightgray'),
-                                             n = 33),
-                 "n cannot exceed")
+                 add_css_conditional_column(conditional = "top_n",
+                                            columns = c(1),
+                                            css = list('background-color', 'lightgray'),
+                                            n = 33),
+               "n cannot exceed")
 
   # n equal to number of rows
   expect_warning(tableHTML(mtcars) %>%
-                  add_css_conditional_column(conditional = "top_n",
-                                             columns = c(1),
-                                             css = list('background-color', 'lightgray'),
-                                             n = 32),
+                   add_css_conditional_column(conditional = "top_n",
+                                              columns = c(1),
+                                              css = list('background-color', 'lightgray'),
+                                              n = 32),
                  "all rows selected")
 
   # comparison value not provided
   expect_error(tableHTML(mtcars) %>%
-                add_css_conditional_column(conditional = "==",
-                                           columns = c(1),
-                                           css = list('background-color', 'lightgray')),
+                 add_css_conditional_column(conditional = "==",
+                                            columns = c(1),
+                                            css = list('background-color', 'lightgray')),
                "comparison value needed")
 
   # begin values not numeric
   expect_error(tableHTML(mtcars) %>%
-                add_css_conditional_column(conditional = "between",
-                                           columns = c(1),
-                                           css = list('background-color', 'lightgray'),
-                                           between = c("a", 1)),
+                 add_css_conditional_column(conditional = "between",
+                                            columns = c(1),
+                                            css = list('background-color', 'lightgray'),
+                                            between = c("a", 1)),
                "begin and end values of begin")
 
   # custom colour rank theme selected with default colour rank theme
   expect_error(tableHTML(mtcars) %>%
-                add_css_conditional_column(conditional = "color_rank",
-                                           columns = c(1),
-                                           color_rank_theme = "Custom"),
+                 add_css_conditional_column(conditional = "color_rank",
+                                            columns = c(1),
+                                            color_rank_theme = "Custom"),
                "color_rank_css needs to be provided")
 
   # wrong format of custom css
   expect_error(tableHTML(mtcars) %>%
-                add_css_conditional_column(conditional = "color_rank",
-                                           columns = c(1),
-                                           color_rank_theme = "Custom",
-                                           color_rank_css = list(mpg = list(list(rep("red", 32))))),
+                 add_css_conditional_column(conditional = "color_rank",
+                                            columns = c(1),
+                                            color_rank_theme = "Custom",
+                                            color_rank_css = list(mpg = list(list(rep("red", 32))))),
                "color_rank_css must be a list of 2")
 
   # unnamed list
   expect_error(tableHTML(mtcars) %>%
-                add_css_conditional_column(conditional = "color_rank",
-                                           columns = c(1),
-                                           color_rank_theme = "Custom",
-                                           color_rank_css = list(list("background-color", list(rep("red", 32))))),
+                 add_css_conditional_column(conditional = "color_rank",
+                                            columns = c(1),
+                                            color_rank_theme = "Custom",
+                                            color_rank_css = list(list("background-color", list(rep("red", 32))))),
                "color_rank_css must be a named list")
+
+  # logical without a logical_condition
+  expect_error(tableHTML(mtcars) %>%
+                 add_css_conditional_column(conditional = "logical",
+                                            columns = c(1)),
+               "logical_conditions should be provided")
+
+  # logical_condition has the wrong nmber of vectors
+  expect_error(tableHTML(mtcars) %>%
+                 add_css_conditional_column(
+                   conditional = "logical",
+                   columns = c(1, 2),
+                   logical_condition=list(mtcars$mpg>30,
+                                          mtcars$mpg>25,
+                                          mtcars$mpg>20)),
+               "logical_conditions should have the same length")
+
+  # vectors in logical_condition have the wrong length
+  expect_error(tableHTML(mtcars) %>%
+                 add_css_conditional_column(
+                   conditional = "logical",
+                   columns = c(1, 2),
+                   logical_condition=list(c(TRUE, FALSE))),
+               "each vector in logical_conditions should have")
 
 })
 
 test_that("data is added", {
- expect_error(tableHTML(mtcars, add_data = FALSE) %>%
-               add_css_conditional_column(),
-              "tableHTML object does not have data in attributes.")
+  expect_error(tableHTML(mtcars, add_data = FALSE) %>%
+                 add_css_conditional_column(),
+               "tableHTML object does not have data in attributes.")
 })
 
 test_that("equations and inequations work", {
@@ -469,4 +493,61 @@ test_that("color rank works", {
                  '#FCEC92', '#F38773', '#EFAE7F', '#F8696B', '#F8696B')
   )
 
+})
+
+test_that("logical works", {
+
+  # one column, one logical vector
+  expect_equal(
+    {
+      tableHTML <- tableHTML(mtcars) %>%
+        add_css_conditional_column(
+          conditional = "logical",
+          logical_conditions = list(mtcars$hp==110),
+          css = list('background-color', "orange"),
+          columns = c("drat"))
+
+      strsplit(tableHTML, '<td') %>%
+        unlist() %>%
+        grep('style="background-color:orange;"', . )
+    },
+    expected = c(7, 19, 43)
+  )
+
+  # multiple columns, one logical vector
+  expect_equal(
+    {
+      tableHTML <- tableHTML(mtcars) %>%
+        add_css_conditional_column(
+          conditional = "logical",
+          logical_conditions = list(mtcars$hp==110),
+          css = list('background-color', "orange"),
+          columns = c(1, 3, 4))
+
+      strsplit(tableHTML, '<td') %>%
+        unlist() %>%
+        grep('style="background-color:orange;"', . )
+    },
+    expected = c(3, 5, 6, 15, 17, 18, 39, 41, 42)
+  )
+
+  # multiple columns, multiple logical vectors
+  expect_equal(
+    {
+      tableHTML <- tableHTML(mtcars) %>%
+        add_css_conditional_column(
+          conditional = "logical",
+          logical_conditions =
+            list(mtcars$hp==110,
+                 mtcars$wt==3.44,
+                 mtcars$drat==3.92),
+          css = list('background-color', "orange"),
+          columns = c('mpg', 'qsec', 'gear'))
+
+      strsplit(tableHTML, '<td') %>%
+        unlist() %>%
+        grep('style="background-color:orange;"', . )
+    },
+    expected = c(3, 15, 39, 57, 108, 117, 120, 129, 132)
+  )
 })
