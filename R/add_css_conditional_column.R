@@ -104,14 +104,14 @@
 #'                              columns = 11)
 #'
 #' tableHTML(mtcars) %>%
-#'  add_theme('scientific') %>%
-#'  add_css_conditional_column(conditional = "color_rank",
-#'                             color_rank_theme =  "RAG",
-#'                             columns = 1) %>%
-#'  add_css_conditional_column(conditional = "color_rank",
-#'                             color_rank_theme = "Rainbow",
-#'                             columns = 5,
-#'                             decreasing = TRUE)
+#'   add_theme('scientific') %>%
+#'   add_css_conditional_column(conditional = "color_rank",
+#'                              color_rank_theme =  "RAG",
+#'                              columns = 1) %>%
+#'   add_css_conditional_column(conditional = "color_rank",
+#'                              color_rank_theme = "Rainbow",
+#'                              columns = 5,
+#'                              decreasing = TRUE)
 #'
 #' css <- make_css_color_rank_theme(list(qsec = mtcars$qsec),
 #'                                   colors = c('#E41A1C', '#377EB8', '#4DAF4A',
@@ -141,22 +141,23 @@
 #'
 #' # test the condition on a column and apply the css on another
 #' iris %>%
-#' tableHTML(rownames = FALSE,
-#'           widths = rep(100, ncol(iris))) %>%
+#'   tableHTML(rownames = FALSE,
+#'             widths = rep(100, ncol(iris))) %>%
 #'   add_css_conditional_column(
-#'     conditional = 'logical',
-#'     columns = c('Sepal.Length', 'Petal.Length'),
-#'     css = list(c('background-color'), c('lightblue')),
-#'     logical_conditions = list(iris$Sepal.Width==3,
-#'                               iris$Petal.Width==0.3))
+#'    conditional = 'logical',
+#'    columns = c('Sepal.Length', 'Petal.Length'),
+#'    css = list(c('background-color'), c('lightblue')),
+#'    logical_conditions = list(iris$Sepal.Width==3,
+#'                              iris$Petal.Width==0.3))
 #' # apply the css on a full row
 #' iris %>%
-#'    tableHTML(rownames = FALSE,
-#'              widths = rep(100, ncol(iris))) %>%
-#'    add_css_conditional_column(conditional = 'logical',
-#'                               columns = 1:ncol(iris),
-#'                               css = list(c('background-color'), c('lightblue')),
-#'                               logical_conditions = list(iris$Sepal.Width==3))
+#'   tableHTML(rownames = FALSE,
+#'             widths = rep(100, ncol(iris))) %>%
+#'   add_css_conditional_column(conditional = 'logical',
+#'                              columns = 1:ncol(iris),
+#'                              css = list(c('background-color'), c('lightblue')),
+#'                              logical_conditions = list(iris$Sepal.Width==3))
+#'
 #' @export
 
 add_css_conditional_column <- function(tableHTML,
