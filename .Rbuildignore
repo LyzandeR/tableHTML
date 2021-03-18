@@ -5,3 +5,4 @@ readme_files/
 cran-comments.md
 news.md
 revdep/
+*.html
