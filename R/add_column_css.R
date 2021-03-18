@@ -59,7 +59,7 @@ add_css_column <- function(tableHTML,
  if (is.numeric(columns) | suppressWarnings(!any(is.na(as.numeric(columns))))) {
   indices <- columns
  } else {
-  indices <- which(attr(tableHTML, 'header') %in% columns)
+  indices <- which(attr(tableHTML, 'headers') %in% columns)
   if ('row_groups' %in% columns) {
    indices <- c(-1, indices)
   }

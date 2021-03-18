@@ -4,8 +4,14 @@
 \alias{tableHTML_to_image}
 \title{Convert a tableHTML into an image}
 \usage{
-tableHTML_to_image(tableHTML, file = NULL, type = c("png", "jpeg"),
-  add = FALSE, selector = "table", ...)
+tableHTML_to_image(
+  tableHTML,
+  file = NULL,
+  type = c("png", "jpeg"),
+  add = FALSE,
+  selector = "table",
+  ...
+)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object created by the tableHTML function.}

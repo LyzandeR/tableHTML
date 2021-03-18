@@ -4,8 +4,13 @@
 \alias{create_logo}
 \title{Generate package's logo}
 \usage{
-create_logo(save = TRUE, format = "html",
-  file = "tableHTML_logo.html", complete_html = FALSE, ...)
+create_logo(
+  save = TRUE,
+  format = "html",
+  file = "tableHTML_logo.html",
+  complete_html = FALSE,
+  ...
+)
 }
 \arguments{
 \item{save}{A boolean when set to TRUE the logo will be saved in

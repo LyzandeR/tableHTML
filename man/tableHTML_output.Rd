@@ -4,8 +4,12 @@
 \alias{tableHTML_output}
 \title{Implementing tableHTML in shiny}
 \usage{
-tableHTML_output(outputId, inline = FALSE, container = if (inline) span
-  else div, ...)
+tableHTML_output(
+  outputId,
+  inline = FALSE,
+  container = if (inline) span else div,
+  ...
+)
 }
 \arguments{
 \item{outputId}{input name.}

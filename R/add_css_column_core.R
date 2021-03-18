@@ -17,3 +17,4 @@ add_core_column_css <- function(tableHTML, i, style) {
 
  return(tableHTML)
 }
+
