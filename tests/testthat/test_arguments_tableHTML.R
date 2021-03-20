@@ -227,7 +227,14 @@ test_that("print works", {
 
 test_that("escape argument works when there are factor columns", {
   
-  df <- data.frame(a = as.factor(c('<abc>', '<def>')))
+  df <- data.frame(a = as.factor(c('abc', 'def', NA)))
+  expect_true(grepl('dba', tableHTML(df, replace_NA = 'dba')))
+  
+})
+
+test_that("replace_NA argument works when there are factor columns", {
+  
+  df <- data.frame(a = as.factor(c('<abc>', '<def>', NA)))
   expect_true(grepl('&#62;', tableHTML(df, escape = TRUE)))
   
 })
