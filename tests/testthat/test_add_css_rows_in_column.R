@@ -1,20 +1,35 @@
 context("add_css_rows_in_column testing")
 
 test_that("Function fails for wrong inputs", {
+  
   #no tableHTML
   expect_error(add_css_rows_in_column(mtcars, css = list('background-color', 
                                                          rep(c('red', 'green'), each = 16))),
                'tableHTML needs to be')
+  
   #all checks ok
   expect_error(add_css_rows_in_column(tableHTML(mtcars), css = list('background-color', 
                                                  rep(c('red', 'green'), each = 16)),
                                       column = 'mpg') , NA)
   
-  #check css list has same lengths
+  #the first element of css is longer than one
+  expect_error(add_css_rows_in_column(tableHTML(mtcars), css = list(c('background-color', 'abc'), 
+                                                                    rep(c('red', 'green'), each = 16)),
+                                      column = 'mpg') , 
+               'only one style')
+  
+  #check second element of css is not as long as the column
   expect_error(tableHTML(mtcars) %>%
                  add_css_rows_in_column(css = list('background-color', 'red'),
                'the values of'))
-  
+
+  #check only one column is provided
+  expect_error(add_css_rows_in_column(tableHTML(mtcars), 
+                                      css = list('background-color', 
+                                                 rep(c('red', 'green'), each = 16)),
+                                      column = c('mpg', 'cyl')),
+               'only one column')
+    
   #check column exists in data
   expect_error(add_css_rows_in_column(tableHTML(mtcars), 
                                       css = list('background-color', 

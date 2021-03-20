@@ -18,7 +18,7 @@
 #'   or a numeric atomic vector with the positions of the columns where the 
 #'   style definitions will be applied on. Only one column must be provided. 
 #'   If the rownames are included the column name is "tableHTML_rownames"
-#'   and the position is 0. If row_groups are are included the column name is "tableHTML_row_groups"
+#'   and the position is 0. If row_groups are included the column name is "tableHTML_row_groups"
 #'   and the position is -1.
 #'
 #' @return A tableHTML object.
@@ -57,6 +57,8 @@ add_css_rows_in_column <- function(tableHTML, css, column) {
   if (length(css[[2]]) != num_rows) stop('the values of the 
                                           style definitions must be
                                           as many as the data.frame rows')
+  if (length(column) != 1) stop('only one column is allowed. If you need more you
+                                 can chain multiple add_css_rows_in_column together!')
   
   #save attributes to use later
   attributes <- attributes(tableHTML)

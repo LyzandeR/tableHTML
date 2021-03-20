@@ -18,7 +18,7 @@ contain the style definitions' values (e.g. red). Check the examples for more in
 or a numeric atomic vector with the positions of the columns where the 
 style definitions will be applied on. Only one column must be provided. 
 If the rownames are included the column name is "tableHTML_rownames"
-and the position is 0. If row_groups are are included the column name is "tableHTML_row_groups"
+and the position is 0. If row_groups are included the column name is "tableHTML_row_groups"
 and the position is -1.}
 }
 \value{
