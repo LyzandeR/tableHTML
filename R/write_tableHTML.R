@@ -14,10 +14,11 @@
 #' @return The function itself returns nothing but a file is created. 
 #'         
 #' @examples
+#' \dontrun{
 #' write_tableHTML(tableHTML(mtcars), file = 'myhtmlcode.html')
 #' 
 #' write_tableHTML(tableHTML(mtcars), file = 'myhtmlcode.html', complete_html = TRUE)
-#' 
+#' }
 #' 
 #' @export
 write_tableHTML <- function(tableHTML, file, complete_html = FALSE) {

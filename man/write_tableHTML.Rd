@@ -24,9 +24,10 @@ The function itself returns nothing but a file is created.
 \code{write_tableHTML} will write the HTML code to a file.
 }
 \examples{
+\dontrun{
 write_tableHTML(tableHTML(mtcars), file = 'myhtmlcode.html')
 
 write_tableHTML(tableHTML(mtcars), file = 'myhtmlcode.html', complete_html = TRUE)
-
+}
 
 }
