@@ -16,6 +16,5 @@ the vignettes bigger than usual.
 
 ## RevDep
 
-There were no errors, warnings or notes for the reverse suggest implicitMeasures
-
+No revdep needed
 
