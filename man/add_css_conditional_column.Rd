@@ -6,11 +6,12 @@
 \usage{
 add_css_conditional_column(tableHTML, columns,
   conditional = c("color_rank", "==", "!=", "min", "max", "top_n",
-  "bottom_n", ">", ">=", "<", "<=", "between", "contains"), n = NULL,
-  value = NULL, between = NULL, css = NULL,
+  "bottom_n", ">", ">=", "<", "<=", "between", "contains", "logical"),
+  n = NULL, value = NULL, between = NULL, css = NULL,
   color_rank_theme = c("Custom", "RAG", "Spectral", "Rainbow",
   "White-Green", "White-Red", "White-Blue"), color_rank_css = NULL,
-  decreasing = FALSE, same_scale = TRUE, levels = NULL)
+  decreasing = FALSE, same_scale = TRUE, logical_conditions = NULL,
+  levels = NULL)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object created by the tableHTML function.}
@@ -26,7 +27,8 @@ and inequality resp. '<', '<=', '>', and '>=' evaluate the respective operators 
 columns on the left. 'between' is SQL like, i.e. inclusive. 'top_n' highlights the n highest values columns, 'bottom_n'
 hightlights the lowest n values. 'max' and 'min' are equivalent of top_1 and bottom_1. 'contains' uses \code{grepl()} to see
 if values of a column contain a pattern specified in \code{value}. 'color-rank' applies
-one of the \code{color_rank_theme}s.}
+one of the \code{color_rank_theme}. 'logical' allows the user to provide a list of logical vectors to identify where to apply the css.
+This option is convenient when the condition is complex, for example if it relies on other columns in the table.}
 
 \item{n}{the number of rows to highlight in 'top_n' and 'bottom_n'. If no value for n is provided, 1 is assumed
 with a warning.}
@@ -60,6 +62,12 @@ length as the number of rows for each style definition. You can use \code{make_c
 \item{same_scale}{Logical. This flag indicates whether the condition should be applied to columns individually or
 in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
 the condition will be evaluated per column.}
+
+\item{logical_conditions}{A list of logical vectors indicating where the condition holds in each column
+provided in the \code{columns} parameter. Should be provided when \code{conditional} is 'logical'.
+The length of the list should have the same length as \code{columns}, and the length of each vector
+in the list should equal the number of rows in the table. If one logical vector is given it wil be
+applied on all given columns.}
 
 \item{levels}{Deprecated. Please change the factor levels in the input data of \code{tableHTML}.}
 }
@@ -121,14 +129,14 @@ tableHTML(mtcars) \%>\%
                              columns = 11)
 
 tableHTML(mtcars) \%>\%
- add_theme('scientific') \%>\%
- add_css_conditional_column(conditional = "color_rank",
-                            color_rank_theme =  "RAG",
-                            columns = 1) \%>\%
- add_css_conditional_column(conditional = "color_rank",
-                            color_rank_theme = "Rainbow",
-                            columns = 5,
-                            decreasing = TRUE)
+  add_theme('scientific') \%>\%
+  add_css_conditional_column(conditional = "color_rank",
+                             color_rank_theme =  "RAG",
+                             columns = 1) \%>\%
+  add_css_conditional_column(conditional = "color_rank",
+                             color_rank_theme = "Rainbow",
+                             columns = 5,
+                             decreasing = TRUE)
 
 css <- make_css_color_rank_theme(list(qsec = mtcars$qsec),
                                   colors = c('#E41A1C', '#377EB8', '#4DAF4A',
@@ -155,5 +163,24 @@ tableHTML(mtcars) \%>\%
                              color_rank_theme = "White-Red",
                              columns = c(9, 10),
                              same_scale = FALSE)
+
+# test the condition on a column and apply the css on another
+iris \%>\%
+  tableHTML(rownames = FALSE,
+            widths = rep(100, ncol(iris))) \%>\%
+  add_css_conditional_column(
+   conditional = 'logical',
+   columns = c('Sepal.Length', 'Petal.Length'),
+   css = list(c('background-color'), c('lightblue')),
+   logical_conditions = list(iris$Sepal.Width==3,
+                             iris$Petal.Width==0.3))
+# apply the css on a full row
+iris \%>\%
+  tableHTML(rownames = FALSE,
+            widths = rep(100, ncol(iris))) \%>\%
+  add_css_conditional_column(conditional = 'logical',
+                             columns = 1:ncol(iris),
+                             css = list(c('background-color'), c('lightblue')),
+                             logical_conditions = list(iris$Sepal.Width==3))
 
 }
