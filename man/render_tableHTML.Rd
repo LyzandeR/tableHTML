@@ -4,8 +4,12 @@
 \alias{render_tableHTML}
 \title{Implementing tableHTML in shiny}
 \usage{
-render_tableHTML(expr, env = parent.frame(), quoted = FALSE,
-  outputArgs = list())
+render_tableHTML(
+  expr,
+  env = parent.frame(),
+  quoted = FALSE,
+  outputArgs = list()
+)
 }
 \arguments{
 \item{expr}{A tableHTML object.}

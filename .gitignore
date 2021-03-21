@@ -6,3 +6,4 @@ inst/doc
 .Rproj
 .tableHTML.Rproj
 revdep/
+/vignettes/*.html

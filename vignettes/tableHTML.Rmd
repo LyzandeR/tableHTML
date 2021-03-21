@@ -328,6 +328,65 @@ in `<th>`. Since the `<th>` tag is within the `<tr>` tag, the style definitions 
 overwrite those of `tr`. This is only true for the **same** style definitions i.e. if you specify
 a `background-color` for both the first row and the headers.
 
+### add\_css\_rows\_in\_column
+
+This function is used to add different css values of the same css definition across the 
+column of the table. For example if you want to specify different colours for each one of
+the rows of a column, this is the right function.
+
+The function accepts only one column but as usual you can chain multiple
+`add_css_rows_in_column`s.
+
+```{r addcssrowsincolumn}
+ tableHTML(mtcars) %>%
+   add_css_rows_in_column(css = list('background-color', 
+                                    rep(c('red', 'green'), each = 16)),
+                         column = 'mpg')
+```
+
+\
+
+Here we chain two columns together
+
+```{r addcssrowsincolumn2}
+ tableHTML(mtcars) %>%
+   add_css_rows_in_column(css = list('background-color', 
+                                    rep(c('red', 'green'), each = 16)),
+                         column = 'mpg') %>%
+   add_css_rows_in_column(css = list('background-color', 
+                                    rep(c('green', 'red'), each = 16)),
+                         column = 'cyl')
+  
+
+```
+
+\
+
+This can be chained with `add_css_column` or any of the rest of the `add_css*` functions
+as seen previously.
+
+```{r addcssrowsincolumn3}
+ tableHTML(mtcars) %>%
+   add_css_column(css = list('border', '3px solid blue'),
+                  columns = c('mpg', 'disp', 'rownames')) %>%
+   add_css_rows_in_column(css = list(c('background-color'), 
+                                    rep(c('red', 'green'), each = 16)),
+                         column = 'mpg')
+  
+     
+```
+
+
+### add\_editable\_column
+
+This function is used to create editable columns. This is done in HTML so the underlying 
+data in your data.frame will not change. This is meant to be used with shiny or JavaScript in your
+application / dashboard / website.
+
+```{r editablecol}
+ tableHTML(mtcars) %>%
+   add_editable_column(columns = 'mpg')
+```
 
 ### add\_css\_header
 
@@ -516,6 +575,33 @@ mtcars %>%
   add_css_footer(css = list(c('text-align', 'color'), c('left', 'black')))
 ```
 
+### make_hyperlink
+
+This function is used to create clickable links in your table. Under the hood
+it adds the `a href` tag to your data in order to be displayed as a link. In order
+for the links to display properly, the `escape` argument needs to be set to `FALSE`.
+
+The second argument in `make_hyperlink` can give an alias to the links.
+
+```{r hyperlink1}
+#escape needs to be set to FALSE
+tableHTML(data.frame(cran = make_hyperlink(c('https://cran.r-project.org/',
+                                             'https://cran.r-project.org/package=tableHTML'))), 
+          escape = FALSE)
+```
+
+\   
+
+And another example:
+
+```{r hyperlink2}
+#escape needs to be set to FALSE
+tableHTML(data.frame(cran = make_hyperlink(c('https://cran.r-project.org/',
+                                             'https://cran.r-project.org/package=tableHTML'),
+                                           c('cran', 'tableHTML'))), 
+          escape = FALSE)
+```
+
 ### replace_html
 
 This is a function that can help you with very specific tasks that cannot be accompliced with the 
@@ -554,6 +640,7 @@ mtcars %>%
 ```
 
 ![     ](image_table1.PNG)
+
 
 ### Themes
 

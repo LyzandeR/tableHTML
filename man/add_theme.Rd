@@ -4,8 +4,7 @@
 \alias{add_theme}
 \title{Add a theme to the tableHTML}
 \usage{
-add_theme(tableHTML, theme = c("scientific", "rshiny-blue", "colorize"),
-  ...)
+add_theme(tableHTML, theme = c("scientific", "rshiny-blue", "colorize"), ...)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object.}

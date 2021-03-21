@@ -5,12 +5,25 @@
 \alias{print.tableHTML}
 \title{Create an easily css-ible HTML table}
 \usage{
-tableHTML(obj, rownames = TRUE, class = paste0("table_",
-  sample(1000:9999, 1)), widths = NULL, headers = NULL,
-  second_headers = NULL, row_groups = NULL, caption = NULL,
-  footer = NULL, border = 1, collapse = c("collapse", "separate",
-  "separate_shiny"), spacing = "2px", escape = TRUE, round = NULL,
-  replace_NA = NULL, add_data = TRUE, theme = NULL)
+tableHTML(
+  obj,
+  rownames = TRUE,
+  class = paste0("table_", sample(1000:9999, 1)),
+  widths = NULL,
+  headers = NULL,
+  second_headers = NULL,
+  row_groups = NULL,
+  caption = NULL,
+  footer = NULL,
+  border = 1,
+  collapse = c("collapse", "separate", "separate_shiny"),
+  spacing = "2px",
+  escape = TRUE,
+  round = NULL,
+  replace_NA = NULL,
+  add_data = TRUE,
+  theme = NULL
+)
 
 \method{print}{tableHTML}(x, viewer = TRUE, ...)
 }

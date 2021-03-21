@@ -221,5 +221,27 @@ test_that("print works", {
                           print(viewer = FALSE)
                         )
   expect_true(any(grepl('tableHTML_column_1', out)))
+  
+})
 
+
+test_that("escape argument works when there are factor columns", {
+  
+  df <- data.frame(a = as.factor(c('abc', 'def', NA)))
+  expect_true(grepl('dba', tableHTML(df, replace_NA = 'dba')))
+  
+})
+
+test_that("replace_NA argument works when there are factor columns", {
+  
+  df <- data.frame(a = as.factor(c('<abc>', '<def>', NA)))
+  expect_true(grepl('&#62;', tableHTML(df, escape = TRUE)))
+  
+})
+
+
+test_that("border does not work with non-numeric", {
+  
+  expect_error(tableHTML(mtcars, border = 'a' ), 'border needs ')
+  
 })

@@ -2,6 +2,7 @@ context("testing of export to image")
 
 test_that("Function fails for wrong inputs", {
  skip_on_cran()
+ skip_on_os('windows')
 
  #check argument type is picked correctly
  expect_error(
@@ -12,7 +13,7 @@ test_that("Function fails for wrong inputs", {
   'should be one of'
  )
 
- #check argumrnt add is logical
+ #check argument add is logical
  expect_error(
   mtcars %>%
    tableHTML() %>%
@@ -67,16 +68,19 @@ test_that("Function fails for wrong inputs", {
 
  #check if device is shut down
  #before adding the image
- expect_false({
+ #this tends to crash the system withing expect_false
+ #but works manually
+ 
+  expect_false({
   plot(1:5)
   par_1 <- par()
 
-  mtcars %>%
-   tableHTML() %>%
-   tableHTML_to_image(add = FALSE)
-  par_2 <- par()
-  identical(par_1, par_2)
- })
+   mtcars %>%
+    tableHTML() %>%
+    tableHTML_to_image(add = FALSE)
+   par_2 <- par()
+   identical(par_1, par_2)
+  })
 
 })
 

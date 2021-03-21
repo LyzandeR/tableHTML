@@ -4,16 +4,20 @@
 \alias{make_css_color_rank_theme}
 \title{Get css properties for custom color rank theme}
 \usage{
-make_css_color_rank_theme(column_data, colors,
-  css_property = "background-color", decreasing = FALSE,
-  same_scale = TRUE)
+make_css_color_rank_theme(
+  column_data,
+  colors,
+  css_property = "background-color",
+  decreasing = FALSE,
+  same_scale = TRUE
+)
 }
 \arguments{
 \item{column_data}{A named list of vectors of values that are in a tableHTML column which
 should be mapped to a color palette.}
 
 \item{colors}{colors to interpolate; must be a valid argument to
-    \code{\link{col2rgb}()}.}
+    \code{\link[grDevices]{col2rgb}()}.}
 
 \item{css_property}{Character. An optional character specifying the css attribute
 that should be used. Default is \code{'backgroud-color'}}

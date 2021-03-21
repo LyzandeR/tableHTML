@@ -4,14 +4,23 @@
 \alias{add_css_conditional_column}
 \title{Add conditional css to tableHTML's columns}
 \usage{
-add_css_conditional_column(tableHTML, columns,
-  conditional = c("color_rank", "==", "!=", "min", "max", "top_n",
-  "bottom_n", ">", ">=", "<", "<=", "between", "contains", "logical"),
-  n = NULL, value = NULL, between = NULL, css = NULL,
-  color_rank_theme = c("Custom", "RAG", "Spectral", "Rainbow",
-  "White-Green", "White-Red", "White-Blue"), color_rank_css = NULL,
-  decreasing = FALSE, same_scale = TRUE, logical_conditions = NULL,
-  levels = NULL)
+add_css_conditional_column(
+  tableHTML,
+  columns,
+  conditional = c("color_rank", "==", "!=", "min", "max", "top_n", "bottom_n", ">",
+    ">=", "<", "<=", "between", "contains", "logical"),
+  n = NULL,
+  value = NULL,
+  between = NULL,
+  css = NULL,
+  color_rank_theme = c("Custom", "RAG", "Spectral", "Rainbow", "White-Green",
+    "White-Red", "White-Blue"),
+  color_rank_css = NULL,
+  decreasing = FALSE,
+  same_scale = TRUE,
+  logical_conditions = NULL,
+  levels = NULL
+)
 }
 \arguments{
 \item{tableHTML}{A tableHTML object created by the tableHTML function.}
