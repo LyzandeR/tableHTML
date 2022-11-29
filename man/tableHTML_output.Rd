@@ -4,22 +4,12 @@
 \alias{tableHTML_output}
 \title{Implementing tableHTML in shiny}
 \usage{
-tableHTML_output(
-  outputId,
-  inline = FALSE,
-  container = if (inline) span else div,
-  ...
-)
+tableHTML_output(outputId, ...)
 }
 \arguments{
 \item{outputId}{input name.}
 
-\item{inline}{use an inline (span()) or block container (div()) for the output.}
-
-\item{container}{a function to generate an HTML element to contain the text.}
-
-\item{...}{Other arguments to pass to the container tag function. This is useful for providing 
-additional classes for the tag.}
+\item{...}{Other arguments to passed along to \code{\link[shiny:htmlOutput]{shiny::uiOutput()}}}
 }
 \description{
 This function is used to implement tableHTML in a shiny app. It is used in the shiny
@@ -47,5 +37,5 @@ server = function(input, output) {
 
 }
 \seealso{
-\code{uiOutput}
+\code{\link[=uiOutput]{uiOutput()}}
 }
