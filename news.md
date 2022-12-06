@@ -1,3 +1,7 @@
+# tableHTML 2.1.1
+
+* Added support for new version of shiny 1.7.4.
+
 # tableHTML 2.0.0
 
 * Breaking Change: Themes are now applied to tableHTML objects using the add_theme() function.
