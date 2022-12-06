@@ -4,22 +4,12 @@
 \alias{render_tableHTML}
 \title{Implementing tableHTML in shiny}
 \usage{
-render_tableHTML(
-  expr,
-  env = parent.frame(),
-  quoted = FALSE,
-  outputArgs = list()
-)
+render_tableHTML(expr, ...)
 }
 \arguments{
 \item{expr}{A tableHTML object.}
 
-\item{env}{An environment.}
-
-\item{quoted}{A boolean value. Whether the expression is quoted or not.}
-
-\item{outputArgs}{A list of arguments to be passed through to the implicit call to uiOutput when 
-renderUI is used in an interactive R Markdown document.}
+\item{...}{Other arguments passed along to \code{\link[shiny:renderUI]{shiny::renderUI()}}.}
 }
 \description{
 This function is used to implement tableHTML in a shiny app. This function is used in the shiny
@@ -47,5 +37,5 @@ server = function(input, output) {
 
 }
 \seealso{
-\code{renderUI}
+\code{\link[shiny:renderUI]{shiny::renderUI()}}
 }

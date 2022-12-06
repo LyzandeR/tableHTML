@@ -7,8 +7,8 @@
 add_css_conditional_column(
   tableHTML,
   columns,
-  conditional = c("color_rank", "==", "!=", "min", "max", "top_n", "bottom_n", ">",
-    ">=", "<", "<=", "between", "contains", "logical"),
+  conditional = c("color_rank", "==", "!=", "min", "max", "top_n", "bottom_n", ">", ">=",
+    "<", "<=", "between", "contains", "logical"),
   n = NULL,
   value = NULL,
   between = NULL,
@@ -65,8 +65,9 @@ length as the number of rows for each style definition. You can use \code{make_c
 
 \item{decreasing}{logical.  Should the sort order be increasing or
     decreasing? For the \code{"radix"} method, this can be a vector of
-    length equal to the number of arguments in \code{\dots}. For the
-    other methods, it must be length one.}
+    length equal to the number of arguments in \code{\dots} and the
+    elements are recycled as necessary.
+    For the other methods, it must be length one.}
 
 \item{same_scale}{Logical. This flag indicates whether the condition should be applied to columns individually or
 in conjunction. If TRUE, the condition will be evaluated on all values of all \code{columns}. If FALSE,
