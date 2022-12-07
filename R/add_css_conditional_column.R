@@ -236,7 +236,7 @@ add_css_conditional_column <- function(tableHTML,
     if (suppressWarnings(any(is.na(as.numeric(between))))) {
       stop('begin and end values of begin must be numeric')
     }
-    if (class(between) != "numeric" | length(between) != 2) {
+    if ( !methods::is(between, 'numeric') | length(between) != 2) {
       stop('between needs to be a vector with 2 elements')
     }
     if (between[1] >= between[2]) {

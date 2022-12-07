@@ -42,7 +42,7 @@ make_css_color_rank_theme <- function(column_data,
                                       same_scale = TRUE) {
 
   #checks
-  if (class(column_data) != 'list' | is.null(names(column_data))) {
+  if (!methods::is(column_data, 'list') | is.null(names(column_data))) {
     stop('column_data must be a named list')
   }
 

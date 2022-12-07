@@ -2,7 +2,7 @@
 
 [![CRAN version](http://www.r-pkg.org/badges/version/tableHTML)](https://cran.r-project.org/package=tableHTML)
 [![Travis-CI Build Status](https://travis-ci.org/LyzandeR/tableHTML.svg?branch=master)](https://travis-ci.org/LyzandeR/tableHTML)
-[![Coverage Status](https://codecov.io/gh/lyzander/tableHTML/branch/master/graph/badge.svg)](https://codecov.io/gh/lyzander/tableHTML?branch=master)
+[![Coverage Status](https://app.codecov.io/gh/lyzander/tableHTML/branch/master/graph/badge.svg)](https://app.codecov.io/gh/lyzander/tableHTML?branch=master)
 
 ## Overview
 

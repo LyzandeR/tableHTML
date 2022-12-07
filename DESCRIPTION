@@ -15,6 +15,7 @@ Imports:
     magrittr,
     shiny,
     jpeg,
+    methods,
     png,
     webshot
 Description: A tool to create and style HTML tables with CSS. These can
