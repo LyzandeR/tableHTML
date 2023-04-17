@@ -1,9 +1,5 @@
 # tableHTML <img src="https://github.com/LyzandeR/tableHTML/blob/master/readme_files/tableHTML_logo.png" width="200px" height="auto" align="right" />
 
-[![CRAN version](http://www.r-pkg.org/badges/version/tableHTML)](https://cran.r-project.org/package=tableHTML)
-[![Travis-CI Build Status](https://travis-ci.org/LyzandeR/tableHTML.svg?branch=master)](https://travis-ci.org/LyzandeR/tableHTML)
-[![Coverage Status](https://app.codecov.io/gh/lyzander/tableHTML/branch/master/graph/badge.svg)](https://app.codecov.io/gh/lyzander/tableHTML?branch=master)
-
 ## Overview
 
 The goal of `tableHTML` is to create easily CSS-ible HTML tables. It is compatible with any application that uses HTML / CSS and has successfully been tested with:
