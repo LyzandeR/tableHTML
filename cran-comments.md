@@ -1,4 +1,4 @@
-## Submiting new version 2.1.1 for tableHTML 
+## Submiting new version 2.1.2 for tableHTML 
 
 ## Test environments
 * Windows 10, R 4.0.4, R devel (also winbuilder on CRAN)

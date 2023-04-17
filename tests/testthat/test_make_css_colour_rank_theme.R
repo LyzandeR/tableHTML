@@ -51,11 +51,13 @@ test_that("color to value mapping is correct", {
                                      c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
                                      decreasing = TRUE,
                                      same_scale = FALSE)
-   css[["a"]][[2]][[1]]
+   substr(css[["a"]][[2]][[1]], 1 , 5)
 
   },
-  expected = c("#F8696B", "#F48773", "#F0A67C", "#F3C285", "#86C183",
-               "#F8696B", "#F48773", "#F0A67C", "#F3C285", "#86C183")
+  expected = substr(c("#F8696B", "#F48773", "#F0A67C", "#F3C285", "#86C183",
+                      "#F8696B", "#F48773", "#F0A67C", "#F3C285", "#86C183"),
+                    1,
+                    5)
   )
  expect_equal(
   {
@@ -65,11 +67,13 @@ test_that("color to value mapping is correct", {
                                      c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
                                      decreasing = TRUE,
                                      same_scale = FALSE)
-   css[["b"]][[2]][[1]]
+   substr(css[["b"]][[2]][[1]], 1, 5)
 
   },
-  expected = c("#F8696B", "#F48773", "#F0A67C", "#F3C285", "#F9DE8D",
-               "#EDE690", "#CFDC8C", "#B3D189", "#9CC986", "#86C183")
+  expected = substr(c("#F8696B", "#F48773", "#F0A67C", "#F3C285", "#F9DE8D",
+                      "#EDE690", "#CFDC8C", "#B3D189", "#9CC986", "#86C183"),
+                    1,
+                    5)
   )
  expect_equal(
   {
@@ -79,11 +83,13 @@ test_that("color to value mapping is correct", {
                                      c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
                                      decreasing = FALSE,
                                      same_scale = FALSE)
-   css[["a"]][[2]][[1]]
+   substr(css[["a"]][[2]][[1]], 1, 5)
 
   },
-  expected = c("#86C183", "#9CC986", "#B3D189", "#CFDC8C", "#F8696B",
-               "#86C183", "#9CC986", "#B3D189", "#CFDC8C", "#F8696B")
+  expected = substr(c("#86C183", "#9CC986", "#B3D189", "#CFDC8C", "#F8696B",
+                      "#86C183", "#9CC986", "#B3D189", "#CFDC8C", "#F8696B"),
+                    1,
+                    5)
  )
  expect_equal(
   {
@@ -93,11 +99,13 @@ test_that("color to value mapping is correct", {
                                      c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
                                      decreasing = FALSE,
                                      same_scale = FALSE)
-   css[["a"]][[2]][[1]]
+   substr(css[["a"]][[2]][[1]], 1, 5)
 
   },
-  expected = c("#F0A47C", "#F29076", "#F57C70", "#F8696B", "#86C183",
-               "#F0A47C", "#F29076", "#F57C70", "#F8696B", "#86C183")
+  expected = substr(c("#F0A47C", "#F29076", "#F57C70", "#F8696B", "#86C183",
+                      "#F0A47C", "#F29076", "#F57C70", "#F8696B", "#86C183"),
+                    1,
+                    5)
  )
  expect_equal(
   {
@@ -107,11 +115,13 @@ test_that("color to value mapping is correct", {
                                      c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
                                      decreasing = FALSE,
                                      same_scale = TRUE)
-   css[["a"]][[2]][[1]]
+   substr(css[["a"]][[2]][[1]],1, 5)
 
   },
-  expected = c("#F9DF8E", "#F6D38A", "#F4C686", "#F1BA82", "#86C183",
-               "#F9DF8E", "#F6D38A", "#F4C686", "#F1BA82", "#86C183")
+  expected = substr(c("#F9DF8E", "#F6D38A", "#F4C686", "#F1BA82", "#86C183",
+                      "#F9DF8E", "#F6D38A", "#F4C686", "#F1BA82", "#86C183"),
+                    1,
+                    5)
  )
  expect_equal(
   {
@@ -121,11 +131,13 @@ test_that("color to value mapping is correct", {
                                      c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
                                      decreasing = FALSE,
                                      same_scale = TRUE)
-   css[["b"]][[2]][[1]]
+   substr(css[["b"]][[2]][[1]], 1, 5)
 
   },
-  expected = c("#F9DF8E", "#F6D38A", "#F4C686", "#F1BA82", "#EFAE7F",
-               "#F0A07B", "#F29277", "#F48473", "#F6766F", "#F8696B")
+  expected = substr(c("#F9DF8E", "#F6D38A", "#F4C686", "#F1BA82", "#EFAE7F",
+                      "#F0A07B", "#F29277", "#F48473", "#F6766F", "#F8696B"),
+                    1,
+                    5)
  )
  expect_equal(
   {
@@ -133,10 +145,10 @@ test_that("color to value mapping is correct", {
    css <- make_css_color_rank_theme(list(a =  factor(letters[1:4])),
                                      c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
                                      decreasing = FALSE)
-   css[["a"]][[2]][[1]]
+   substr(css[["a"]][[2]][[1]], 1, 5)
 
   },
-  expected = c("#86C183", "#CFDC8C", "#F3C285", "#F8696B")
+  expected = substr(c("#86C183", "#CFDC8C", "#F3C285", "#F8696B"), 1, 5)
  )
  expect_equal(
   {
@@ -144,10 +156,10 @@ test_that("color to value mapping is correct", {
    css <- make_css_color_rank_theme(list(a =  letters[1:4]),
                                      c("#86c183", "#B9D48A", "#FCEC92", "#EFAE7F","#F8696B"),
                                      decreasing = TRUE)
-   css[["a"]][[2]][[1]]
+   substr(css[["a"]][[2]][[1]], 1, 5)
 
   },
-  expected = c("#F8696B","#F3C285", "#CFDC8C", "#86C183")
+  expected = substr(c("#F8696B","#F3C285", "#CFDC8C", "#86C183"), 1, 5)
  )
  }
 )

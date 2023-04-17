@@ -1,3 +1,7 @@
+# tableHTML 2.1.2
+
+* Updated tests to account for an issue with MacOS's M1mac update.
+
 # tableHTML 2.1.1
 
 * Added support for new version of shiny 1.7.4.
