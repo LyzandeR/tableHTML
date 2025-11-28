@@ -26,9 +26,9 @@ shinyApp(
   br(),
   column(width = 1),
   tableHTML_output("mytable"))
- ), 
+ ),
 server = function(input, output) {
- output$mytable <- render_tableHTML( 
+ output$mytable <- render_tableHTML(
   tableHTML(mtcars)
  )}
 )
